@@ -1,0 +1,104 @@
+header .container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.navbar-brand {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.navbar {
+    padding-left: 0 !important;
+}
+
+.navbar-color{
+    background: #ffffff;
+}
+/* logo code  */
+.logo-code{
+    margin:14px 14px;
+}
+.Andhrasweets-title{
+    font-family: "Poppins", "Inter", sans-serif;
+    font-weight: 700;   /* bold like brand logo */
+    letter-spacing: 0.5px;
+    color: red;
+}
+
+.nav-link {
+    position: relative;
+    font-size: 18px;
+    color: #8a4b00 !important;
+    transition: 0.3s;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #d88d00;
+    transition: 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* responsive coding  */
+@media (max-width: 576px) {    /* mobile view */
+    .navbar-mobileview {
+        margin-left: 20% !important;
+        font-size: 20px !important;
+    }
+}
