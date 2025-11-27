@@ -13,23 +13,24 @@ header .container {
 }
 
 .navbar-color{
-    background: #ffffff;
+    background:linear-gradient(135deg, #7b8bf3,#4bc7ff);
 }
 /* logo code  */
 .logo-code{
     margin:14px 14px;
 }
 .Andhrasweets-title{
-    font-family: "Poppins", "Inter", sans-serif;
+    font-family: serif;
     font-weight: 700;   /* bold like brand logo */
-    letter-spacing: 0.5px;
-    color: red;
+    letter-spacing: 1.0px;
+    color: whitesmoke;
+    font-size: 25px;
 }
 
 .nav-link {
     position: relative;
     font-size: 18px;
-    color: #8a4b00 !important;
+    color: #f2f6ff !important;
     transition: 0.3s;
 }
 
@@ -40,7 +41,7 @@ header .container {
     bottom: 0;
     width: 0%;
     height: 2px;
-    background-color: #d88d00;
+    background-color: #a8d4ff;
     transition: 0.3s;
 }
 
@@ -48,52 +49,9 @@ header .container {
     width: 100%;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* 
+ */
+/* =================== */
 
 /* responsive coding  */
 @media (max-width: 576px) {    /* mobile view */
@@ -102,3 +60,610 @@ header .container {
         font-size: 20px !important;
     }
 }
+
+
+
+
+
+
+/* ==============Home.Html file css code ====================== */
+
+/* -------- HERO SECTION -------- */
+/* .hero-section { */
+    /* width: 100%; */
+    /* min-height: 100vh; */
+    /* background: */
+        /* linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.55)), */
+        /* url("{% static 'images/home_logo.png' %}"); */
+    /* background-size: cover; */
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* padding: 0px; */
+    /* margin: 0px; */
+    /* overflow: hidden; */
+/* } */
+
+/* Left Side Text Animation */
+.hero-content {
+    max-width: 550px;
+    color: #fff;
+    animation: slideLeft 1.4s ease-out;
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-60px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-title {
+    font-size: 3.4rem;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* CTA Button */
+.hero-btn {
+    margin-top: 25px;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #ff8800, #ffb300);
+    border: none;
+    border-radius: 35px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(255, 153, 0, 0.4);
+}
+
+/* -------- RIGHT SIDE IMAGES -------- */
+.hero-images {
+    position: relative;
+    animation: fadeUp 1.6s ease-out;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.main-jar {
+    width: 360px;
+    border-radius: 20px;
+    box-shadow: 0 8px 35px rgba(0,0,0,1.35);
+}
+
+/* Floating small pickle bottle */
+.floating-pickle {
+    position: absolute;
+    right: -30px;
+    top: 30px;
+    width: 170px;
+    animation: float 3.5s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
+}
+
+/* Responsive */
+@media(max-width: 992px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+    }
+    .hero-images {
+        margin-top: 30px;
+    }
+    .main-jar {
+        width: 260px;
+    }
+}
+
+/* ==============last section code =================================== */
+
+
+/* Hero Section */
+.hero-section-lastsection {
+    padding: 80px 0;
+    background: #fff; /* change if needed */
+}
+
+.hero-img {
+    width: 100%;
+    max-width: 450px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-title1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #5a3200;
+}
+
+.hero-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #444;
+    margin-top: 15px;
+}
+
+/* Brown Button */
+.btn-brown {
+    background-color: #8a4b08;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-brown:hover {
+    background-color: #663508;
+    color: #fff;
+}
+
+/* Smooth Fade Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Little Andhra pickles========================= */
+
+.lap-title{
+    text-align: center;
+    font-weight: 700;
+    font-size: 35px;
+    margin-top:30px;
+}
+.lap-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #229122;
+}
+
+/* .lap-tab { */
+    /* padding: 10px 20px; */
+    /* border: none; */
+    /* background: #eee; */
+    /* font-size: 16px; */
+    /* border-radius: 8px; */
+    /* margin: 5px; */
+    /* cursor: pointer; */
+/* } */
+/* .lap-tab.active { */
+    /* background: #ff9800; */
+    /* color: #fff; */
+/* } */
+/*  */
+/* Horizontal scroll container */
+/* .scroll-container { */
+    /* display: flex !important;       FLEX FIX */
+    /* gap: 20px; */
+    /* overflow-x: auto; */
+    /* white-space: nowrap; */
+    /* scroll-behavior: smooth; */
+    /* scrollbar-width: none;  firefox */
+    /* padding: 10px; */
+/* } */
+/*  */
+/*  */
+/* Stop scrollbars showing */
+/* .scroll-container::-webkit-scrollbar { */
+    /* display: none; */
+/* } */
+/*  */
+/* Product card */
+/* .lap-card { */
+    /* min-width: 170px;      IMPORTANT for horizontal scrolling */
+    /* flex: 0 0 auto;        Do not shrink */
+    /* text-align: center; */
+/* } */
+/*  */
+/*  */
+/*  */
+/* Image */
+/* .lap-img { */
+    /* width: 100%; */
+    /* height: 150px; */
+    /* object-fit: contain; */
+    /* border-radius: 10px; */
+/* } */
+/*  */
+/* Product name */
+/* .lap-name { */
+    /* font-size: 15px; */
+    /* margin-top: 5px; */
+/* } */
+/*  */
+/* MOBILE RESPONSIVE */
+/* @media (max-width: 768px) { */
+    /* .scroll-container { */
+        /* grid-template-columns: repeat(2, 1fr); Mobile */
+        /* gap: 15px; */
+    /* } */
+    /* .lap-img { */
+        /* height: 130px; */
+    /* } */
+/* } */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+
+
+
+/* ---------------------- */
+/* TABS */
+.lap-tab {
+    padding: 10px 20px;
+    border: none;
+    background: #eee;
+    font-size: 16px;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
+.lap-tab.active {
+    background: #ff9800;
+    color: #fff;
+}
+
+/* ---------------------- */
+/* AUTO SCROLL (outer wrapper) */
+.auto-scroll {
+    width: 100%;
+    overflow: hidden;
+    padding-left: 10px;
+}
+
+/* AUTO SCROLL TRACK (moves) */
+.scroll-track {
+    display: flex;
+    gap: 20px;
+    animation: scrollAnim 20s linear infinite;
+}
+
+@keyframes scrollAnim {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ---------------------- */
+/* PRODUCT CARD */
+.lap-card {
+    min-width: 170px;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.lap-img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.lap-name {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+/* ---------------------- */
+/* MOBILE */
+@media (max-width: 768px) {
+    .lap-img {
+        height: 130px;
+    }
+}
+
+
+
+/* ========Sweets Categories Css======= */
+
+
+/* Section Title */
+/* .section-title { */
+    /* font-size: 22px; */
+    /* margin: 15px 0; */
+    /* font-weight: 700; */
+/* } */
+/*  */
+/* Grid System */
+/* .products-grid { */
+    /* display: grid; */
+    /* grid-template-columns: repeat(3, 1fr); Laptop: 3 cards */
+    /* gap: 20px; */
+    /* padding: 10px 0; */
+/* } */
+/*  */
+/* Cards */
+/* .lap-card { */
+    /* background: #fff; */
+    /* border-radius: 12px; */
+    /* padding: 10px; */
+    /* text-align: center; */
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
+/* } */
+/*  */
+/* .lap-img { */
+    /* width: 100%; */
+    /* height: 160px; */
+    /* object-fit: cover; */
+    /* border-radius: 10px; */
+/* } */
+/*  */
+/* .lap-name { */
+    /* font-size: 16px; */
+    /* font-weight: 600; */
+    /* margin-top: 8px; */
+/* } */
+/*  */
+/* Mobile: 2 cards per row */
+/* @media (max-width: 600px) { */
+    /* .products-grid { */
+        /* grid-template-columns: repeat(2, 1fr); */
+    /* } */
+/* } */
+/*  */
+
+/* ==================Andhra sweets ========================================== */
+
+.section-title{
+    text-align: center;
+    font-weight: 700;
+    font-size: 35px;
+    margin-top:30px;
+}
+
+/* Grid System */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /*Laptop: 3 cards */
+    gap: 25px;
+    padding: 15px;
+}
+
+/* Cards */
+.lap-card1 {
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.lap-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Images */
+.lap-img1 {
+    width: 70%;
+    height: 300px;      /*larger image like your screenshot */
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Name */
+.lap-name1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Price text */
+.lap-card p:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Mobile: 2 cards per row */
+@media (max-width: 800px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .lap-img1 {
+        height: 150px;  /* smaller for mobile */
+    }
+}
+/* =================================Masala's and podi's ================================= */
+
+/* Cards */
+.lap-card2 {
+    background: #fff;
+    border-radius: 18px;             /* smoother corners */
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.lap-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Images */
+.lap-img2 {
+    width: 70%;
+    height: 300px;      /*larger image like your screenshot */
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Name */
+.lap-name2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Price text */
+.lap-card p:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Mobile: 2 cards per row */
+@media (max-width: 800px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .lap-img2 {
+        height: 150px;  /* smaller for mobile */
+    }
+}
+
+
+
+/* ==========================Andhra Savories======================== */
+
+
+
+
+
+/* =========================final touch =============================== */*/
+
+
+.features-wrapper {
+    margin-bottom: 70px !important; /* Creates gap above footer */
+}
+
+.features-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content:space-evenly;
+    /* gap: 25px; */
+    /* padding: 0 20px; */
+}
+
+.feature-box {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    padding: 20px 10px;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.feature-box:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.20);
+}
+
+.icon-circle {
+    width: 80px;
+    height: 80px;
+    background: #ff9800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    box-shadow: 0 4px 15px rgba(255,152,0,0.4);
+}
+
+.icon-circle i {
+    color: #fff;
+    font-size: 35px;
+}
+
+.feature-box h4 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ff9800;
+}
+
+.feature-box p {
+    font-size: 14px;
+    color: #444;
+    margin-top: 5px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .features-row {
+        flex-direction: column;
+    }
+}
+.features-row {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+
+/* ==========fake code ================= */
+
+
+.fake-code{
+    color: white;
+}
+
+
+
+
+/* ===========================next page pickles page============================= */
+* Banner container /
+.page-banner {  
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    background: url('/media/banner-image.jpg') center/cover no-repeat; /* Replace with your banner image path */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+

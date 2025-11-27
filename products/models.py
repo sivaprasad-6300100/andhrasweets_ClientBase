@@ -1,3 +1,42 @@
-from django.db import models 
+from django.db import models
 
-# Create your models here.
+
+class Products(models.Model):
+    CATEGORY_CHOICES = (
+        ("veg-pickles", "Veg Pickles"),
+        ("nonveg-pickles", "Non-Veg Pickles"),
+        ("sweets", "Sweets"),
+        ("podis", "Podis"),
+        ("savories", "Savories"),
+        ("dry-fruits", "Dry Fruits"),
+    )
+
+    name = models.CharField(max_length=200)
+    telugu_name = models.CharField(max_length=200)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    image = models.ImageField(upload_to="products/")
+
+    def __str__(self):
+        return self.name
+    
+
+
+class Banner(models.Model):
+    PAGE_CHOICES =(
+        ("pickles","pickles page"),
+        ("sweets","sweets page"),
+        ("savories","savories page"),
+        ("masalas","masalas page"),
+        ("dryfruits","dryfruits page"),
+        ("home","home page"),
+    )
+
+
+    page  =models.CharField(max_length=50,choices=PAGE_CHOICES,unique=True)
+    images =models.ImageField(upload_to="banners/")
+    alt_text =models.CharField(max_length=200, blank=True)
+
+
+    def __str__(self):
+        return f"{self.page} Banner"

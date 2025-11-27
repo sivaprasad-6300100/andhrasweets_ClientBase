@@ -1,7 +1,284 @@
+
 {% extends 'base.html' %}
+
+{% load static %}
 
 {% block title %}Home | Andhra Sweets{% endblock %}
 
-{% block content %} {% endblock %}
+{% block content %} 
+
+<style>
+    .hero-section {
+    width: 100%;
+    height: 100vh;
+    background:
+        linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.55)),
+        url("{% static 'images/home_logo.png' %}");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    overflow: hidden;
+}
 
 
+</style>
+
+<div class="hero-section">
+
+    <!-- LEFT CONTENT -->
+    <div class="hero-content">
+        <h1 class="hero-title">Premium Homemade Pickles & Authentic Sweets</h1>
+        <p class="hero-subtitle">
+            Traditional Taste • Fresh Ingredients • 100% Quality Guaranteed
+        </p>
+
+        <a href="#">
+            <button class="hero-btn">Explore Products</button>
+        </a>
+    </div>
+
+    <!-- RIGHT IMAGES -->
+    <div class="hero-images">
+        <img src="{% static 'images/larger_floating_image.png' %}" class="main-jar" alt="Pickle Jar">
+
+        <img src="{% static 'images/small_floating_image.png' %}" class="floating-pickle" alt="Floating Pickle">
+    </div>
+
+</div>
+<!--   content section ================ -->
+
+
+<section class="py-5">
+    <div class="container">
+
+        <h1 class="text-center fw-bold mb-4" style="font-size: 40px;">
+            Treat yourself to an irresistible variety of<br>
+            <span style="color: #1b8f3a;">authentic Andhra sweets and pickles</span> crafted with love by 
+            <span style="color: #1b8f3a;">LittleAndhra.</span>
+        </h1>
+
+        <p class="text-center mt-3" style="font-size: 18px; line-height: 1.8;">
+            Andhra Pradesh is known for its bold flavours and rich culinary traditions. Every meal from this 
+            land is enhanced with aromatic chutneys, flavour-packed pickles, traditional spice powders, 
+            and mouth-watering sweet delicacies.
+        </p>
+
+        <p class="text-center mt-3" style="font-size: 18px; line-height: 1.8;">
+            Our <strong>Andhra pickles</strong> stand out for their fiery taste and authentic preparation. 
+            Customer favourites include the tangy <strong>Avakaya</strong> (mango pickle), the iconic 
+            <strong>Gongura</strong> pickle, and the flavour-rich <strong>Allam Pachadi</strong> (ginger pickle). 
+            These classic pickles pair perfectly with any meal, any time.
+        </p>
+
+        <p class="text-center mt-3" style="font-size: 18px; line-height: 1.8;">
+            Andhra is equally celebrated for its traditional sweets like <strong>Putharekulu</strong>, 
+            <strong>Ariselu</strong>, <strong>Bobbatlu</strong>, <strong>Sunnundalu</strong>, and 
+            <strong>Kajikaya</strong>. Prepared during festivals and special occasions, these sweets bring 
+            the true essence of Andhra to homes across the country.
+        </p>
+
+        <div class="text-center mt-4">
+            <span style="font-size: 40px;">⌁⌁⌁⌁⌁⌁⌁⌁⌁</span>
+        </div>
+    </div>
+</section>
+ 
+<!-- ===============little Andhra section code ================================== -->
+
+<!-- LITTLE ANDHRA PICKLES SECTION -->
+<div class="container my-5">
+
+    <h2 class="lap-title">LITTLE ANDHRA PICKLES</h2>
+    <p class="lap-subtitle">
+        Discover our different kinds of pickles: sour, spicy, and crispy.
+    </p>
+</div>
+
+    <!-- ========Category Tabs================== -->
+    <div class="lap-tabs text-center mt-4">
+        <button class="lap-tab active" id="vegTab">Veg Pickles</button>
+        <button class="lap-tab" id="nonvegTab">Non-Veg Pickles</button>
+    </div>
+
+    <!-- VEG PICKLES -->
+<div id="vegPickles" class="auto-scroll mt-4">
+
+    <div class="scroll-track">
+        {% for item in veg_pickles %}
+        <div class="lap-card">
+            <img src="{{ item.image.url }}" class="lap-img">
+            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p>₹{{ item.price }}</p>
+        </div>
+        {% endfor %}
+
+        <!-- Duplicate for infinite loop -->
+        {% for item in veg_pickles %}
+        <div class="lap-card">
+            <img src="{{ item.image.url }}" class="lap-img">
+            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p>₹{{ item.price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+<!-- NON-VEG PICKLES -->
+<div id="nonvegPickles" class="auto-scroll mt-4 d-none">
+
+    <div class="scroll-track">
+        {% for item in nonveg_pickles %}
+        <div class="lap-card">
+            <img src="{{ item.image.url }}" class="lap-img">
+            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p>₹{{ item.price }}</p>
+        </div>
+        {% endfor %}
+
+        <!-- Duplicate -->
+        {% for item in nonveg_pickles %}
+        <div class="lap-card">
+            <img src="{{ item.image.url }}" class="lap-img">
+            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p>₹{{ item.price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- TAB SWITCH SCRIPT -->
+
+<script>
+document.getElementById("vegTab").onclick = function () {
+    document.getElementById("vegPickles").classList.remove("d-none");
+    document.getElementById("nonvegPickles").classList.add("d-none");
+    this.classList.add("active");
+    document.getElementById("nonvegTab").classList.remove("active");
+};
+
+document.getElementById("nonvegTab").onclick = function () {
+    document.getElementById("vegPickles").classList.add("d-none");
+    document.getElementById("nonvegPickles").classList.remove("d-none");
+    this.classList.add("active");
+    document.getElementById("vegTab").classList.remove("active");
+};
+
+// AUTO SCROLL FUNCTION
+
+function smoothScroll(id) {
+    const box = document.getElementById(id);
+    let speed = 1.2; // stable speed (not too small)
+
+    function scroll() {
+        box.scrollLeft += speed;
+
+        // When reach end → jump without micro vibration
+        if (box.scrollLeft + box.clientWidth >= box.scrollWidth - 2) {
+            box.scrollLeft = 0;
+        }
+
+        setTimeout(() => {
+            requestAnimationFrame(scroll);
+        }, 16); // 60fps stable
+    }
+
+    scroll();
+}
+
+smoothScroll("vegPickles");
+smoothScroll("nonvegPickles");
+</script>
+
+
+<!-- ============================sweets categories ===================================== -->
+
+
+<h1 class="section-title">SWEETS CATEGORIES</h1>
+
+<div class="products-grid">
+    {% for item in sweets %}
+    <div class="lap-card1">
+        <img src="{{ item.image.url }}" class="lap-img1">
+        <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
+        <p>₹{{ item.price }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+<!--================================= Masala's and podi's================================ -->
+
+<h1 class="section-title">MASALA'S AND PODI'S</h1>
+
+<div class="products-grid">
+   {% for item in podis %}
+   <div class="lap-card1">
+        <img src="{{ item.image.url}}" class="lap-img1">
+        <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
+        <p>₹{{ item.price }}</p>
+   </div>
+   {% endfor %}
+</div>
+
+
+<!-- ===========================Andhra Savories=================================== -->
+
+
+<h1 class="section-title">ANDHRA SAVORIES</h1>
+
+<div class="products-grid">
+   {% for item in savories %}
+   <div class="lap-card1">
+        <img src="{{ item.image.url}}" class="lap-img1">
+        <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
+   </div>
+   {% endfor %}
+</div>
+
+
+
+<!-- ================================ final touch code 3 options =========================== -->
+<section class="feature-wrapper">
+    <div class="features-row">
+    <div class="feature-box">
+        <div class="icon-circle">
+            <i class="fa-solid fa-truck-fast"></i>
+        </div>
+        <h4>Express Delivery</h4>
+        <p>Get your items delivered fast.</p>
+    </div>
+
+    <div class="feature-box">
+        <div class="icon-circle">
+            <i class="fa-solid fa-lemon"></i>
+        </div>
+        <h4>Always Fresh</h4>
+        <p>Best quality, always fresh.</p>
+    </div>
+
+    <div class="feature-box">
+        <div class="icon-circle">
+            <i class="fa-solid fa-award"></i>
+        </div>
+        <h4>Premium Quality</h4>
+        <p>Handpicked premium products.</p>
+    </div>
+    </div>
+</section>
+<p class="fake-code">+
+
+    =
+    =
+
+</p>
+
+
+
+{% endblock %}

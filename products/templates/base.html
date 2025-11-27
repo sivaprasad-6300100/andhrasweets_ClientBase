@@ -4,57 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
     <title>{% block title %}Andhra Sweets{% endblock %}</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-    <!-- FontAwesome link -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
+    <style>
+        /* Removes ANY unwanted padding/margin from browser */
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    /* FIX NAVBAR */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+    }
+
+    body {
+        padding-top: 100px; 
+    }
+
+
+    </style>
 </head>
+
 <body>
 
-<!-- ===== HEADER ===== -->
-<header class="bg-light shadow-sm">
-    <div class="container-fluid navbar-color">
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand fw-bold d-flex align-items-center p-0 m-0" href="{% url 'home' %}">
+<!-- ================= HEADER ================= -->
+<header class="shadow-sm">
+    <div class="container-fluid navbar-color p-0">
+        <nav class="navbar navbar-expand-lg navbar-light px-3">
 
-                <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo-code"
+            <!-- LOGO -->
+            <a class="navbar-brand d-flex align-items-center p-0" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo-code" 
                      style="max-width: 80px; max-height: 80px;">
-                <span class="fw-bold  Andhrasweets-title">AndhraSweets</span>
+                <span class="fw-bold Andhrasweets-title ms-2">AndhraSweets</span>
             </a>
+
+            <!-- MOBILE BUTTON -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-        
+
+            <!-- LINKS -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav    ms-5 navbar-mobileview">
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'sweets' %}">Sweets</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'pickles' %}">Pickles</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'dry_fruits' %}">Dry Fruits</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'savories' %}">Savories</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'masalas_podis' %}">Masalas & Podis</a></li>
-                    <li class="nav-item  ms-3"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                    <li class="nav-item  ms-5"><a class="nav-link" href="{% url 'cart' %}"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                    <li class="nav-item  ms-5"><a class="nav-link" href="{% url 'login' %}"><i class="fa-solid fa-user"></i></a></li>
+                <ul class="navbar-nav ms-5 navbar-mobileview">
+
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'sweets' %}">Sweets</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'pickles' %}">Pickles</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'dry_fruits' %}">Dry Fruits</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'savories' %}">Savories</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'masalas_podis' %}">Masalas & Podis</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                    
+                    <li class="nav-item ms-4">
+                        <a class="nav-link" href="{% url 'cart' %}">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-4">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-4">
+                        <a class="nav-link" href="">
+                            <i class="fa-solid fa-phone" style="color:white"></i>
+                        </a>
+                    </li> 
+
                 </ul>
             </div>
         </nav>
     </div>
 </header>
 
-<!-- ===== MAIN CONTENT ===== -->
-<main class="container my-5">
-    {% block content %}{% endblock %}
+
+<!-- ================= MAIN CONTENT ================= -->
+<!-- Full width, no padding, no margin -->
+<main class="p-0 m-0 w-100">
+    {% block content %}
+    {% endblock %}
 </main>
 
-<!-- ===== FOOTER ===== -->
+
+<!-- ================= FOOTER ================= -->
 <footer class="bg-dark text-white py-4 mt-auto">
     <div class="container text-center">
         <p>&copy; 2025 Andhra Sweets | All Rights Reserved</p>
@@ -66,10 +116,13 @@
     </div>
 </footer>
 
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Custom JS -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Main JS -->
 <script src="{% static 'js/main.js' %}"></script>
 
 </body>
