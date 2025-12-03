@@ -1,16 +1,41 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Address
 
-# Create your views here.
+@login_required
+def address_list(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request, "address_list.html", {"addresses": addresses})
 
+@login_required
+def add_address(request):
+    if request.method == "POST":
+        Address.objects.create(
+            user=request.user,
+            name=request.POST['name'],
+            mobile=request.POST['mobile'],
+            address=request.POST['address'],
+            landmark=request.POST['landmark'],
+        )
+        return redirect('address_list')
+    return render(request, "add_address.html")
 
-def login_view(request):
-    return render(request,'login.html')
+@login_required
+def edit_address(request, id):
+    address = get_object_or_404(Address, id=id, user=request.user)
 
-def register_view(request):
-    return render(request,'register.html')
+    if request.method == "POST":
+        address.name = request.POST['name']
+        address.mobile = request.POST['mobile']
+        address.address = request.POST['address']
+        address.landmark = request.POST['landmark']
+        address.save()
+        return redirect('address_list')
 
-def profile_view(request):
-    return render(request,'profile.html')
+    return render(request, "edit_address.html", {"address": address})
 
-def account_view(request):
-    return render(request,'account.html')
+@login_required
+def delete_address(request, id):
+    address = get_object_or_404(Address, id=id, user=request.user)
+    address.delete()
+    return redirect('address_list')

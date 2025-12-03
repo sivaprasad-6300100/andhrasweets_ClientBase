@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Verify OTP</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f7fb; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+        .card { background:white; width:360px; padding:20px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.06); }
+        h2 { margin:0 0 12px 0; }
+        input[type="text"] { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-top:6px; box-sizing:border-box; }
+        button { width:100%; padding:10px; background:#10b981; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
+        .errors { color:#b91c1c; margin-top:6px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Verify OTP</h2>
+        <p>We sent an OTP to <strong>{{ phone }}</strong></p>
+
+        {% if messages %}
+            {% for m in messages %}
+                <div class="{{ m.tags }}">{{ m }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <p>
+                {{ form.otp.label_tag }}<br>
+                {{ form.otp }}
+                {% if form.otp.errors %}
+                    <div class="errors">{{ form.otp.errors|striptags }}</div>
+                {% endif %}
+            </p>
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+</body>
+</html>

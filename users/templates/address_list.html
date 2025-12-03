@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} account |Andhra sweets {% endblock %}
+
+{% block content %}
+
+<h2>My Addresses</h2>
+
+<a href="{% url 'add_address' %}" class="btn btn-primary">Add New Address</a>
+<hr>
+
+{% for a in addresses %}
+<div class="card p-2 mt-2">
+    <h4>{{ a.name }}</h4>
+    <p>{{ a.mobile }}</p>
+    <p>{{ a.address }}</p>
+    <p>{{ a.landmark }}</p>
+
+    <a href="{% url 'edit_address' a.id %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'delete_address' a.id %}" class="btn btn-danger">Delete</a>
+
+    <!-- This button is important for order -->
+    <a href="{% url 'payment' a.id %}" class="btn btn-success">Deliver Here</a>
+</div>
+{% endfor %}
+
+
+{% endblock %}

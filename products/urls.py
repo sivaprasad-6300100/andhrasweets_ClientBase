@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home,pickles,sweets,dry_fruits,savories,masalas_podis,about,blog,contact,product_detail
+from .views import home,pickles,sweets,dry_fruits,savories,podis,about,blog,contact,product_detail
 
 
 urlpatterns =[
@@ -9,7 +9,7 @@ urlpatterns =[
     path('pickles/', pickles, name='pickles'),
     path('dry-fruits/', dry_fruits, name='dry_fruits'),
     path('savories/', savories, name='savories'),
-    path('masalas-podis/', masalas_podis, name='masalas_podis'),
+    path('masalas-podis/', podis, name='masalas_podis'),
     # Static Pages
     path('about/', about, name='about'),
     path('blog/', blog, name='blog'),

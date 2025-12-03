@@ -15,6 +15,13 @@ class Products(models.Model):
     telugu_name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+
+
+     # New weight–based prices
+    price_250 = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    price_500 = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
+    price_1000 = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)  # 1kg
+
     image = models.ImageField(upload_to="products/")
 
     def __str__(self):

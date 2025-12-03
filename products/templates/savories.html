@@ -2,5 +2,37 @@
 
 {% block title %}Savories | Andhra Sweets{% endblock %}
 
-{% block content %} this is  a savories page  {% endblock %}
+{% block content %} 
+
+{% if banner %}
+<div class="page-banner">
+    <img src="{{ banner.images.url }}" alt="{{ banner.alt_text }}">
+</div>
+{% endif %}
+
+<div class="pickles-container">
+
+    <h1 class="main-title">🌶 Andhra Pickles Collection </h1>
+    <p class="sub-title">Choose your favourite category</p>
+    <p class="sub-title">Homemade | Authentic | Traditional Taste</p>
+
+    <!-- ================savories cards code start now ================ -->
+      <div class="pickles-grid">
+     {% for item in savories %}
+     <div class="pickle-card">
+         <div class="img-box">
+             <img src="{{ item.image.url }}">
+             <span class="price-tag">₹{{ item.price }}</span>
+         </div>
+         <h4>{{ item.name }}</h4>
+         <p>{{ item.telugu_name }}</p>
+         <button class="add-btn"><a href="{% url 'product_detail' item.id %}" class="remove-btn">View Product</a></button>
+         <!-- <a href="{% url 'product_detail' item.id %}" >View</a> -->
+    </div>
+    {% empty %}
+    <p class="no-data">No Savories available.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
 

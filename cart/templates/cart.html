@@ -1,5 +1,139 @@
 {% extends 'base.html' %}
 
-{% block title %}Cart |AndhraSweets {% endblock %}
+{% block title %}Cart | AndhraSweets{% endblock %}
 
-{% block content %} This is a cart page {% endblock %}
+{% block content %}
+
+<style>
+.cart-box {
+    max-width: 650px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.cart-box h2 {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.cart-details h4 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.cart-details p {
+    margin: 3px 0 0;
+    color: #555;
+}
+
+.cart-right {
+    font-size: 16px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.cart-total {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.checkout-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 10px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.checkout-btn:hover {
+    background: #218838;
+}
+
+body {
+    background: #f5f7fa;
+}
+</style>
+
+
+<div class="cart-box">
+
+    <h2>Your Cart</h2>
+
+    {% for item in cart_items %}
+        <div class="cart-item">
+
+            <div class="cart-left">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="cart-img">
+
+                <div class="cart-details">
+                    <h4>{{ item.product.name }}</h4>
+
+                    <!-- SHOW SELECTED WEIGHT -->
+                    <p>Weight: 
+                        {% if item.weight == "250" %}250g{% endif %}
+                        {% if item.weight == "500" %}500g{% endif %}
+                        {% if item.weight == "1000" %}1 Kg{% endif %}
+                    </p>
+
+                    <!-- SHOW PRICE BASED ON WEIGHT -->
+                    <p>Price: ₹{{ item.get_price }}</p>
+                </div>
+            </div>
+
+            <div class="cart-right">
+                <!-- subtotal = get_price × quantity -->
+                <p>{{ item.quantity }} × ₹{{ item.get_price }}</p>
+                <p>Subtotal: ₹{{ item.subtotal }}</p>
+            </div>
+
+            <!-- delete form -->
+             <form action="{% url 'delete_cart_item' item.id %}" method="POST" style="margin-top:10px;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" style="background:#dc3545; color:#fff; border:none; padding:5px 5px; border-radius:5px; cursor:pointer;">
+                    Delete
+
+        </div>
+    {% endfor %}
+
+    <h3 class="cart-total">Total: ₹{{ total }}</h3>
+
+    <a href="{% url 'select_address' %}">
+        <button class="checkout-btn">Checkout</button>
+    </a>
+
+</div>
+
+{% endblock %}

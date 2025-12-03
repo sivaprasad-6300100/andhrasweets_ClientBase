@@ -1,14 +1,9 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block title %}Pickles | Andhra Sweets{% endblock %}
 
 {% block content %}
-<p>siva</p>
-<p>siva</p>
-<p>siva</p>
-<p>siva</p>
-<p>siva</p>
-
 
 
 {% if banner %}
@@ -17,23 +12,71 @@
 </div>
 {% endif %}
 
+<div class="pickles-container">
 
+    <h1 class="main-title">🌶 Andhra Pickles Collection </h1>
+    <p class="sub-title">Choose your favourite category</p>
+    <p class="sub-title">Homemade | Authentic | Traditional Taste</p>
+    <!-- Tabs -->
+    <div class="tabs-box">
+        <button class="tab-btn active" id="vegTab" onclick="showPickles('veg')">🥗 Veg Pickles</button>
+        <button class="tab-btn" id="nonvegTab" onclick="showPickles('nonveg')">🍗 Non-Veg Pickles</button>
+    </div>
+
+    <!-- 🔹 VEG PICKLES -->
+    <div id="vegSection" class="pickles-grid">
+        {% for item in veg_pickles %}
+        <div class="pickle-card">
+            <div class="img-box">
+                <img src="{{ item.image.url }}">
+                <span class="price-tag">₹{{ item.price }}</span>
+            </div>
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.telugu_name }}</p>
+            <button class="add-btn"><a href="{% url 'product_detail' item.id %}" class="remove-btn">View Product</a></button>
+            <!-- <a href="{% url 'product_detail' item.id %}" >View</a> -->
+
+        </div>
+        {% empty %}
+        <p class="no-data">No Veg Pickles available.</p>
+        {% endfor %}
+    </div>
+
+    <!-- 🔹 NON-VEG PICKLES -->
+    <div id="nonvegSection" class="pickles-grid d-none">
+        {% for item in nonveg_pickles %}
+        <div class="pickle-card">
+            <div class="img-box">
+                <img src="{{ item.image.url }}">
+                <span class="price-tag red">₹{{ item.price }}</span>
+            </div>
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.telugu_name }}</p>
+            <button class="add-btn">View Product</button>
+            <!-- <a href="{% url 'product_detail' item.id %}" class="view-btn">View</a> -->
+        </div>
+        {% empty %}
+        <p class="no-data">No Non-Veg Pickles available.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+function showPickles(type){
+    document.getElementById("vegSection").classList.add("d-none");
+    document.getElementById("nonvegSection").classList.add("d-none");
+    document.getElementById("vegTab").classList.remove("active");
+    document.getElementById("nonvegTab").classList.remove("active");
+
+    if(type === "veg"){
+        document.getElementById("vegSection").classList.remove("d-none");
+        document.getElementById("vegTab").classList.add("active");
+    }else{
+        document.getElementById("nonvegSection").classList.remove("d-none");
+        document.getElementById("nonvegTab").classList.add("active");
+    }
+}
+</script>
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

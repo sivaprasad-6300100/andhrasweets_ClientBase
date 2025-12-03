@@ -1,10 +1,9 @@
 from django.urls import path
-from .views  import login_view,register_view,profile_view,account_view
+from users.views import add_address,address_list,edit_address,delete_address
 
-
-urlpatterns =[
-    path('login/',login_view,name='login'),
-    path('register/',register_view,name='register'),
-    path('profile/',profile_view,name='profile'),
-    path('account/',account_view,name='account'),
+urlpatterns = [
+    path('addresses/',address_list, name="address_list"),
+    path('addresses/add/',add_address, name="add_address"),
+    path('addresses/<int:id>/edit/',edit_address, name="edit_address"),
+    path('addresses/<int:id>/delete/',delete_address, name="delete_address"),
 ]

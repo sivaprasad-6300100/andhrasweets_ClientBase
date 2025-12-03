@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %} account |Andhra sweets {% endblock %}
+
+{% block content %}
+
+
+<style>
+/* Container */
+form {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+    outline: none;
+}
+
+/* Focus effect */
+form input:focus,
+form textarea:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40,167,69,0.3);
+}
+
+/* Textarea styling */
+form textarea {
+    height: 100px;
+    resize: none;
+}
+
+/* Button */
+form button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* Body background */
+body {
+    background: #f4f7f8;
+}
+</style>
+
+
+<h2>Add Address</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="name" placeholder="Full Name" required><br><br>
+    <input type="text" name="mobile" placeholder="Mobile Number" required><br><br>
+    <textarea name="address" placeholder="Full Address" required></textarea><br><br>
+    <input type="text" name="landmark" placeholder="Landmark"><br><br>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>
+
+
+{% endblock %}

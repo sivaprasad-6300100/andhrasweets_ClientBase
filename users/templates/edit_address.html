@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %} account |Andhra sweets {% endblock %}
+
+{% block content %}
+
+<h2>Edit Address</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <input type="text" name="name" value="{{ address.name }}" required><br><br>
+    <input type="text" name="mobile" value="{{ address.mobile }}" required><br><br>
+    <textarea name="address" required>{{ address.address }}</textarea><br><br>
+    <input type="text" name="landmark" value="{{ address.landmark }}"><br><br>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} | Andhra Sweets{% endblock %}
+
+{% block content %}
+
+<div class="product-container">
+
+    <div class="product-main">
+
+        <!-- Left Image -->
+        <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+
+        <!-- Right Info -->
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+
+            {% if product.telugu_name %}
+            <p class="telugu-name">{{ product.telugu_name }}</p>
+            {% endif %}
+
+            <!-- Dynamic price output -->
+            <p class="price" id="product-price">₹{{ product.price_250 }}</p>
+
+
+            {% if product.description %}
+            <p class="description">{{ product.description }}</p>
+            {% else %}
+            <p class="description">No additional details available.</p>
+            {% endif %}
+
+            <!-- Weight Selector -->
+            <div class="quantity-box">
+                <label for="weight">Select Weight:</label>
+                <select id="weight" name="weight">
+                    <option value="250">250 g</option>
+                    <option value="500">500 g</option>
+                    <option value="1000">1 Kg</option>
+                </select>
+            </div>
+
+            <!-- Hidden price to send to cart -->
+            <input type="hidden" id="selected-price" value="{{ product.price_250 }}">
+
+            <!-- Quantity -->
+            <div class="quantity-box">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons">
+                <a id="buyNowBtn" href="{% url 'buy_now' product.id %}" class="btn btn-primary">Buy Now</a>
+                <a id="addCartBtn" href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add to Cart</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Related Products -->
+    <div class="related-products">
+        <h2>Related Pickles</h2>
+        <div class="related-grid">
+            {% for item in related_products %}
+            <a href="{% url 'product-detail' item.id %}">
+            <div class="related-card">
+                <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                <p>{{ item.name }}</p>
+            </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+
+<!-- JavaScript for dynamic price change -->
+<script>
+    const price250 = ("{{ product.price_250|default:0 }}");
+    const price500 = ("{{ product.price_500|default:0 }}");
+    const price1000 = ("{{ product.price_1000|default:0 }}");
+
+    const weightSelect = document.getElementById("weight");
+    const priceBox = document.getElementById("product-price");
+    const hiddenPrice = document.getElementById("selected-price");
+
+    // Update price dynamically
+    weightSelect.addEventListener("change", function () {
+        let price = 0;
+
+        if (this.value == "250") price = price250;
+        if (this.value == "500") price = price500;
+        if (this.value == "1000") price = price1000;
+
+        priceBox.innerHTML = "₹" + price;
+        hiddenPrice.value = price;
+    });
+</script>
+
+{% endblock %}
