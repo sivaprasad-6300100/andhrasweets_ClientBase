@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from cart.models import Cart
 from products.models import Products
-from users.models import Address
-from orders.models import Order, OrderItem
-
+from users.models import UserAddress
+from orders.models import Order, OrderItem,Delivery
+  
 @login_required
 def select_address(request):
     if request.method == "POST":
@@ -12,7 +12,7 @@ def select_address(request):
         payment_method = request.POST['payment_method']
         return redirect(f"/payment/{address_id}/?method={payment_method}")
 
-    addresses = Address.objects.filter(user=request.user)
+    addresses = UserAddress.objects.filter(user=request.user)
     return render(request, 'select_address.html', {"addresses": addresses})
 
 
@@ -21,7 +21,7 @@ def select_address(request):
 def save_address_and_payment(request, address_id):
 
     payment_method = request.GET.get('method', 'COD')
-    selected_address = Address.objects.get(id=address_id)
+    selected_address = UserAddress.objects.get(id=address_id)
 
     # BUY NOW FLOW
     if 'buy_now_product' in request.session:
@@ -69,3 +69,17 @@ def save_address_and_payment(request, address_id):
 @login_required
 def order_success(request):
     return render(request, 'success.html')
+
+
+# order details
+@login_required
+def order_list(request):
+    # Get all Delivery objects where the related Order belongs to the current user
+    orders = Delivery.objects.filter(order__user=request.user).order_by('-order__created_at')
+    return render(request, 'order_list.html', {'orders': orders})
+
+
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Delivery, id=order_id, user=request.user)
+    return render(request, 'orders/order_detail.html', {'order': order})

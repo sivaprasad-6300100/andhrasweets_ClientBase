@@ -119,9 +119,9 @@
             <div class="address-box">
                 <label>
                     <input type="radio" name="address_id" value="{{ a.id }}" required>
-                    <p><strong>{{ a.name }}</strong> ({{ a.mobile }})</p>
-                    <p>{{ a.address }}, {{ a.landmark }}</p>
-                    <p>{{ a.city }}, {{ a.state }} - {{ a.pincode }}</p>
+                    <p><strong>{{ a.full_name }}</strong> ({{ a.phone }})</p>
+                    <p>{{ a.address_line }}, {{ a.city }}</p>
+                    <p> {{ a.state }} - {{ a.pincode }}</p>
                 </label>
             </div>
             {% endfor %}

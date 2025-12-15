@@ -1,28 +1,228 @@
 {% extends 'base.html' %}
 
-{% block title %} account |Andhra sweets {% endblock %}
+{% block title %}Andhra website -Address List {% endblock %}
 
 {% block content %}
 
-<h2>My Addresses</h2>
+    <!-- ✅ UPPER CSS (FROM 2nd CODE) -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* background: linear-gradient(135deg, #a9a9f7, #a5bef8); */
+            margin: 0;
+            padding: 10px;  
+        }
 
-<a href="{% url 'add_address' %}" class="btn btn-primary">Add New Address</a>
-<hr>
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            margin-top: 120px;
+            /* letter-spacing: 0.5px; */
+        }
 
-{% for a in addresses %}
-<div class="card p-2 mt-2">
-    <h4>{{ a.name }}</h4>
-    <p>{{ a.mobile }}</p>
-    <p>{{ a.address }}</p>
-    <p>{{ a.landmark }}</p>
+        a.add_address {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .address_card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, #007bff, #28a745);
+        }
 
-    <a href="{% url 'edit_address' a.id %}" class="btn btn-warning">Edit</a>
-    <a href="{% url 'delete_address' a.id %}" class="btn btn-danger">Delete</a>
+        a.add_address:hover {
+            background-color: #218838;
+        }
 
-    <!-- This button is important for order -->
-    <a href="{% url 'payment' a.id %}" class="btn btn-success">Deliver Here</a>
+        .address_card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 55px 50px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .address_card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .address_card label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .address_card input,
+        .address_card textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .address_card textarea {
+            resize: vertical;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-edit,
+        .btn-update {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-edit:hover,
+        .btn-update:hover {
+            background-color: #0056b3;
+        }
+
+        
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .no_address {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            .address_card {
+                padding: 10px 15px;
+            }
+
+            a.add_address {
+                width: 100%;
+                text-align: center;
+                display: block;
+            }
+        }
+    </style>
+
+
+<h1>Your Saved Addresses</h1>
+
+<a href="{% url 'add_address' %}" class="add_address">+ Add New Address</a>
+
+{% for address in addresses %}
+<div class="address_card">
+
+    <!-- UPDATE FORM -->
+     <form method="POST" class="address-form">
+    {% csrf_token %}
+    <input type="hidden" name="update_id" value="{{ address.id }}">
+
+    <label>Full Name</label>
+    <input type="text" name="full_name" value="{{ address.full_name }}" disabled>
+
+    <label>Phone</label>
+    <input type="text" name="phone" value="{{ address.phone }}" disabled>
+
+    <label>Address Line 1</label>
+    <textarea name="address_line1" disabled>{{ address.address_line1 }}</textarea>
+
+    <label>Address Line 2</label>
+    <textarea name="address_line2" disabled>{{ address.address_line2 }}</textarea>
+
+    <label>City</label>
+    <input type="text" name="city" value="{{ address.city }}" disabled>
+
+    <label>State / Province</label>
+    <input type="text" name="state_province" value="{{ address.state_province }}" disabled>
+
+    <label>Postal Code</label>
+    <input type="text" name="postal_code" value="{{ address.postal_code }}" disabled>
+
+    <label>Country</label>
+    <input type="text" name="country" value="{{ address.country }}" disabled>
+
+    <label>Address Type</label>
+    <input type="text" name="address_type" value="{{ address.address_type }}" disabled>
+
+    <div class="btn-group">
+        <button type="button" class="btn-edit">Edit</button>
+        <button type="submit" class="btn-update" style="display:none;">Update</button>
+    </div>
+</form>
+
+
+    <!-- DELETE FORM -->
+    <form method="POST" onsubmit="return confirm('Delete this address?');">
+        {% csrf_token %}
+        <input type="hidden" name="delete_id" value="{{ address.id }}">
+        <div class="btn-group">
+            <button type="submit" class="btn-delete">Delete</button>
+        </div>
+    </form>
+
 </div>
+{% empty %}
+<p class="no_address">No saved addresses found.</p>
 {% endfor %}
 
+<!-- ===================== JavaScript ============================ -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".btn-edit").forEach(function(editBtn) {
+
+        editBtn.addEventListener("click", function () {
+
+            const form = this.closest(".address-form");
+
+            form.querySelectorAll("input:not([type='hidden']), textarea")
+                .forEach(field => field.disabled = false);
+
+            this.style.display = "none";
+            form.querySelector(".btn-update").style.display = "inline-block";
+        });
+
+    });
+
+});
+</script>
 
 {% endblock %}
+
+

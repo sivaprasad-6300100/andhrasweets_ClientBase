@@ -7,6 +7,7 @@
 
 {% block content %} 
 
+
 <style>
     .hero-section {
     width: 100%;
@@ -35,8 +36,8 @@
             Traditional Taste • Fresh Ingredients • 100% Quality Guaranteed
         </p>
 
-        <a href="#">
-            <button class="hero-btn">Explore Products</button>
+        <a  href="#vegPickles">
+            <button class="hero-btn" id="pickles">Explore Products</button>
         </a>
     </div>
 
@@ -105,6 +106,7 @@
 
     <!-- VEG PICKLES -->
 <div id="vegPickles" class="auto-scroll mt-4">
+    <a href="#vegPickles"></a>
 
     <div class="scroll-track">
         {% for item in veg_pickles %}
@@ -131,11 +133,11 @@
 <!-- NON-VEG PICKLES -->
 <div id="nonvegPickles" class="auto-scroll mt-4 d-none">
 
-    <div class="scroll-track">
+    <div class="scroll-track" #="1">
         {% for item in nonveg_pickles %}
         <div class="lap-card">
             <img src="{{ item.image.url }}" class="lap-img">
-            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p class="lap-name">{{ item.name }} <br>({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
         {% endfor %}
@@ -144,7 +146,7 @@
         {% for item in nonveg_pickles %}
         <div class="lap-card">
             <img src="{{ item.image.url }}" class="lap-img">
-            <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
+            <p class="lap-name">{{ item.name }} <br>({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
         {% endfor %}

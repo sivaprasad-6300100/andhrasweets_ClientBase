@@ -6,7 +6,7 @@ from .models import Banner
 
 def home(request):
     veg_pickles = Products.objects.filter(category="veg-pickles")
-    nonveg_pickles = Products.objects.filter(category="non-veg-pickles")
+    nonveg_pickles = Products.objects.filter(category="nonveg-pickles")
     sweets = Products.objects.filter(category="sweets")
     podis = Products.objects.filter(category="podis")
     savories = Products.objects.filter(category="savories")
@@ -21,6 +21,17 @@ def home(request):
         "dry_fruits": dry_fruits,
     })
 
+# ==============single pages=================
+def privacy(request):
+    return render(request,'privacy.html')
+def terms_conditions(request):
+    return render(request,'terms_conditions.html')
+def delivery_policy(request):
+    return render(request,'delivery_policy.html')
+def refund_return(request):
+    return render(request,'refund_return.html')
+
+
 
 
 def about(request):
@@ -31,6 +42,8 @@ def blog(request):
 
 def contact(request):
     return render(request, 'contact.html')
+
+
 
 
 # --------------------
@@ -55,7 +68,7 @@ def pickles(request):
     banner = Banner.objects.filter(page="pickles").first()
 
     veg_pickles = Products.objects.filter(category="veg-pickles")
-    nonveg_pickles = Products.objects.filter(category="non-veg-pickles")
+    nonveg_pickles = Products.objects.filter(category="nonveg-pickles")
 
     return render(request, "pickles.html", {
         "banner": banner,

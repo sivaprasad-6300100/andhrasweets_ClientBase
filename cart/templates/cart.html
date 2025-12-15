@@ -85,7 +85,79 @@
 body {
     background: #f5f7fa;
 }
+
+/* ================nav bar css code ============================ */
+
+.navbar_cart{
+    margin-top: 25px;
+}
+
+/* Remove default list style and padding */
+.navbar_list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;          /* horizontal layout */
+    gap: 30px;              /* space between items */
+    background-color: #f7959569; /* navbar background */
+    border-radius: 8px;
+    padding: 10px 20px;
+    align-items: center;
+}
+
+/* Individual nav items */
+.navbar_list li {
+}
+
+/* Links styling */
+.nav_item {
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    padding: 8px 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Icon spacing */
+.nav_item i {
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+/* Hover effect */
+.nav_item:hover {
+    background-color: #479efa;
+    color: white;
+    transform: scale(1.05);
+}
+
+
+/* Responsive tweak */
+@media (max-width: 600px) {
+    .navbar_list {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+
 </style>
+
+{% if user.is_authenticated %}
+<nav class="navbar_cart">
+    <ul class="navbar_list">
+        <li><a href="{% url 'orders:order_list' %}" class="nav_item"><i class="bi bi-bag-check"></i> My Orders</a></li>
+        <li><a href="{% url 'address_list' %}" class="nav_item"><i class="bi bi-bag-check"></i> Add Address</a></li>
+    </ul>
+</nav>
+{% endif %}
+
+<!-- address============== -->
+
+
 
 
 <div class="cart-box">
@@ -117,6 +189,7 @@ body {
                 <!-- subtotal = get_price × quantity -->
                 <p>{{ item.quantity }} × ₹{{ item.get_price }}</p>
                 <p>Subtotal: ₹{{ item.subtotal }}</p>
+                <!-- <p>Requi:{{ item.customer_req }}</p> -->
             </div>
 
             <!-- delete form -->
@@ -124,13 +197,14 @@ body {
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger" style="background:#dc3545; color:#fff; border:none; padding:5px 5px; border-radius:5px; cursor:pointer;">
                     Delete
+                </form>
 
         </div>
     {% endfor %}
 
     <h3 class="cart-total">Total: ₹{{ total }}</h3>
 
-    <a href="{% url 'select_address' %}">
+    <a href="{% url 'orders:select_address' %}">
         <button class="checkout-btn">Checkout</button>
     </a>
 

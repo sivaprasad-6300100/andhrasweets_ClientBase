@@ -15,6 +15,9 @@
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
 
     <style>
         /* Removes ANY unwanted padding/margin from browser */
@@ -38,6 +41,157 @@
     }
 
 
+    /* =================footer page code css================= */
+    /* Footer Base Styles */
+/* --------------------------------------------------
+   PREMIUM FOOTER DESIGN — SOCIAL ICONS NOT MODIFIED
+----------------------------------------------------- */
+
+footer {
+    background: #111;  /* deep black */
+    color: #fff;
+    padding: 60px 0 25px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Section Titles */
+footer h6 {
+    font-size: 17px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    position: relative;
+}
+
+/* Title underline */
+footer h6::after {
+    content: "";
+    width: 35px;
+    height: 2px;
+    background: linear-gradient(90deg, #ffcc00, #ff8800);
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    border-radius: 10px;
+}
+
+/* Footer links */
+footer ul li {
+    margin-bottom: 10px;
+}
+
+footer ul li a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+/* Link hover */
+footer ul li a:hover {
+    color: #ffcc00;
+    padding-left: 5px;
+}
+
+/* Footer contact text */
+footer p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+/* Footer logo */
+footer img {
+    width: 150px;
+    margin-bottom: 12px;
+}
+
+/* Bottom Line */
+footer hr {
+    opacity: 0.2;
+    border-color: rgba(255,255,255,0.2);
+    margin: 25px 0;
+}
+
+/* Bottom Copyright */
+footer .footer-bottom {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    footer .row > div {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    footer h6::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+
+/* new code testing purpose */
+
+/* Social Icons Container (keeps them aligned) */
+footer .social-icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Each icon circle */
+footer .social-icons a {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    font-size: 18px;
+    transition: 0.4s ease;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Hover animation: scale + glowing gradient */
+footer .social-icons a:hover {
+    transform: scale(1.15);
+    background: linear-gradient(135deg, #ffcc00, #ff8800);
+    color: #1a1a1a;
+    box-shadow: 0 0 12px rgba(255, 170, 0, 0.7);
+}
+
+
+/* ===============My Icon=================== */
+.gradient-text {
+    font-size: 22px;
+    font-weight: 700;
+
+    /* Gradient Color */
+    background: linear-gradient(90deg, #ff8800, #ffcc00, #ff0080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Smooth shimmer movement */
+    background-size: 200%;
+    animation: gradientMove 3s ease infinite;
+}
+
+/* Animation for moving gradient */
+@keyframes gradientMove {
+    0% { background-position: 0% }
+    100% { background-position: 100% }
+}
+
+
+
+
     </style>
 </head>
 
@@ -52,7 +206,7 @@
             <a class="navbar-brand d-flex align-items-center p-0" href="{% url 'home' %}">
                 <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo-code" 
                      style="max-width: 80px; max-height: 80px;">
-                <span class="fw-bold Andhrasweets-title ms-2">AndhraSweets</span>
+                <span class="fw-bold Andhrasweets-title ms-2">andhraruchulu</span>
             </a>
 
             <!-- MOBILE BUTTON -->
@@ -71,25 +225,47 @@
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'savories' %}">Savories</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'masalas_podis' %}">Masalas & Podis</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
-                    
+                    <!-- ============================cart links login logout ======================= -->
                     <li class="nav-item ms-4">
-                        <a class="nav-link" href="{% url 'cart_page' %}">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
+                        {% if user.is_authenticated %}
+                            <a class="nav-link" href="{% url 'cart_page' %}">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
+                        {% else %}
+                            <a class="nav-link" href="{% url 'user_register' %}">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
+                        {% endif %}
                     </li>
+                    
+                    
+                    
+<!-- ============================log in logout functions================== -->
+
+                {% if user.is_authenticated %}
+                <li class="nav-item ms-4">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item ms-4">
+                    <a class="nav-link" href="{% url 'user_register' %}">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+
+
 
                     <li class="nav-item ms-4">
-                        <a class="nav-link" href="{% url 'user_register' %}">
-                            <i class="fa-solid fa-user"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-4">
-                        <a class="nav-link" href="">
+                        <a class="nav-link" href="tel:+6300100420">
                             <i class="fa-solid fa-phone" style="color:white"></i>
                         </a>
                     </li> 
 
-                </ul>
+                </ul> 
             </div>
         </nav>
     </div>
@@ -104,21 +280,112 @@
 </main>
 
 
+<!-- ================bottom nav bar code ======================== -->
+ <!-- Bottom Mobile Navbar -->
+<nav class="la-mobile-nav">
+    <a  href="{% url 'home' %}" class="la-nav-item">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
+<!-- cart links============= -->
+     {% if user.is_authenticated %}
+    <a href="{% url 'cart_page' %}" class="la-nav-item">
+        <i class="fa-solid fa-store"></i>
+        <span>Cart</span>
+    </a>
+    {% else %}
+    <a href="{% url 'user_register' %}" class="la-nav-item">
+        <i class="fa-solid fa-store"></i>
+        <span>Cart</span>
+    </a>
+    {% endif %}
+
+
+
+    <!-- user login links======== -->
+    {% if user.is_authenticated %}
+    <a href="{% url 'logout' %}" class="la-nav-item">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
+    {% else %}
+    <a href="{% url 'user_register' %}" class="la-nav-item">
+        <i class="fa-solid fa-user"></i>
+        <span>Account</span>
+    </a>
+    {% endif %}
+
+
+
+    </nav>
+
+
+
 <!-- ================= FOOTER ================= -->
-<footer class="bg-dark text-white py-4 mt-auto">
-    <div class="container text-center">
-        <p>&copy; 2025 Andhra Sweets | All Rights Reserved</p>
-        <p>
-            <a href="{% url 'about' %}" class="text-white me-3">About Us</a>
-            <a href="{% url 'contact' %}" class="text-white me-3">Contact</a>
-            <a href="{% url 'blog' %}" class="text-white">Blog</a>
-        </p>
+<footer class="bg-dark text-white pt-5 pb-3">
+    <div class="container">
+        <div class="row">
+
+            <!-- Logo and Contact -->
+            <div class="col-md-4 mb-4">
+                <img src="{% static 'images/logo.png' %}" alt="Little Andhra" class="mb-3" style="width:150px;">
+                <p><i class="bi bi-geo-alt-fill"></i> Nellore - Andhra Pradesh 524320</p>
+                <p><i class="bi bi-envelope-fill"></i> info@littleandhra.in</p>
+                <div class="social-icons mt-2">
+                    <a href="#" class="text-white"><i class="bi bi-x-circle"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                    <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="col-md-2 mb-4">
+                <h6 class="text-uppercase fw-bold">Menu</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'home' %}" class="text-white">Home</a></li>
+                    <li><a href="{% url 'about' %}" class="text-white">About Us</a></li>
+                    <li><a href="{% url 'sweets' %}" class="text-white">Sweets</a></li>
+                    <li><a href="{% url 'pickles' %}" class="text-white">Pickles</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-white">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Orders & Returns -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase fw-bold">Orders and Returns</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'privacy' %}" class="text-white">Privacy Policy</a></li>
+                    <li><a href="{% url 'terms_conditions' %}" class="text-white">Terms and Conditions</a></li>
+                    <li><a href="{% url 'delivery_policy' %}" class="text-white">Shipping & Delivery Policy</a></li>
+                    <li><a href="{% url 'refund_return' %}" class="text-white">Refund & Returns</a></li>
+                </ul>
+            </div>
+
+            <!-- My Account -->
+            <div class="col-md-3 mb-4">
+                <h6 class="text-uppercase fw-bold">My Account</h6>
+                <ul class="list-unstyled">
+                    <li><a href="{% url 'user_register' %}" class="text-white">Login</a></li>
+                    <li><a href="{% url 'user_register' %}" class="text-white">Register Account</a></li>
+                    <li><a href="{% url 'cart_page' %}" class="text-white">My Wishlist</a></li>
+                    <li><a href="{% url 'cart_page' %}" class="text-white">My Compare</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <hr class="bg-white">
+        <p class="text-center mb-0">&copy; 2025 Little Andhra | All Rights Reserved</p>
+        <h5 class="gradient-text">@SIVA_SARANYA</h5>
     </div>
 </footer>
 
 
+
+
 <!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 

@@ -4,8 +4,35 @@
     <meta charset="utf-8" />
     <title>Verify OTP</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f7fb; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
-        .card { background:white; width:360px; padding:20px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.06); }
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 70px !important; /* FIX FOR NAVBAR */
+            background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #f9f586);
+            background-size: 400% 400%;
+            animation: bgAnimation 15s ease infinite;
+        }
+        @keyframes bgAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+}
+        
+        .card {
+            background: rgba(255, 255, 255, 0.15);   /* transparent */
+            backdrop-filter: blur(12px);            /* blur glass effect */
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            width: 350px;
+        }
+
         h2 { margin:0 0 12px 0; }
         input[type="text"] { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-top:6px; box-sizing:border-box; }
         button { width:100%; padding:10px; background:#10b981; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; }

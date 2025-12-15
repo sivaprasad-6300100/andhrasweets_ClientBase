@@ -1,82 +1,172 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Address</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 0;
+            margin: 0;
+        }
 
-{% block title %} account |Andhra sweets {% endblock %}
+        form {
+            background: #fff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
 
-{% block content %}
+        h2 {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
 
+        label {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+        }
 
-<style>
-/* Container */
-form {
-    max-width: 450px;
-    margin: 40px auto;
-    padding: 25px;
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #333;
+            box-sizing: border-box;
+        }
 
-/* Title */
-h2 {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
+        input[type="text"]:focus, textarea:focus, select:focus {
+            border-color: #0077cc;
+            outline: none;
+        }
 
-/* Input Fields */
-form input[type="text"],
-form textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: 0.3s;
-    outline: none;
-}
+        .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
 
-/* Focus effect */
-form input:focus,
-form textarea:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 5px rgba(40,167,69,0.3);
-}
+        .row .col {
+            flex: 1;
+            min-width: 120px;
+        }
 
-/* Textarea styling */
-form textarea {
-    height: 100px;
-    resize: none;
-}
+        button {
+            background: #0077cc;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s;
+        }
 
-/* Button */
-form button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-}
+        button:hover {
+            background: #005fa3;
+        }
 
-/* Body background */
-body {
-    background: #f4f7f8;
-}
-</style>
+        a {
+            display: inline-block;
+            margin-top: 10px;
+            text-decoration: none;
+            color: #0077cc;
+            font-size: 14px;
+        }
 
+        a:hover {
+            text-decoration: underline;
+        }
 
-<h2>Add Address</h2>
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
 
 <form method="POST">
     {% csrf_token %}
+    <h2>Add New Address</h2>
 
-    <input type="text" name="name" placeholder="Full Name" required><br><br>
-    <input type="text" name="mobile" placeholder="Mobile Number" required><br><br>
-    <textarea name="address" placeholder="Full Address" required></textarea><br><br>
-    <input type="text" name="landmark" placeholder="Landmark"><br><br>
+    <div class="row">
+        <div class="col">
+            <label>Full Name</label>
+            <input type="text" name="full_name" required>
+        </div>
+        <div class="col">
+            <label>Phone (Include country code)</label>
+            <input type="text" name="phone" placeholder="+1-123-456-7890" required>
+        </div>
+    </div>
 
-    <button type="submit" class="btn btn-success">Save</button>
+    <label> address_line1</label>
+    <input type="text" name="address_line1" placeholder="Street address" required>
+
+    <label>Address Line 2 (Optional)</label>
+    <input type="text" name="address_line2" placeholder="Apartment, suite, etc.">
+
+    <div class="row">
+        <div class="col">
+            <label>City</label>
+            <input type="text" name="city" required>
+        </div>
+        <div class="col">
+            <label>State / Province</label>
+            <input type="text" name="state_province">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>Postal Code</label>
+            <input type="text" name="postal_code" required>
+        </div>
+        <div class="col">
+            <label>Country</label>
+            <select name="country" required>
+                <option value="">--Select Country--</option>
+                <option value="India">India</option>
+                <option value="United States">United States</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Germany">Germany</option>
+                <option value="France">France</option>
+                <!-- Add more countries as needed -->
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <label>Address Type</label>
+            <div>
+                <input type="radio" name="address_type" value="Home" checked> Home
+                <input type="radio" name="address_type" value="Work"> Work
+            </div>
+        </div>
+    </div>
+
+    <button type="submit">Save Address</button>
+    <a href="{% url 'address_list' %}">Back</a>
+
 </form>
 
-
-{% endblock %}
+</body>
+</html>

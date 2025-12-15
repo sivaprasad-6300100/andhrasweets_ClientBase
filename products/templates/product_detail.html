@@ -5,6 +5,40 @@
 
 {% block content %}
 
+<style>
+    /* Customer Requirements Textarea with colors */
+.quantity-box textarea#customer-req {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ff9800; /* bright orange border */
+    border-radius: 10px;
+    background: #fff8e1; /* light cream background */
+    font-size: 14px;
+    color: #333;
+    resize: vertical;
+    box-shadow: 0 2px 6px rgba(255, 152, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Focus effect */
+.quantity-box textarea#customer-req:focus {
+    border-color: #ff5722; /* deep orange on focus */
+    background: #fff3e0; /* slightly lighter background */
+    box-shadow: 0 0 8px rgba(255, 87, 34, 0.4);
+    outline: none;
+}
+
+/* Label styling */
+.quantity-box label[for="customer-req"] {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #ff6f00; /* dark orange for label */
+}
+
+
+</style>
+
 <div class="product-container">
 
     <div class="product-main">
@@ -60,6 +94,13 @@
         </div>
 
     </div>
+
+    <!-- Customer Requirements -->
+<div class="quantity-box">
+    <label for="customer-req">Special Instructions:</label>
+    <textarea id="customer-req" name="customer_req" placeholder="E.g., extra sugar, less salt, more spice..." rows="3"></textarea>
+</div>
+
 
     <!-- Related Products -->
     <div class="related-products">

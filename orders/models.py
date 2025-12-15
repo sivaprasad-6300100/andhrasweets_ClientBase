@@ -1,7 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings   # <-- IMPORTANT
 from products.models import Products
-from users.models import Address
+from users.models import UserAddress
 
 
 class Order(models.Model):
@@ -14,20 +14,44 @@ class Order(models.Model):
         ('PAYTM', 'Paytm'),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    STATUS_CHOICES = (
+        ('Pending', 'Pending'),
+        ('Processing', 'Processing'),
+        ('Shipped', 'Shipped'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
+    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.ForeignKey(UserAddress, on_delete=models.SET_NULL, null=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='COD')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Order {self.id} - {self.user}"
 
+# ====================order item================
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.order} - {self.product}"
+        return f"{self.product.name} x {self.quantity}"
+
+
+# ============ ORDER TRACKING ============
+class Delivery(models.Model):
+    # orders = Delivery.objects.filter(order__user=request.user).order_by('-order__created_at')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE)
+    tracking_id = models.CharField(max_length=50, blank=True, null=True)    
+    delivery_date = models.DateField(blank=True, null=True)
+    shipped_at = models.DateTimeField(blank=True, null=True)
+    delivered_at = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Delivery for Order {self.order.id}"

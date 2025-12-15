@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-_vzmgiyr_+sw(8onijr_oc7)63^+tw79n=t((rs2n(y(tus#+e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+
 
 
 # Application definition
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'users',
+    
 ]
 
 MIDDLEWARE = [
@@ -131,3 +134,39 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Authentication Settings
+LOGIN_URL = '/users/register/'
+LOGIN_REDIRECT_URL = '/cart/cart_page/'   # Add trailing slash
+AUTH_USER_MODEL = 'users.UserProfile'
+
+# for sending email notifications to admin when new order is palced
+# ==================== EMAIL SETTINGS ====================
+
+# Admin who receives order notifications
+ADMIN_EMAIL = "sambasivaprasad345@gmail.com"
+
+# The email account that sends emails
+DEFAULT_FROM_EMAIL = "sambasivaprasad345@gmail.com"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sambasivaprasad345@gmail.com'
+
+# Replace with your Gmail App Password (16-character password)
+EMAIL_HOST_PASSWORD = 'crkpivfxccxeyijh'   # 16-char App Password
+
+
+
+
+
+
+
+
+
+
+
+
+
+

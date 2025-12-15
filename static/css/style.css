@@ -1,3 +1,34 @@
+
+/* Remove wrong global pointer */
+* {
+    cursor: default;
+}
+
+/* Only clickable elements */
+a, button, .lap-card, .add-btn {
+    cursor: pointer;
+}
+
+/* Remove white line focus */
+
+*:not(input):not(textarea) {
+    caret-color: transparent !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================== */
+
 header .container {
     padding-left: 0 !important;
     margin-left: 0 !important;
@@ -19,13 +50,23 @@ header .container {
 .logo-code{
     margin:14px 14px;
 }
-.Andhrasweets-title{
+/* .Andhrasweets-title{ */
+    /* font-family: serif; */
+    /* font-weight: 700;   bold like brand logo */
+    /* letter-spacing: 1.0px; */
+    /* color: whitesmoke; */
+    /* font-size: 25px; */
+/* } */
+
+.Andhrasweets-title {
     font-family: serif;
-    font-weight: 700;   /* bold like brand logo */
-    letter-spacing: 1.0px;
-    color: whitesmoke;
-    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 28px;
+    color: #FFCC00 !important;   /* Bright yellow for brand highlight */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);  /* makes it pop */
 }
+
 
 .nav-link {
     position: relative;
@@ -54,10 +95,48 @@ header .container {
 /* =================== */
 
 /* responsive coding  */
-@media (max-width: 576px) {    /* mobile view */
-    .navbar-mobileview {
-        margin-left: 20% !important;
-        font-size: 20px !important;
+/* @media (max-width: 576px) {    mobile view */
+    /* .navbar-mobileview { */
+        /* margin-left: 20% !important; */
+        /* font-size: 20px !important; */
+    /* } */
+/* } */
+
+
+
+/* =====================Bottom navbar code================= */
+/* ====== MOBILE BOTTOM NAVBAR ====== */
+.la-mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #006b3c; /* Dark Andhra Green */
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 9999;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+}
+
+/* Navigation icons */
+.la-nav-item {
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.la-nav-item i {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 3px;
+}
+
+/* Hide on Desktop */
+@media(min-width: 769px) {
+    .la-mobile-nav {
+        display: none;
     }
 }
 
@@ -442,17 +521,18 @@ header .container {
 
 /* ==================Andhra sweets ========================================== */
 
+
 .section-title{
     text-align: center;
     font-weight: 700;
     font-size: 35px;
-    margin-top:30px;
-}
+    margin-top:30px; }
+
 
 /* Grid System */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /*Laptop: 3 cards */
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
     padding: 15px;
 }
@@ -464,16 +544,12 @@ header .container {
     transition: transform 0.2s ease;
 }
 
-.lap-card:hover {
-    transform: translateY(-5px);
-}
-
-/* Images */
+/* Image FIX - No cutting */
 .lap-img1 {
-    width: 70%;
-    height: 300px;      /*larger image like your screenshot */
-    object-fit: cover;
-    border-radius: 15px;
+    width: 100%;
+    max-height: 200px;        /* auto-fit height */
+    object-fit: contain !important;  /* show full image */
+    border-radius: 10px;
 }
 
 /* Name */
@@ -483,25 +559,14 @@ header .container {
     margin-top: 10px;
 }
 
-/* Price text */
-.lap-card p:last-child {
+/* Price */
+.lap-card1 p:last-child {
     margin-top: 5px;
     font-size: 16px;
     font-weight: 600;
 }
 
-/* Mobile: 2 cards per row */
-@media (max-width: 800px) {
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        padding: 10px;
-    }
 
-    .lap-img1 {
-        height: 150px;  /* smaller for mobile */
-    }
-}
 /* =================================Masala's and podi's ================================= */
 
 /* Cards */
@@ -560,81 +625,71 @@ header .container {
 
 
 
-/* =========================final touch =============================== */*/
-
-
+/* =========================final cards code delivery,always fast,premimum quality =============================== */*/
 .features-wrapper {
-    margin-bottom: 70px !important; /* Creates gap above footer */
+    margin-bottom: 70px !important;
 }
 
 .features-row {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content:space-evenly;
-    /* gap: 25px; */
-    /* padding: 0 20px; */
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);   /* 3 boxes in a row */
+    gap: 12px;                               /* space between boxes */
+    padding: 0 10px;
 }
 
+/* Feature box */
 .feature-box {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(8px);
-    border-radius: 18px;
-    padding: 20px 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px 10px;
     text-align: center;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
     transition: 0.3s ease;
-    cursor: pointer;
 }
 
 .feature-box:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.20);
+    transform: translateY(-5px);
 }
 
+/* Icon circle */
 .icon-circle {
-    width: 80px;
-    height: 80px;
+    width: 55px;
+    height: 55px;
     background: #ff9800;
     border-radius: 50%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin: 0 auto 15px;
-    box-shadow: 0 4px 15px rgba(255,152,0,0.4);
+    align-items: center;
+    margin: 0 auto 12px;
 }
 
 .icon-circle i {
-    color: #fff;
-    font-size: 35px;
+    font-size: 28px;
+    color: white;
 }
 
+/* Title */
 .feature-box h4 {
-    margin-top: 10px;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 700;
     color: #ff9800;
+    margin-bottom: 5px;
 }
 
+/* Small paragraph */
 .feature-box p {
-    font-size: 14px;
+    font-size: 12px;
     color: #444;
-    margin-top: 5px;
+    line-height: 1.3;
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
+/* Larger screens (tablet/laptop): 3 in a row stays same */
+@media (min-width: 769px) {
     .features-row {
-        flex-direction: column;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
     }
 }
-.features-row {
-    display: flex !important;
-    flex-direction: row !important;
-}
-
-
-/* ==========fake code ================= */
 
 
 .fake-code{
@@ -717,7 +772,7 @@ header .container {
     transform: scale(1.05);
 }
 
-/* ===== CARD GRID ===== */
+/* ===== CARD GRID All Pages picles Page,Sweets page,savories page,masalas page,======= */
 .pickles-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -726,7 +781,7 @@ header .container {
     animation: fadeSlide .6s ease;
 }
 
-/* ===== PICKLE CARD ===== */
+
 .pickle-card {
     background: #fff;
     border-radius: 18px;
@@ -995,3 +1050,98 @@ header .container {
     .product-main {flex-direction: column;}
     .related-grid {grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));}
 }
+
+
+/* ==============================All responsive css code==========================  */
+/* ------navbar code--------------- */
+/* ---- MOBILE NAVBAR FIX ---- */
+@media (max-width: 576px) {
+
+    /* Navbar main container */
+    .navbar {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+        padding: 5px 10px !important;
+    }
+
+    /* Logo + Brand Name */
+    .navbar-brand {
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 8px;
+    }
+
+    /* Brand text */
+    .Andhrasweets-title {
+        font-size: 20px !important;
+        margin: 0 !important;
+    }
+
+    /* REMOVE wrong margin-left on mobile links */
+    .navbar-mobileview {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    /* Toggler (3 bar icon) stays right side */
+    .navbar-toggler {
+        margin: 0 !important;
+        padding: 3px 6px !important;
+    }
+
+    /* Toggler icon bigger for mobile */
+    .navbar-toggler-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* ===============andhra sweets,savories,masalas_posi==================== */
+/* Mobile: 2 cards per row */
+@media (max-width: 800px) {
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .lap-img1 {
+        max-height: 140px;      /* adjusts for mobile */
+        object-fit: contain !important;
+    }
+}
+
+
+/* =========================picles,sweets,savories,masalas_podi  page mobile view code=============================== */
+/* ==== Mobile View: Show 2 Pickles Per Row ==== */
+@media (max-width: 600px) {
+    .pickles-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        padding: 0 10px !important;
+    }
+
+    .pickle-card {
+        margin: 0 !important;
+    }
+
+    .img-box {
+        height: 160px !important; /* reduce height so it fits nicely */
+    }
+
+    .pickle-card h4 {
+        font-size: 16px !important;
+    }
+
+    .pickle-card p {
+        font-size: 12px !important;
+    }
+}
+
+
+

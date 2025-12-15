@@ -4,17 +4,109 @@
     <meta charset="utf-8" />
     <title>Verified</title>
     <style>
-        body { font-family: Arial, sans-serif; background: linear-gradient(90deg,#e6fffa,#eef2ff); display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
-        .card { background:white; padding:30px; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.06); text-align:center; }
-        a.button { display:inline-block; margin-top:14px; background:#2563eb; color:#fff; padding:10px 18px; border-radius:8px; text-decoration:none; }
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 70px !important; /* FIX FOR NAVBAR */
+            background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #f9f586);
+            background-size: 400% 400%;
+            animation: bgAnimation 15s ease infinite;
+         }
+         @keyframes bgAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);   /* transparent */
+            backdrop-filter: blur(12px);            /* blur glass effect */
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            width: 350px;
+        }
+
+        a.button {
+            display:inline-block;
+            margin-top:14px;
+            background:#2563eb;
+            color:#fff;
+            padding:10px 18px;
+            border-radius:8px;
+            text-decoration:none;
+        }
+
+        .login-navbar {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15); 
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.3); 
+            padding: 15px 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar-link {
+            color:whitesmoke !important;
+            text-decoration: none;
+            font-size: 30px;
+            font-family: serif;
+            font-weight: 700;
+        }
+
+        .navbar-link:hover {
+            color: #000 !important;
+        }
     </style>
 </head>
 <body>
+
+    <!-- ============navbar====================== -->
+<!-- white navbar=========== -->
+
+    <nav class="login-navbar">
+    
+
+    <!-- Right Side: Menu Links -->
+    <div>
+        <a href="{% url 'home' %}" class="navbar-link">Home
+        </a>
+    </div>
+</nav>
+
+
+
     <div class="card">
+
         <h2>Phone Verified ✅</h2>
-        <p>Your phone number has been successfully verified.</p>
-        <a class="button" href="{% url 'user_register' %}">Register another</a>
+
+        {% if user.is_authenticated %}
+            <h3>Welcome {{ user.username }} 🎉</h3>
+            <p>You are successfully logged in.</p>
+
+            <!-- Logout button -->
+            <a class="button" href="{% url 'home' %}">Logout</a>
+
+        {% else %}
+            <p>Your phone number has been successfully verified.</p>
+            
+            <!-- Register button (only visible when not logged in) -->
+            <a class="button" href="{% url 'user_register' %}">Register another</a>
+
+            <!-- Login button -->
+            <a class="button" href="{% url 'users_register' %}">Login</a>
+        {% endif %}
     </div>
 </body>
 </html>
-    

@@ -1,21 +1,39 @@
-{% extends 'base.html' %}
-
-{% block title %} account |Andhra sweets {% endblock %}
-
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Address</title>
+</head>
+<body>
 
 <h2>Edit Address</h2>
 
 <form method="POST">
     {% csrf_token %}
-
+    <label>Name:</label><br>
     <input type="text" name="name" value="{{ address.name }}" required><br><br>
-    <input type="text" name="mobile" value="{{ address.mobile }}" required><br><br>
-    <textarea name="address" required>{{ address.address }}</textarea><br><br>
-    <input type="text" name="landmark" value="{{ address.landmark }}"><br><br>
 
-    <button type="submit" class="btn btn-primary">Update</button>
+    <label>Mobile:</label><br>
+    <input type="text" name="mobile" value="{{ address.mobile }}" required><br><br>
+
+    <label>Address:</label><br>
+    <textarea name="address" required>{{ address.address }}</textarea><br><br>
+
+    <label>city:</label><br>
+    <input type="text" name="city" value="{{ address.city }}"><br><br>
+
+    <label >state:</label><br>
+    <input type="text" name="state" value="{{ address.state }}"><br>
+
+    <label >pincode:</label><br>
+    <input type=" text" name="pincode" value="{{address.pincode}}"><br>
+
+    <label ></label>
+
+    <button type="submit">Update Address</button>
 </form>
 
+<br>
+<a href="{% url 'address_list' %}">Back</a>
 
-{% endblock %}
+</body>
+</html>
