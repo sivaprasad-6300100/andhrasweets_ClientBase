@@ -4,34 +4,131 @@
 {% block content %}
 
 <style>
+    /* CSS */
+.btn-otpa {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 0;
+    margin: 10px 0;
+    background: linear-gradient(to right, #ff6ec4, #7873f5); /* same as your Send OTP */
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none; /* For anchor tags */
+    transition: 0.3s;
+}
+
+.btn-otpa:hover {
+    opacity: 0.9;
+}
+
+.register-btn {
+    width: 100% !important;
+}
+
 .login-container { max-width:450px; margin:auto; margin-top:40px; padding:30px; background:linear-gradient(135deg, #ffffff20, #ffffff10); backdrop-filter:blur(10px); border-radius:20px; border:1px solid rgba(255,255,255,0.2); box-shadow:0 0 20px rgba(0,0,0,0.1);}
-.login-title { font-size:32px; font-weight:bold; text-align:center; margin-bottom:20px; color:white; text-shadow:0px 0px 4px rgba(0,0,0,0.3);}
-.input-box { width:100%; padding:12px; border-radius:10px; border:none; margin-bottom:15px; outline:none; background: rgba(255,255,255,0.6);}
+/* login name should like create like a colors ============== */
+.login-title {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #4fbded, #f95a6c, #00d2ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: 30px;
+    /* animation: glowText 2.5s infinite alternate; */
+}
+
+/* Glow animation */
+/* @keyframes glowText { */
+    /* 0% { */
+        /* text-shadow: 0 0 5px #ff6ec4, 0 0 10px #6a5af9, 0 0 15px #00d2ff; */
+    /* } */
+    /* 50% { */
+        /* text-shadow: 0 0 10px #ff6ec4, 0 0 20px #6a5af9, 0 0 30px #00d2ff; */
+    /* } */
+    /* 100% { */
+        /* text-shadow: 0 0 5px #ff6ec4, 0 0 10px #6a5af9, 0 0 15px #00d2ff; */
+    /* } */
+/* } */
+
+.input-box {
+     width:100%; 
+     padding:12px; 
+     border-radius:10px; 
+     border: 2px solid #999;        /* ⬅ visible line */
+     /* border-radius: 10px; */
+     /* border:none;  */
+     margin-bottom:15px; 
+     /* outline:none;  */
+     cursor: text;
+     background: rgba(255,255,255,0.9);
+
+     /* 🔑 IMPORTANT FIX */
+     user-select: text;
+     -webkit-user-select: text;
+     -ms-user-select: text;
+    }
 .btn-otp { width:100%; padding:12px; margin-top:10px; border:none; border-radius:10px; cursor:pointer; color:white; font-size:16px; font-weight:bold; background: linear-gradient(90deg, #ff66c4, #6a5af9); transition:0.3s ease;}
 .btn-otp:hover { opacity:0.9;}
 .register-link { text-align:center; margin-top:15px; font-size:15px; color:white;}
-.register-link a { font-weight:bold; color:yellow;}
+.register-link a { font-weight:bold; color:red; text-decoration: none; }
 .error-msg { color:red; text-align:center; margin-bottom:10px; font-weight:bold;}
 </style>
 
 <div class="login-container">
 
     <h2 class="login-title">Login</h2>
-
+    <!--======= form=========== -->
     <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="phone" class="input-box" placeholder="Enter phone number" value="{{ phone|default:'' }}">
+    {% csrf_token %}
 
-        {% if error %}
-            <p class="error-msg">{{ error }}</p>
-        {% endif %}
+    <!-- <label>REGISTER NUMBER</label> -->
 
-        <button type="submit" class="btn-otp">Send OTP</button>
-    </form>
+    <div style="display:flex; gap:8px; align-items:center;">
+        <!-- Fixed Country Code -->
+        <input
+            type="text"
+            value="+91"
+            disabled
+            style="
+                width:70px;
+                padding: 12px;
+                margin-bottom:15px;
+                text-align:center;
+                font-weight:600;
+                background: linear-gradient(to right, #ff6ec4, #7873f5);
+                border-radius:11px;
+                border: 2px solid #999;        
+                color:#fff;
+            "
+        >
 
-    <p class="register-link">
-        New user? <a href="{% url 'user_register' %}">Register</a>
-    </p>
+        <!-- Phone Number Input -->
+        <input
+            type="tel"
+            name="phone"
+            class="input-box"
+            placeholder="Enter phone number"
+            inputmode="numeric"
+            maxlength="10"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            required
+        >
+    </div>
+
+    {% if error %}
+        <p class="error-msg">{{ error }}</p>
+    {% endif %}
+
+    <button type="submit" class="btn-otp">Send OTP</button>
+</form>
+
+        <a href="{% url 'user_register' %}"  class="btn-otpa register-bt">Register</a>
+    
 
 </div>
 

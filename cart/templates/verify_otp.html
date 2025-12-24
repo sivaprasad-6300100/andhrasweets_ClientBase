@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>Verify OTP</title>
+{% extends 'base.html' %}
+
+{% block title %}Verify otp  {% endblock %}
+
+{% block content %}
     <style>
         body {
             font-family: "Inter", Arial, sans-serif;
             margin: 0;
             height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-top: 70px !important; /* FIX FOR NAVBAR */
+            /* display: flex; */
+            /* align-items: center; */
+            /* justify-content: center; */
+            padding-top: 70px !important; /* Fix Navbar */
             background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #f9f586);
             background-size: 400% 400%;
             animation: bgAnimation 15s ease infinite;
@@ -31,15 +31,40 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
             text-align: center;
             width: 350px;
+            margin-top: 120px;
+            margin-bottom: 15px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        h2 { margin:0 0 12px 0; }
-        input[type="text"] { width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-top:6px; box-sizing:border-box; }
-        button { width:100%; padding:10px; background:#10b981; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600; }
-        .errors { color:#b91c1c; margin-top:6px; }
+        h2 { 
+            margin:0 0 12px 0;
+         }
+        input[type="text"] {
+            width:100%;
+            padding:10px; 
+            border:1px solid #ddd; 
+            border-radius:6px; 
+            margin-top:6px; 
+            box-sizing:border-box; 
+        }
+        button { 
+            width:100%; 
+            padding:10px; 
+            background:#10b981; 
+            color:white; 
+            border:none; 
+            border-radius:6px; 
+            cursor:pointer; 
+            font-weight:600; 
+        }
+        .errors { 
+            color:#b91c1c; 
+            margin-top:6px; 
+        }
     </style>
-</head>
-<body>
+
+
     <div class="card">
         <h2>Verify OTP</h2>
         <p>We sent an OTP to <strong>{{ phone }}</strong></p>
@@ -63,5 +88,4 @@
             <button type="submit">Verify</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock%}

@@ -1,14 +1,26 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import UserAddress
+from django.conf import settings
+from .models import UserAddress,UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import JsonResponse
-from .models import UserProfile
+# from .models import UserProfile
 from .forms import RegisterForm
 import random
 from .forms import OTPForm
+# import requests
 
+
+# =====================otp flow Fast2sms========================
+# FAST2SMS_API_KEY = "CflRJgWb47q1LvmTi2Q6cADhn98uPBXt0xoj5SrpeHOUsMFzYIa1zRATCLv7QPN93rK5yoIZXi2jDWJx"
+
+def send_fast2sms_otp(phone, otp):
+    # TEMPORARY OTP – print to console
+    print(f"[TEMP OTP] Phone: {phone}, OTP: {otp}")
+    
+    # Return fake success response like Fast2SMS
+    return {"return": True, "message": "OTP printed to console"}
 
 
 # address_list_view ==============================
@@ -90,87 +102,79 @@ def delete_address(request, id):
     address.delete()
     return redirect('address_list')
 
-# user registration view================
-def register_view(request):
 
-    form = RegisterForm()   # load the form
+
+# ==============================================
+# user registration view=====================================
+
+def register_view(request):
+    form = RegisterForm()
 
     if request.method == "POST":
-
         form = RegisterForm(request.POST)
 
         if form.is_valid():
             phone = form.cleaned_data["phone"]
             name = form.cleaned_data["name"]
 
-            # Get or create user
             user, created = UserProfile.objects.get_or_create(phone=phone)
 
-            # If phone already exists AND user has name → already registered
             if not created and user.name:
-                messages.error(request, "Phone already registered. Please Login.")
+                messages.error(request, "Phone already registered. Please login.")
                 return redirect("user_register")
 
-            # Save new user OR update name
             user.name = name
-
-            # Generate OTP
-            otp = str(random.randint(100000, 999999))
-            user.otp = otp
+            user.otp = str(random.randint(100000, 999999))
             user.save()
 
-            # Store phone in session for OTP verification
-            request.session["phone"] = phone
+            sms_response = send_fast2sms_otp(phone, user.otp)
 
-            messages.success(request, "OTP sent!")
+            if not sms_response.get("return"):
+                messages.error(request, "Failed to send OTP. Try again.")
+                return redirect("user_register")
+
+            request.session["phone"] = phone
+            messages.success(request, "OTP sent to your mobile number.")
             return redirect("otp_verify")
 
-    # If GET → show form
     return render(request, "login_phone.html", {"form": form})
 
 
-
 # already existing view ====================
-
-
 
 def login_phone_view(request):
     if request.method == "POST":
         phone = request.POST.get("phone")
 
-        # ❌ Phone not registered
         if not UserProfile.objects.filter(phone=phone).exists():
             return render(request, "existing_user.html", {
                 "error": "Phone not registered. Please register.",
                 "phone": phone
             })
 
-        # ✔ Phone exists → generate OTP
         user = UserProfile.objects.get(phone=phone)
         user.otp = str(random.randint(100000, 999999))
         user.save()
 
-        print("OTP:", user.otp)  # Debug only
+        sms_response = send_fast2sms_otp(phone, user.otp)
 
-        # Save phone in session so OTP page can access it
+        if not sms_response.get("return"):
+            messages.error(request, "Failed to send OTP.")
+            return redirect("login_phone_view")
+
         request.session["phone"] = phone
-
-        # Redirect to OTP page without passing phone in URL
         return redirect("otp_verify")
 
-    # GET → show form
     return render(request, "existing_user.html")
 
 
-def fake_view(request):
-    return render(request,'existing_user.html')
-
 # =======================
         #  vierify otp_verify_view
-    # ===============================
+    # ==============================
+
 
 def otp_verify_view(request):
-    phone = request.session.get("phone")  # get phone from session
+    phone = request.session.get("phone")
 
     if not phone:
         messages.error(request, "Session expired. Please login again.")
@@ -184,18 +188,18 @@ def otp_verify_view(request):
 
     form = OTPForm()
 
-    print("OTP sent to user:", user.otp)   # SHOW OTP IN TERMINAL AGAIN
-
     if request.method == "POST":
         form = OTPForm(request.POST)
         if form.is_valid():
             otp_input = form.cleaned_data["otp"]
 
             if otp_input == user.otp:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
+
                 user.otp = None
                 user.save()
-                user.backend = 'django.contrib.auth.backends.ModelBackend'  # ← Add this
+
                 return redirect("home")
             else:
                 messages.error(request, "Invalid OTP")
@@ -204,10 +208,19 @@ def otp_verify_view(request):
 
 
 
+
+
+
+
 def logout_view(request):
     # request.session.flush()   # 🔥 clears cart + session data
     logout(request)
     return redirect("home")
+
+
+# def fake_view(request):
+    # return render(request,'existing_user.html')
+# 
  
  
 
@@ -220,4 +233,9 @@ def check_phone(request):
     phone = request.GET.get("phone")
     exists = UserProfile.objects.filter(phone=phone).exists()
     return JsonResponse({"exists": exists})
+
+
+
+
+# Blog page  views==========================
 

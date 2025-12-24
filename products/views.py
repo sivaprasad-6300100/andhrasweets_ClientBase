@@ -1,6 +1,7 @@
 from django.shortcuts import render ,get_object_or_404
 from .models import Products
 from .models import Banner
+# from .models import Blog_
 
 # Create your views here.
 
@@ -37,8 +38,8 @@ def refund_return(request):
 def about(request):
     return render(request, 'about.html')
 
-def blog(request):
-    return render(request, 'blog.html')
+# def blog(request):
+    # return render(request,'blog.html')
 
 def contact(request):
     return render(request, 'contact.html')

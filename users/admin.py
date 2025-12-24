@@ -32,3 +32,4 @@ admin.site.register(UserProfile, UserProfileAdmin)
 # admin.site.register(Address)
 admin.site.register(UserAddress)# Register the new model
 
+

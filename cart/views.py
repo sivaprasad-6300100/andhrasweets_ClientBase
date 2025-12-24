@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from products.models import Products
 from django.conf import settings
-from orders.models import Order, OrderItem
-from users.models import UserAddress
+# from orders.models import Order, OrderItem
+# from users.models import UserAddress
 from cart.models import Cart  # single authoritative Cart import
 
 
@@ -21,11 +21,7 @@ def add_to_cart(request, id):
     return redirect('cart_page')
 
 
-@login_required
-def buy_now(request, id):
-    product = get_object_or_404(Products, id=id)
-    request.session['buy_now_product'] = product.id
-    return redirect('orders:select_address')
+
 
 
 @login_required

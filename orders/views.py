@@ -4,6 +4,12 @@ from cart.models import Cart
 from products.models import Products
 from users.models import UserAddress
 from orders.models import Order, OrderItem,Delivery
+# import razorpay
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+
+
+
   
 @login_required
 def select_address(request):
@@ -83,3 +89,13 @@ def order_list(request):
 def order_detail(request, order_id):
     order = get_object_or_404(Delivery, id=order_id, user=request.user)
     return render(request, 'orders/order_detail.html', {'order': order})
+
+
+
+
+
+
+
+
+
+

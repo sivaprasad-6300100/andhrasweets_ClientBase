@@ -204,7 +204,7 @@ body {
 
     <h3 class="cart-total">Total: ₹{{ total }}</h3>
 
-    <a href="{% url 'orders:select_address' %}">
+    <a href="{% url 'checkout' %}?mode=cart">
         <button class="checkout-btn">Checkout</button>
     </a>
 

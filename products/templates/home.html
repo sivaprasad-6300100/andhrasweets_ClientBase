@@ -3,7 +3,7 @@
 
 {% load static %}
 
-{% block title %}Home | Andhra Sweets{% endblock %}
+{% block title %}andhrasruchulu{% endblock %}
 
 {% block content %} 
 
@@ -23,9 +23,50 @@
     padding: 40px;
     overflow: hidden;
 }
+/* ============scrolling Whatsapp css code starts================ */
+/* ===================== WhatsApp Floating Button CSS =================== */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;   /* distance from bottom */
+    right: 20px;    /* distance from right */
+    z-index: 9999;  /* stay on top */
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
 
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+
+.whatsapp-float img {
+    width: 35px;
+    height: 35px;
+}
+.whatsapp-text {
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+}
+/* WhatsApp Floating Button - Adjusted for Mobile */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 80px; /* lift above bottom nav menu */
+        right: 20px;
+    }
+}
+
+
+/* =====================code ends whatsapp icon=================== */
 
 </style>
+
 
 <div class="hero-section">
 
@@ -47,9 +88,10 @@
 
         <img src="{% static 'images/small_floating_image.png' %}" class="floating-pickle" alt="Floating Pickle">
     </div>
-
 </div>
-<!--   content section ================ -->
+
+
+<!-- ✅ WHATSAPP ICON (SCROLLS WITH PAGE) -->
 
 
 <section class="py-5">
@@ -111,7 +153,9 @@
     <div class="scroll-track">
         {% for item in veg_pickles %}
         <div class="lap-card">
+            <a href="{% url 'pickles' %}">
             <img src="{{ item.image.url }}" class="lap-img">
+            </a>
             <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
@@ -120,7 +164,9 @@
         <!-- Duplicate for infinite loop -->
         {% for item in veg_pickles %}
         <div class="lap-card">
+            <a href="{% url 'pickles' %}">
             <img src="{{ item.image.url }}" class="lap-img">
+            </a>
             <p class="lap-name">{{ item.name }} ({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
@@ -136,7 +182,9 @@
     <div class="scroll-track" #="1">
         {% for item in nonveg_pickles %}
         <div class="lap-card">
+            <a href="{% url 'pickles' %}">
             <img src="{{ item.image.url }}" class="lap-img">
+            </a>
             <p class="lap-name">{{ item.name }} <br>({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
@@ -145,7 +193,9 @@
         <!-- Duplicate -->
         {% for item in nonveg_pickles %}
         <div class="lap-card">
+            <a href="{% url 'pickles' %}">
             <img src="{{ item.image.url }}" class="lap-img">
+            </a>
             <p class="lap-name">{{ item.name }} <br>({{ item.telugu_name }})</p>
             <p>₹{{ item.price }}</p>
         </div>
@@ -201,12 +251,14 @@ smoothScroll("nonvegPickles");
 <!-- ============================sweets categories ===================================== -->
 
 
-<h1 class="section-title">SWEETS CATEGORIES</h1>
+<h1  class="section-title">SWEETS CATEGORIES</h1>
 
-<div class="products-grid">
+<div  class="products-grid" id="sweets-section">
     {% for item in sweets %}
     <div class="lap-card1">
+        <a href="{% url 'sweets' %}" class="home-cards-hover">
         <img src="{{ item.image.url }}" class="lap-img1">
+        </a>
         <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
         <p>₹{{ item.price }}</p>
     </div>
@@ -222,7 +274,9 @@ smoothScroll("nonvegPickles");
 <div class="products-grid">
    {% for item in podis %}
    <div class="lap-card1">
+    <a href="{% url 'masalas_podis' %}">
         <img src="{{ item.image.url}}" class="lap-img1">
+    </a>
         <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
         <p>₹{{ item.price }}</p>
    </div>
@@ -238,7 +292,9 @@ smoothScroll("nonvegPickles");
 <div class="products-grid">
    {% for item in savories %}
    <div class="lap-card1">
+    <a href="{% url 'savories' %}">
         <img src="{{ item.image.url}}" class="lap-img1">
+    </a>
         <p class="lap-name1">{{ item.name }} ({{ item.telugu_name }})</p>
    </div>
    {% endfor %}
@@ -274,6 +330,16 @@ smoothScroll("nonvegPickles");
     </div>
     </div>
 </section>
+<!-- =================== WhatsApp Floating Button =================== -->
+<!-- <div class="whatsapp-float" > -->
+
+<a href="https://wa.me/916300100420" class="whatsapp-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
+    <!-- <span class="whatsapp-text">Chat Us</span> -->
+</a>
+
+<!-- </div> -->
+
 <p class="fake-code">+
 
     =

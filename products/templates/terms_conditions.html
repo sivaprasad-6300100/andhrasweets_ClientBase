@@ -1,9 +1,81 @@
-
 {% block title %} Delivery _policy page {% endblock %}
 
 {% block content %}
 
-<h3>hii this is a terms and conditions  page details</h3>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+<style>
+.policy-container{
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.policy-container h3{
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.policy-container p{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.policy-container ul{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.policy-container ul li{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+
+</style>
+
+<div class="policy-container">
+
+<h3>Terms and Conditions</h3>
+
+<p><strong>Last updated:</strong> DD/MM/YYYY</p>
+
+<p>
+By accessing and using <strong>Andhra Sweets & Pickles</strong>, you agree to the following terms.
+</p>
+
+<p><strong>General:</strong></p>
+<ul>
+    <li>All products are subject to availability</li>
+    <li>Prices may change without prior notice</li>
+    <li>Product images are for reference only</li>
+</ul>
+
+<p><strong>Orders:</strong></p>
+<ul>
+    <li>Orders once placed cannot be cancelled</li>
+    <li>Incorrect delivery details may result in delivery failure</li>
+</ul>
+
+<p><strong>Payments:</strong></p>
+<ul>
+    <li>Payments are securely processed via Razorpay</li>
+    <li>We are not responsible for bank or network payment failures</li>
+</ul>
+
+<p><strong>Legal:</strong><br>
+All disputes are subject to Indian law and local jurisdiction.
+</p>
+
+</div>
 
 {% endblock %}

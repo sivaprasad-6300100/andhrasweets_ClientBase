@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Enter Phone</title>
 
     <style>
@@ -80,7 +81,8 @@
     }
 
     /* ---------- Input fields with glass effect ---------- */
-    input[type="text"] {
+    input[type="text"],
+    input[type="tel"] {
         width: 100%;
         padding: 12px 14px;
         margin-top: 6px;
@@ -98,7 +100,8 @@
         color: rgba(255, 255, 255, 0.6);
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus,
+    input[type="tel"]:focus {
         background: rgba(255, 255, 255, 0.35);
         box-shadow: 0 0 8px rgba(255,255,255,0.5), 0 0 12px rgba(99, 102, 241, 0.6);
         outline: none;
@@ -124,6 +127,11 @@
         background-position: right;
         transform: translateY(-2px) scale(1.02);
         box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .login_class{
+        text-decoration: none;
+        color: whitesmoke;
     }
 
     /* ---------- Error messages ---------- */
@@ -173,6 +181,40 @@
 .navbar-link:hover {
     color: #000 !important;
 }
+@media (max-width: 700px) {
+
+    /* 🔧 Stop mobile up/down jumping */
+    body {
+        min-height: 100svh;     /*stable viewport height*/
+        height: auto;
+        padding-top: 80px;     /* navbar space */
+        overflow-x: hidden;
+    }
+
+    /* 🔧 Remove flex centering on mobile */
+    body {
+        display: block;
+    }
+
+    /* 🔧 Center card safely */
+    .card {
+        width: 100%;
+        max-width: 360px;
+        margin: 40px auto;
+    }
+
+    /* 🔧 Fix navbar scroll jitter */
+    .login-navbar {
+        /* position: sticky; */
+        top: 0;
+    }
+
+    /* 🔧 Reduce repaint cost (prevents shake) */
+    body {
+        background-attachment: fixed;
+    }
+}
+
 
 </style>
 </head>
@@ -218,17 +260,39 @@
                 {% endif %}
             </p>
 
+
+
             <p>
-                {{ form.phone.label_tag }}
-                {{ form.phone }}
+                <label>Mobile Number</label>
+
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <!-- Fixed Country Code -->
+                    <input type="text"
+                           value="+91"
+                           disabled
+                           style="
+                               width:70px;
+                               text-align:center;
+                               font-weight:600;
+                               background: rgba(255, 255, 255, 0.25);
+                               border-radius:10px;
+                               border:none;
+                               color:#fff;
+                           ">
+
+                    <!-- Phone Input -->
+                    {{ form.phone }}
+                </div>
+            
                 {% if form.phone.errors %}
                     <div class="errors">{{ form.phone.errors|striptags }}</div>
                 {% endif %}
             </p>
 
+
             <button type="submit" name="action" value="signup">Send OTP</button>
         </form>
-            <button><a href=" {% url 'login_phone_view' %}">Login</a></button>
+            <button><a href=" {% url 'login_phone_view' %}" class="login_class">Login</a></button>
 
     </div>
 
@@ -236,9 +300,17 @@
 
     <!-- checking user already registered are not=========== -->
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const phoneInput = document.querySelector("input[name='phone']");
 
-
-
-
+    if (phoneInput) {
+        phoneInput.addEventListener("input", function () {
+            // Remove everything except digits
+            this.value = this.value.replace(/[^0-9]/g, "");
+        });
+    }
+});
+</script>
 </body>
 </html>

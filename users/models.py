@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.http import JsonResponse
+# from django.utils.text import slugify
+
 
 class UserProfileManager(BaseUserManager):
     def create_user(self, phone, password=None, **extra_fields):
@@ -18,7 +20,7 @@ class UserProfileManager(BaseUserManager):
 
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    phone = models.CharField(max_length=15, unique=True)
+    phone = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     otp = models.CharField(max_length=6, blank=True, null=True)
 
@@ -86,7 +88,36 @@ class UserAddress(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.full_name} - {self.city}"
+        return f"{self.user} - {self.phone},{self.address_line1}, {self.address_line2}, {self.city}, {self.state_province},{self.postal_code}"
+
+
+
+
+
+
+# =======================Blog Model ========================
+
+# from django.db import models
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 
     
 

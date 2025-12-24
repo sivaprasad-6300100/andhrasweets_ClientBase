@@ -8,14 +8,25 @@ class Order(models.Model):
 
     PAYMENT_CHOICES = (
         ('COD', 'Cash on Delivery'),
+        ('ONLINE','ONLINE'),
         ('PHONEPE', 'PhonePe'),
         ('GPAY', 'Google Pay'),
         ('UPI', 'UPI'),
         ('PAYTM', 'Paytm'),
     )
+    payment_status = models.CharField(
+    max_length=20,
+    choices=(
+        ('PENDING', 'Pending'),
+        ('PAID', 'Paid'),
+        ('FAILED', 'Failed'),
+    ),
+    default='PENDING'
+)
 
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
         ('Processing', 'Processing'),
         ('Shipped', 'Shipped'),
         ('Delivered', 'Delivered'),
@@ -27,6 +38,13 @@ class Order(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='COD')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    razorpay_order_id = models.CharField(
+        max_length=100, blank=True, null=True
+    )
+
+    razorpay_payment_id = models.CharField(
+        max_length=100, blank=True, null=True
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

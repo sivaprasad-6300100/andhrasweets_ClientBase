@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import add_address,address_list,edit_address,delete_address,register_view,login_phone_view,otp_verify_view,logout_view,fake_view
+from users.views import add_address,address_list,edit_address,delete_address,logout_view,register_view,login_phone_view,otp_verify_view
 
 urlpatterns = [
     path('addresses/',address_list, name="address_list"),
@@ -12,7 +12,13 @@ urlpatterns = [
     path('login_phone_view/',login_phone_view,name='login_phone_view'),
     path('otp_verify/',otp_verify_view,name='otp_verify'),
     path('logout_view/',logout_view,name='logout'),
-    path('fake_view/',fake_view,name='fake_view')
+    # path('fake_view/',fake_view,name='fake_view')
+      # 🔐 AJAX OTP (no page reload)
+    # path("ajax/send-otp/",ajax_send_otp, name="ajax_send_otp"),
+    # path("ajax/verify-otp/",ajax_verify_otp, name="ajax_verify_otp"),
+
+
+
 
     
 ]

@@ -189,6 +189,14 @@ footer .social-icons a:hover {
     100% { background-position: 100% }
 }
 
+/* ===== FIX CONTENT HIDING BEHIND BOTTOM NAV ===== */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 60px;   /* space for bottom nav */
+    }
+}
+
+
 
 
 
@@ -206,7 +214,7 @@ footer .social-icons a:hover {
             <a class="navbar-brand d-flex align-items-center p-0" href="{% url 'home' %}">
                 <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo-code" 
                      style="max-width: 80px; max-height: 80px;">
-                <span class="fw-bold Andhrasweets-title ms-2">andhraruchulu</span>
+                <span class="fw-bold Andhrasweets-title ms-2">andhras😋ruchulu</span>
             </a>
 
             <!-- MOBILE BUTTON -->
@@ -221,7 +229,7 @@ footer .social-icons a:hover {
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'sweets' %}">Sweets</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'pickles' %}">Pickles</a></li>
-                    <li class="nav-item ms-3"><a class="nav-link" href="{% url 'dry_fruits' %}">Dry Fruits</a></li>
+                    <!-- <li class="nav-item ms-3"><a class="nav-link" href="{% url 'dry_fruits' %}">Dry Fruits</a></li> -->
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'savories' %}">Savories</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'masalas_podis' %}">Masalas & Podis</a></li>
                     <li class="nav-item ms-3"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
@@ -332,11 +340,13 @@ footer .social-icons a:hover {
                 <p><i class="bi bi-geo-alt-fill"></i> Nellore - Andhra Pradesh 524320</p>
                 <p><i class="bi bi-envelope-fill"></i> info@littleandhra.in</p>
                 <div class="social-icons mt-2">
-                    <a href="#" class="text-white"><i class="bi bi-x-circle"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
-                    <a href="#" class="text-white"><i class="bi bi-whatsapp"></i></a>
+                    <a href="mailto:andhrasweetsandpickles@gmail.com" class="text-white"><i class="bi bi-envelope-fill"></i></a>
+
+                    <a href="https://www.instagram.com/andhrasruchulu/" class="text-white"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/AndhrasweetsAndpickles"  class="text-white"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.youtube.com/@AndhrasweetsAndpickles"  class="text-white " target="_blank"><i class="bi bi-youtube"></i></a>
+
+                    <a href="https://wa.me/916300122612" class="text-white"><i class="bi bi-whatsapp"></i></a>
                 </div>
             </div>
 
@@ -348,7 +358,7 @@ footer .social-icons a:hover {
                     <li><a href="{% url 'about' %}" class="text-white">About Us</a></li>
                     <li><a href="{% url 'sweets' %}" class="text-white">Sweets</a></li>
                     <li><a href="{% url 'pickles' %}" class="text-white">Pickles</a></li>
-                    <li><a href="{% url 'contact' %}" class="text-white">Contact Us</a></li>
+                    <li><a href="tel:+6300100420" class="text-white">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -377,7 +387,8 @@ footer .social-icons a:hover {
         </div>
 
         <hr class="bg-white">
-        <p class="text-center mb-0">&copy; 2025 Little Andhra | All Rights Reserved</p>
+        <p class="text-center mb-0">&copy; 2025 Little Andhra | All Rights Reserved | <span class="gradient-text">Developed by Siva Prasad </span>
+</p>
         <h5 class="gradient-text">@SIVA_SARANYA</h5>
     </div>
 </footer>

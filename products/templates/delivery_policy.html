@@ -1,9 +1,76 @@
-
 {% block title %} Delivery _policy page {% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h3>hii this is a delivery page details</h3>
 
+<style>
+.policy-container{
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+.policy-container h3{
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.policy-container p{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.policy-container ul{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.policy-container ul li{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+</style>
+
+<div class="policy-container">
+
+<h3>Shipping & Delivery Policy</h3>
+
+<p><strong>Last updated:</strong> DD/MM/YYYY</p>
+
+<p><strong>Shipping Area:</strong></p>
+<ul>
+    <li>We deliver across India</li>
+</ul>
+
+<p><strong>Order Processing:</strong></p>
+<ul>
+    <li>Orders are processed within 1–2 business days</li>
+</ul>
+
+<p><strong>Delivery Time:</strong></p>
+<ul>
+    <li>Delivery usually takes 3–7 business days depending on location</li>
+</ul>
+
+<p><strong>Delays:</strong></p>
+<ul>
+    <li>Delivery delays due to weather, festivals, or courier issues are beyond our control</li>
+</ul>
+
+<p><strong>Address Responsibility:</strong><br>
+Customers must ensure accurate address and contact details while placing orders.
+</p>
+
+</div>
 
 {% endblock %}

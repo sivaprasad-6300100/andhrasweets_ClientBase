@@ -18,15 +18,6 @@ a, button, .lap-card, .add-btn {
 
 
 
-
-
-
-
-
-
-
-
-
 /* ================== */
 
 header .container {
@@ -519,7 +510,7 @@ header .container {
 /* } */
 /*  */
 
-/* ==================Andhra sweets ========================================== */
+/* ==================All proucts page css code Andhra sweets ========================================== */
 
 
 .section-title{
@@ -537,6 +528,7 @@ header .container {
     padding: 15px;
 }
 
+
 /* Cards */
 .lap-card1 {
     padding: 15px;
@@ -551,6 +543,13 @@ header .container {
     object-fit: contain !important;  /* show full image */
     border-radius: 10px;
 }
+.lap-img1:hover {
+    transform: scale(1.10);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
 
 /* Name */
 .lap-name1 {

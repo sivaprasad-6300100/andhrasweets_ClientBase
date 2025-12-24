@@ -1,69 +1,34 @@
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.core.mail import send_mail
-from django.conf import settings
-from .models import Order, OrderItem
+# from django.conf import settings
+# from django.core.mail import EmailMessage
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
+# from .models import Order
 
+# @receiver(post_save, sender=Order)
+# def send_order_notification(sender, instance, created, **kwargs):
+#     if not created:
+#         return
 
-@receiver(post_save, sender=Order)
-def send_order_notification(sender, instance, created, **kwargs):
-    if created:
+#     try:
+#         subject = f"New Order #{instance.id}"
+#         body = f"""
+# New Order Placed
 
-        # ------------- GET ORDER ITEMS ----------------
-        items = OrderItem.objects.filter(order=instance)
+# Order ID: {instance.id}
+# User: {instance.user}
+# Amount: ₹{instance.total_amount}
+# Payment Method: {instance.payment_method}
+# Status: {instance.status}
+#         """
 
-        items_text = ""
-        for item in items:
-            gram_info = ""
-            if hasattr(item.product, 'grams'):
-                gram_info = f" ({item.product.grams}g)"
+#         email = EmailMessage(
+#             subject=subject,
+#             body=body,
+#             from_email=settings.DEFAULT_FROM_EMAIL,
+#             to=[settings.ADMIN_EMAIL],
+#         )
 
-            items_text += (
-                f"- {item.product.name}{gram_info} | Qty: {item.quantity} | Price: ₹{item.price}\n"
-            )
+#         email.send(fail_silently=True)  # 🔥 NEVER crash checkout
 
-        # ------------- FULL EMAIL MESSAGE -------------
-        subject = f"New Order Received - #{instance.id}"
-
-        message = f"""
-A new order has been placed on your website.
-
-===============================
-        CUSTOMER DETAILS
-===============================
-User ID: {instance.user.id}
-User Name: {instance.user.username}
-Phone: {instance.address.phone_number}
-
-===============================
-           ADDRESS
-===============================
-{instance.address.full_name}
-{instance.address.address_line_1}
-{instance.address.city}, {instance.address.state} - {instance.address.pincode}
-
-===============================
-          ORDER ITEMS
-===============================
-{items_text}
-
-===============================
-         ORDER SUMMARY
-===============================
-Total Amount: ₹{instance.total_amount}
-Payment Method: {instance.payment_method}
-Status: {instance.status}
-Created At: {instance.created_at.strftime('%d-%m-%Y %H:%M')}
-Order ID: {instance.id}
-
-Login to your admin panel to view full details.
-"""
-
-        # ----------- SEND EMAIL ----------------
-        send_mail(
-            'Test Email',
-            'This is a test email body',
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.ADMIN_EMAIL],
-            fail_silently=False,
-        )
+#     except Exception as e:
+#         print("Order email error:", e)

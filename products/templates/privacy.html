@@ -1,9 +1,84 @@
-
 {% block title %} Delivery _policy page {% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h3>hii this is a privacy page details</h3>
+<style>
+.policy-container{
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
 
+.policy-container h3{
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.policy-container p{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.policy-container ul{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.policy-container ul li{
+    font-size: 15px;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+</style>
+
+<div class="policy-container">
+
+<h3>Privacy Policy</h3>
+
+<p><strong>Last updated:</strong> DD/MM/YYYY</p>
+
+<p>
+At <strong>Andhra Sweets & Pickles</strong>, we respect your privacy and are committed to protecting
+your personal information.
+</p>
+
+<p><strong>Information We Collect:</strong></p>
+<ul>
+    <li>Name, phone number, email address</li>
+    <li>Shipping and billing address</li>
+    <li>Payment details (processed securely via Razorpay; we do not store card/UPI details)</li>
+</ul>
+
+<p><strong>How We Use Your Information:</strong></p>
+<ul>
+    <li>To process and deliver orders</li>
+    <li>To contact customers regarding orders</li>
+    <li>To improve our services and customer experience</li>
+</ul>
+
+<p><strong>Data Security:</strong></p>
+<ul>
+    <li>We use secure servers and trusted payment gateways</li>
+    <li>Personal data is never sold or shared except with delivery partners</li>
+</ul>
+
+<p><strong>Third-Party Services:</strong><br>
+Payments are handled through Razorpay, which follows strict security standards.
+</p>
+
+<p><strong>Consent:</strong><br>
+By using our website, you consent to this Privacy Policy.
+</p>
+
+</div>
 
 {% endblock %}
