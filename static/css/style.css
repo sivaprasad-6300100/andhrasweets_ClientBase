@@ -171,6 +171,17 @@ header .container {
 .hero-title {
     font-size: 3.4rem;
     font-weight: 700;
+     /* Gradient Color */
+    background: linear-gradient(90deg, #ff8800, #ffcc00, #ff0080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Smooth shimmer movement */
+    background-size: 200%;
+    animation: gradientMove 3s ease infinite;
+}
+    @keyframes gradientMove {
+        0% { background-position: 0% }
+        100% { background-position: 100% }
 }
 
 .hero-subtitle {
@@ -299,6 +310,152 @@ header .container {
         transform: translateY(0);
     }
 }
+
+
+
+/* ===========reviews page css code starts=============== */
+
+/* =========================
+   REVIEW SECTION
+========================= */
+
+.review-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Heading */
+.review-section h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+/* Average rating text */
+.review-section > p {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 22px;
+}
+
+/* =========================
+   REVIEW CARD
+========================= */
+
+.review-card {
+    background: #ffffff;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+/* Stars inside card */
+.review-card {
+    font-size: 18px;
+    color: #ffb400;
+}
+
+/* Comment */
+.review-card p {
+    font-size: 15px;
+    color: #333;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* Name */
+.review-card small {
+    font-size: 14px;
+    color: #777;
+    font-style: italic;
+}
+
+/* =========================
+   REVIEW FORM
+========================= */
+
+.review-section form {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff7f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+/* Labels */
+.review-section label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Inputs */
+.review-section input,
+.review-section select,
+.review-section textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-section input:focus,
+.review-section select:focus,
+.review-section textarea:focus {
+    border-color: #ff7a18;
+    box-shadow: 0 0 0 3px rgba(255,122,24,0.15);
+}
+
+/* Submit Button */
+.review-section button {
+    background: linear-gradient(135deg, #ff7a18, #ff5722);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-section button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255,87,34,0.4);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+    .review-section {
+        padding: 15px;
+    }
+
+    .review-card {
+        padding: 14px;
+    }
+
+    .review-section h3 {
+        font-size: 20px;    
+    }
+}
+/* =================code ends ================ */
 
 /* Little Andhra pickles========================= */
 

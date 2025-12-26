@@ -1,6 +1,9 @@
-from django.shortcuts import render ,get_object_or_404
+from django.shortcuts import render ,get_object_or_404,redirect
+from django.contrib.auth.decorators import login_required
 from .models import Products
+from django.db.models import Avg
 from .models import Banner
+from reviews.models import Review_Model
 # from .models import Blog_
 
 # Create your views here.
@@ -12,6 +15,7 @@ def home(request):
     podis = Products.objects.filter(category="podis")
     savories = Products.objects.filter(category="savories")
     dry_fruits = Products.objects.filter(category="dry-fruits")
+    reviews = Review_Model.objects.all().order_by('-created_at')[:6]
 
     return render(request, "home.html", {
         "veg_pickles": veg_pickles,
@@ -20,6 +24,7 @@ def home(request):
         "podis": podis,
         "savories": savories,
         "dry_fruits": dry_fruits,
+        "reviews": reviews,
     })
 
 # ==============single pages=================
@@ -114,9 +119,47 @@ def podis(request):
 # --------------------
 
 
+def can_review(user):
+    return user.is_authenticated and user.is_verified
+
+
+@login_required
 def product_detail(request, id):
     product = get_object_or_404(Products, id=id)
-    return render(request, "product_detail.html", {"product": product})
+
+    # ⭐ Average rating for this product
+    avg_rating = product.reviews.aggregate(
+        Avg("rating")
+    )["rating__avg"] or 0
+
+    # 📝 All reviews of this product
+    reviews = product.reviews.all().order_by("-created_at")
+
+    # 🔐 Can this user review?
+    can_user_review = can_review(request.user)
+
+    # 📝 Handle review submit
+    if request.method == "POST" and can_user_review:
+        rating = request.POST.get("rating")
+        comment = request.POST.get("comment")
+
+        if rating and comment:
+            Review_Model.objects.update_or_create(
+                product=product,
+                user=request.user,
+                defaults={
+                    "name": request.user.name,
+                    "rating": rating,
+                    "comment": comment
+                }
+            )
+        return redirect("product_detail", id=id)
+
+    return render(request, "product_detail.html", {
+        "product": product,
+        "reviews": reviews,
+        "avg_rating": avg_rating,
+        "can_user_review": can_user_review,
+    })
 
 
- 

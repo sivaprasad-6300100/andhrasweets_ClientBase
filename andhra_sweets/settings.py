@@ -18,8 +18,11 @@ load_dotenv()
 # SECURITY
 # --------------------------------------------------
 SECRET_KEY = 'django-insecure-_vzmgiyr_+sw(8onijr_oc7)63^+tw79n=t((rs2n(y(tus#+e'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = False
+ALLOWED_HOSTS = ['andhrasruchulu.com','www.andhrasruchulu.com','72.61.244.174']
+
+# Domains trusted for CSRF protection (forms, POST requests)
+CSRF_TRUSTED_ORIGINS = ['https://andhrasruchulu.com', 'https://www.andhrasruchulu   .com']
 
 # --------------------------------------------------
 # APPLICATIONS
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'users',
     'blog',
     'payments',
+    'reviews',
 ]
 
 # --------------------------------------------------
@@ -107,11 +111,12 @@ USE_TZ = True
 # --------------------------------------------------
 # STATIC & MEDIA
 # --------------------------------------------------
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/andhrasruchulu/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/var/www/andhrasruchulu/media/'
 
 # --------------------------------------------------
 # AUTH

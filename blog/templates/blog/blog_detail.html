@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+
+<style>
+/* ---------- Page background ---------- */
+body {
+    background: linear-gradient(135deg, #fff1eb, #ace0f9);
+}
+
+/* ---------- Article container ---------- */
+.blog-detail-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    animation: fadeIn 0.6s ease;
+}
+
+/* ---------- Title ---------- */
+.blog-detail-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #1f1f1f;
+    margin-bottom: 10px;
+}
+
+/* ---------- Meta info ---------- */
+.blog-detail-meta {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* ---------- Featured image ---------- */
+.blog-detail-image {
+    width: 100%;
+    border-radius: 16px;
+    margin: 25px 0;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* ---------- Content ---------- */
+.blog-detail-content {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #444;
+}
+
+/* Headings inside content */
+.blog-detail-content h3,
+.blog-detail-content h4 {
+    margin-top: 30px;
+    font-weight: 700;
+    color: #222;
+}
+
+/* ---------- Back button ---------- */
+.back-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 24px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff512f, #f09819);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(240,152,25,0.5);
+    color: #fff;
+}
+
+/* ---------- Divider ---------- */
+.content-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+    margin: 30px 0;
+}
+
+/* ---------- Animation ---------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+    .blog-detail-title {
+        font-size: 1.8rem;
+    }
+    .blog-detail-container {
+        padding: 20px;
+    }
+}
+</style>
+
+<div class="container my-4">
+    <div class="blog-detail-container">
+
+        <h1 class="blog-detail-title">{{ blog.title }}</h1>
+
+        <div class="blog-detail-meta">
+            🗓 {{ blog.created_at|date:"F d, Y" }} &nbsp;•&nbsp; ✍️ Admin
+        </div>
+
+        {% if blog.image %}
+        <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="blog-detail-image">
+        {% endif %}
+
+        <div class="content-divider"></div>
+
+        <div class="blog-detail-content">
+            {{ blog.content|linebreaks }}
+        </div>
+
+        <a href="{% url 'blog' %}" class="back-btn">
+            ← Back to Blogs
+        </a>
+
+    </div>
+</div>
+
+{% endblock %}

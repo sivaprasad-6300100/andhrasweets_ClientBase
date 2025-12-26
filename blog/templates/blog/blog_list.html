@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+<style>
+/* Page background */
+body {
+    background: linear-gradient(135deg, #fff1eb, #ace0f9);
+}
+
+/* Blog container */
+.blog-container {
+    max-width: 920px;
+    margin: auto;
+    padding-bottom: 40px;
+}
+
+/* Blog heading */
+.blog-title {
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: #2b2b2b;
+    letter-spacing: 0.5px;
+    margin-bottom: 30px;
+}
+
+/* Blog card */
+.blog-card {
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    transition: all 0.4s ease;
+    animation: fadeUp 0.7s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-10px) scale(1.01);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+}
+
+/* Blog image */
+.blog-card img {
+    height: 280px;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.blog-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Blog body */
+.blog-card .card-body {
+    padding: 26px;
+}
+
+/* Blog title inside card */
+.blog-card h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f1f1f;
+    margin-bottom: 12px;
+}
+
+/* Blog text */
+.blog-card p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 18px;
+}
+
+/* Read more button */
+.blog-btn {
+    background: linear-gradient(135deg, #ff512f, #f09819);
+    border: none;
+    padding: 9px 22px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.3px;
+    transition: all 0.3s ease;
+}
+
+.blog-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(240,152,25,0.5);
+    opacity: 0.95;
+}
+
+/* Optional category badge */
+.blog-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #ff5722;
+    color: #fff;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* Blog meta (date, author) */
+.blog-meta {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+/* Animation */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+    .blog-card img {
+        height: 200px;
+    }
+    .blog-title {
+        font-size: 1.7rem;
+    }
+}
+</style>
+
+
+<div class="container blog-container">
+    <h2 class="text-center my-4 blog-title">Our Blogs</h2>
+
+    {% for blog in blogs %}
+    <div class="card mb-4 blog-card">
+        {% if blog.image %}
+        <img src="{{ blog.image.url }}" class="card-img-top">
+        {% endif %}
+        <div class="card-body">
+            <h4>{{ blog.title }}</h4>
+            <p>{{ blog.content|truncatewords:30 }}</p>
+            <a href="{% url 'blog_detail' blog.slug %}" class="btn blog-btn">
+                Read More
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">No blogs available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

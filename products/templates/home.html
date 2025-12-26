@@ -300,6 +300,62 @@ smoothScroll("nonvegPickles");
    {% endfor %}
 </div>
 
+<!--================================= reviews code starts============================== -->
+
+<section class="review-section">
+    <h2>What Our Customers Say</h2>
+
+    <div class="review-container" id="review-container">
+        {% for review in reviews %}
+        <div class="review-card" {% if forloop.counter > 3 %} style="display:none;" {% endif %}>
+            <div class="stars">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= review.rating %}
+                        ⭐
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <p class="review-text">“{{ review.comment }}”</p>
+            <span class="review-name">— {{ review.name }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Toggle Show More / Show Less button -->
+    {% if reviews|length > 3 %}
+    <button id="toggle-reviews-btn" onclick="toggleReviews()">Show More</button>
+    {% endif %}
+</section>
+
+<script>
+function toggleReviews() {
+    const hiddenReviews = document.querySelectorAll('#review-container .review-card');
+    const btn = document.getElementById('toggle-reviews-btn');
+    
+    let anyHidden = false;
+
+    hiddenReviews.forEach((review, index) => {
+        if (index >= 3) {
+            if (review.style.display === 'none') {
+                review.style.display = 'block';
+                anyHidden = true;
+            } else {
+                review.style.display = 'none';
+            }
+        }
+    });
+
+    // Toggle button text
+    if (anyHidden) {
+        btn.innerText = 'Show Less';
+    } else {
+        btn.innerText = 'Show More';
+    }
+}
+</script>
 
 
 <!-- ================================ final touch code 3 options =========================== -->

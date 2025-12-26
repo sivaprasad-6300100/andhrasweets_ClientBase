@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+        font-family:'Segoe UI', Roboto, Arial, sans-serif;
+        background:#f1f3f6;
+        padding-bottom:110px;
+    }
+    .header{
+        background:#2874f0;
+        color:#fff;
+        text-align:center;
+        padding:14px;
+        font-size:18px;
+        font-weight:600;
+    }
+    .container{max-width:480px;margin:auto;}
+    .card{
+        background:#fff;
+        margin:12px;
+        border-radius:12px;
+        box-shadow:0 2px 8px rgba(0,0,0,.08);
+    }
+    .card h3{
+        padding:14px 16px;
+        font-size:16px;
+        border-bottom:1px solid #eee;
+    }
+    .address{
+        display:flex;
+        gap:12px;
+        padding:14px 16px;
+        border-bottom:1px solid #eee;
+        cursor:pointer;
+        font-size:14px;
+    }
+
+    /* add address button */
+    .add-address {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 6px 14px;
+    text-decoration: none;
+    margin: 12px auto;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #fb641b;
+    background: #fff3e6;
+
+    border: 1px solid #ffd1b3;
+    border-radius: 20px;
+
+    cursor: pointer;
+    text-align: center;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease;
+}
+
+.add-address:hover {
+    background: #fb641b;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(251,100,27,0.3);
+}
+
+.add-address a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+
+
+
+    .address:hover{background:#f8f9ff;}
+    .price-row{
+        display:flex;
+        justify-content:space-between;
+        padding:10px 16px;
+        font-size:14px;
+    }
+    .total{font-weight:bold;border-top:1px solid #eee;}
+    .option{
+        padding:14px 16px;
+        display:flex;
+        justify-content:space-between;
+        border-bottom:1px solid #eee;
+    }
+    .pay-bar{
+        position:fixed;
+        bottom:0;left:0;right:0;
+        background:#fff;
+        border-top:1px solid #ddd;
+        padding:12px;
+    }
+    .pay-btn{
+        width:100%;
+        padding:16px;
+        background:#fb641b;
+        color:#fff;
+        font-size:18px;
+        border:none;
+        border-radius:8px;
+        cursor:pointer;
+    }
+    /* ====================Bill Summary================ */
+
+
+/* ================= Bill Summary Professional UI ================= */
+
+.bill-card {
+    padding: 16px;
+}
+
+.bill-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.bill-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.bill-item img {
+    width: 58px;
+    height: 58px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 12px;
+}
+
+.bill-item-details {
+    flex: 1;
+}
+
+.bill-item-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #212121;
+    margin-bottom: 4px;
+}
+
+.bill-item-qty {
+    font-size: 13px;
+    color: #757575;
+}
+
+.bill-item-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: #212121;
+}
+
+.bill-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #555;
+    margin-top: 8px;
+}
+
+.strike {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.bill-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    font-size: 17px;
+    font-weight: 700;
+    color: #000;
+}
+/* add more button */
+.add-more-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 6px 14px;
+    margin: 8px auto 16px auto;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #2874f0;
+    background: #f1f6ff;
+
+    border: 1px solid #d6e4ff;
+    border-radius: 20px;
+
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease;
+}
+
+.add-more-link:hover {
+    background: #2874f0;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(40,116,240,0.25);
+}
+
+.plus-icon {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+
+
+    </style>
+</head>
+
+<body>
+
+<h3 class="header">Checkout</h3>
+
+<div class="container">
+    <div class="card">
+        <h3>Select Delivery Address</h3>
+        {% for address in addresses %}
+        <label class="address">
+            <input type="radio" name="address_id" value="{{ address.id }}">
+            <div>
+                <strong>{{ address.full_name }} - {{ address.phone }}</strong><br>
+                {{ address.address_line1 }}, {{ address.address_line2 }}<br>
+                {{ address.state_province }} {{ address.postal_code }}, {{address.country}}
+            </div>
+        </label>
+        {% endfor %}
+        <div style="text-align: center;">
+            <a href="{% url 'add_address' %}"  class="add-address">
+            + Add New Address
+            </a>
+        </div>
+    </div>
+<!-- ======================Bill Summary Details=================== -->
+
+<!-- ====================== Bill Summary ====================== -->
+<div class="card bill-card">
+    <h3 class="bill-title">Bill Summary</h3>
+<input type="hidden" id="base-amount" value="{{ amount }}">
+
+    {% if is_buy_now %}
+    <!-- BUY NOW PRODUCT -->
+    <div class="bill-item">
+        <img src="{{ buy_now_product.image.url }}" alt="{{ buy_now_product.name }}">
+        <div class="bill-item-details">
+            <p class="bill-item-name">{{ buy_now_product.name }}</p>
+            <p class="bill-item-qty">
+                {{ buy_now_qty }} × ₹{{ buy_now_product.price }}
+            </p>
+        </div>
+        <div class="bill-item-price">
+            ₹{{ amount }}
+        </div>
+    </div>
+{% else %}
+    <!-- CART PRODUCTS -->
+    {% for item in cart_items %}
+    <div class="bill-item">
+        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+        <div class="bill-item-details">
+            <p class="bill-item-name">{{ item.product.name }}</p>
+            <p class="bill-item-qty">
+                {{ item.quantity }} × ₹{{ item.get_price }}
+            </p>
+        </div>
+        <div class="bill-item-price">
+            ₹{{ item.subtotal }}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+  <div class="bill-row">
+        <span>Delivery Charges</span>
+        <span id="delivery-charge">
+            <span class="strike">₹199</span>
+            <strong style="color:green; margin-left:6px;">FREE</strong>
+        </span>
+    </div>
+    <div class="bill-total">
+        <span>Total</span>
+        <span id="total-amount">₹{{ amount }}</span>
+    </div>
+
+
+
+
+
+<!-- ============Add More Button ==============  -->
+      <div style="text-align: center;">
+        <a href="{% url 'home' %}" class="add-more-link" onclick="openCartModal()">
+            <span class="plus-icon">+</span> Add more items
+        </a>
+      </div>
+
+</div>
+
+<!-- ====================Payment Options =================== -->
+ 
+<div class="card">
+    <h3>Payment Options</h3>
+    <div class="option">UPI <span>GPay, PhonePe</span></div>
+    <div class="option">Card <span>Visa, Mastercard</span></div>
+    <div class="option">Net Banking</div>
+</div>
+
+<!-- </div> -->
+
+<div class="pay-bar">
+<button id="pay-btn" class="pay-btn">Pay ₹  <span id="pay-amount"> {{ amount }}</span></button>
+</div>
+
+
+
+<!--  ====================Script Tag Starts================== -->
+
+
+<script>
+/* 🔹 ADDED: Function to read CSRF token from cookie */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.getElementById("pay-btn").addEventListener("click", function () {
+
+    let selected = document.querySelector('input[name="address_id"]:checked');
+    if (!selected) {
+        alert("Please select address");
+        return;
+    }
+
+    /* 🔹 ADDED: get CSRF token correctly */
+    const csrftoken = getCookie("csrftoken");
+
+    fetch("{% url 'checkout' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrftoken,   /* 🔹 CHANGED HERE */
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "address_id=" + selected.value
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+        var options = {
+            key: data.razorpay_key,
+            amount: data.amount,
+            currency: "INR",
+            name: "Your Store",
+            order_id: data.razorpay_order_id,
+            handler: function (response) {
+
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = "{% url 'payment_success' %}";
+                form.innerHTML = `
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+                    <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
+                    <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
+                    <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+                `;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        };
+
+        new Razorpay(options).open();
+    })
+    .catch(() => alert("Something went wrong"));
+});
+</script>
+
+<!-- live Delivery Changes =================== -->
+
+<script>
+document.querySelectorAll('input[name="address_id"]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+
+        fetch(`/payments/get-delivery-charge/?address_id=${this.value}`)
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
+
+                // 🔴 IMPORTANT: base amount WITHOUT delivery
+                let baseAmount = Number(document.getElementById("base-amount").value);
+                let total = baseAmount;
+
+                if (data.is_india) {
+                    document.getElementById("delivery-charge").innerHTML = `
+                        <span class="strike">₹199</span>
+                        <strong style="color:green; margin-left:6px;">FREE</strong>
+                    `;
+                } else {
+                    document.getElementById("delivery-charge").innerHTML =
+                        `<strong>₹${data.delivery_charge}</strong>`;
+                    total = baseAmount + data.delivery_charge;
+                }
+
+                document.getElementById("total-amount").innerText = "₹" + total;
+                document.getElementById("pay-amount").innerText = total;
+            })
+            .catch(function () {
+                alert("Failed to update delivery charge");
+            });
+
+    });
+});
+</script>
+
+
+
+
+
+
+</body>
+</html>

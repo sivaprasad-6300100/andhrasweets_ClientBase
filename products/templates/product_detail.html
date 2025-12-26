@@ -102,6 +102,67 @@
 </div>
 
 
+<!-- customer reviews====================== -->
+ <div class="review-section">
+   <h3>Customer Reviews</h3>
+
+<p>⭐ {{ avg_rating|floatformat:1 }} / 5</p>
+
+{% for review in reviews %}
+<div class="review-card">
+    {% for i in "12345" %}
+        {% if forloop.counter <= review.rating %}
+            ⭐
+        {% else %}
+            ☆
+        {% endif %}
+    {% endfor %}
+    <p>{{ review.comment }}</p>
+    <small>— {{ review.user.name }}</small>
+    <!-- <small>— {{ review.user.phone }}</small> -->
+</div>
+{% empty %}
+<p>No reviews yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+    {% if can_user_review %}
+        <form method="post">
+            {% csrf_token %}
+            <!-- <div class="form-group"> -->
+                <!-- <label>Your Name</label> -->
+                <!-- <input type="text" name="name" required placeholder="Name Same as  username"> -->
+            <!-- </div> -->
+            <div class="form-group">
+              <label>Rating</label>
+                <select name="rating" required>
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★</option>
+                    <option value="3">★★★</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Comment</label>
+                <textarea name="comment" required></textarea>
+        
+
+            <button type="submit">Submit Review</button>
+            </div>
+        </form>
+    {% else %}
+        <p>Please verify your phone number to write a review.</p>
+    {% endif %}
+{% else %}
+    <p>Please login to write a review.</p>
+{% endif %}
+ </div>
+
+
+<!-- ⭐⭐ REVIEWS SECTION END HERE ⭐⭐ -->
+<!-- ⭐⭐ REVIEWS SECTION END HERE ⭐⭐ -->
+
+
+
     <!-- Related Products -->
     <div class="related-products">
         <h2>Related Pickles</h2>

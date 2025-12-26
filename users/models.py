@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.http import JsonResponse
+from django.utils import timezone
 # from django.utils.text import slugify
 
 
@@ -22,8 +23,9 @@ class UserProfileManager(BaseUserManager):
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=10, unique=True)
     name = models.CharField(max_length=100, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)  # auto timestamp
     otp = models.CharField(max_length=6, blank=True, null=True)
-
+    is_verified = models.BooleanField(default=False)  # 🔥 IMPORTANT
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -35,24 +37,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.phone
 
-
-# Address Model (Same as your old project)
-# class Address(models.Model):
-    # user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    # full_name = models.CharField(max_length=100)
-    # phone = models.CharField(max_length=15)
-    # address_line = models.TextField()
-    # city = models.CharField(max_length=50)
-    # state = models.CharField(max_length=50)
-    # pincode = models.CharField(max_length=10)
-    # country = models.CharField(max_length=50)
-    # address_type = models.CharField(max_length=20)
-    # created_at = models.DateTimeField(auto_now_add=True)
-# 
-    # def __str__(self):
-        # return f"{self.full_name} - {self.address_line}"
-    # 
-# 
 
 
 
@@ -95,9 +79,6 @@ class UserAddress(models.Model):
 
 
 
-# =======================Blog Model ========================
-
-# from django.db import models
 
 
 
