@@ -11,4 +11,5 @@ urlpatterns = [
     # order details===========
     path('', views.order_list, name='order_list'),
     path('<int:order_id>/', views.order_detail, name='order_detail'),
+    path('track/<int:order_id>/', views.track_order, name='track_order'),
 ]

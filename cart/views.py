@@ -12,13 +12,30 @@ from cart.models import Cart  # single authoritative Cart import
 @login_required
 def add_to_cart(request, id):
     product = get_object_or_404(Products, id=id)
-    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
 
+    # ✅ Get data from POST
+    weight = request.POST.get("weight", "250")
+    quantity = int(request.POST.get("quantity", 1))
+    customer_req = request.POST.get("customer_req", "")
+
+    # ✅ Create / get cart item with WEIGHT
+    cart_item, created = Cart.objects.get_or_create(
+        user=request.user,
+        product=product,
+        weight=weight,
+        defaults={
+            "quantity": quantity,
+            "customer_req": customer_req
+        }
+    )
+
+    # ✅ If already exists, increase quantity
     if not created:
-        cart_item.quantity += 1
+        cart_item.quantity += quantity
+        cart_item.save()
 
-    cart_item.save()
-    return redirect('cart_page')
+    return redirect("cart_page")
+
 
 
 

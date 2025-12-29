@@ -1,101 +1,190 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 <style>
-    /* ---------- My Orders Table Styling ----------- */
+/* ---------- My Orders Styling ----------- */
 h2 {
     text-align: center;
-    margin: 20px 0;
-    font-size: 28px;
+    margin: 25px 0;
+    font-size: 30px;
     color: #333;
     font-weight: 700;
+    font-family: 'Arial', sans-serif;
 }
 
-table {
+.orders-table {
     width: 100%;
     border-collapse: collapse;
     background: #ffffff;
     border-radius: 12px;
     overflow: hidden;
     margin-top: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    font-family: 'Arial', sans-serif;
 }
 
-table th {
+.orders-table th {
     background: #4a90e2;
     color: white;
-    padding: 12px;
+    padding: 14px;
     font-size: 15px;
     font-weight: 600;
     text-align: left;
 }
 
-table td {
-    padding: 12px;
+.orders-table td {
+    padding: 14px;
     border-bottom: 1px solid #eee;
     font-size: 14px;
     color: #444;
 }
 
-table tr:last-child td {
+.orders-table tr:last-child td {
     border-bottom: none;
 }
 
 /* Hover effect */
-table tr:hover {
+.orders-table tr:hover {
     background: #f7fbff;
 }
 
-/* View button */
-table a {
+/* Buttons */
+.orders-table a {
     padding: 6px 12px;
+    margin: 2px 0;
     background: #4a90e2;
     color: white;
     border-radius: 6px;
     text-decoration: none;
     font-size: 13px;
     transition: 0.3s;
+    display: inline-block;
 }
 
-table a:hover {
+.orders-table a:hover {
     background: #357ABD;
 }
 
-/* ------- Mobile Responsive ------ */
+/* Status badges */
+.status-delivered { color: green; font-weight: 600; }
+.status-shipped { color: orange; font-weight: 600; }
+.status-processing { color: red; font-weight: 600; }
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    table th, table td {
+    .orders-table th, .orders-table td {
         padding: 10px;
         font-size: 13px;
     }
-
-    h2 {
-        font-size: 22px;
-    }
+    h2 { font-size: 24px; }
 }
 
+@media (max-width: 576px) {
+    .orders-table thead { display: none; }
+    .orders-table tr {
+        display: block;
+        margin-bottom: 20px;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .orders-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .orders-table td:last-child { border-bottom: none; }
+    .orders-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #555;
+    }
+}
 </style>
+
 <h2>My Orders</h2>
-<table>
-    <tr>
-        <th>Order ID</th>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Total Price</th>
-        <th>Status</th>
-        <th>view</th>
-    </tr>
-    {% for order in orders %}
-    <tr>
-        <td>{{ order.id }}</td>
-        <td>{{ order.product.name }}</td>
-        <td>{{ order.quantity }}</td>
-        <td>{{ order.total_price }}</td>
-        <td>{{ order.status }}</td>
-        <td><a href="{% url 'orders:order_detail' order.id %}">View</a></td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="6">No orders yet.</td></tr>
-    {% endfor %}
+
+<table class="orders-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Products</th>
+            <th>Quantities</th>
+            <th>Price</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Invoice</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td data-label="Order ID">{{ order.id }}</td>
+            <td data-label="Date">{{ order.created_at|date:"d M Y" }}</td>
+
+            <td data-label="Products">
+                {% for item in order.items.all %}
+                    {{ item.product.name }}<br>
+                {% endfor %}
+            </td>
+
+            <td data-label="Quantities">
+                {% for item in order.items.all %}
+                    {{ item.quantity }}<br>
+                {% endfor %}
+            </td>
+
+            <td data-label="Price">
+                {% for item in order.items.all %}
+                    ₹{{ item.price }}<br>
+                {% endfor %}
+                <strong>Total: ₹{{ order.total_amount }}</strong>
+            </td>
+
+            <td data-label="Payment">
+                {% if order.payment_status == "PAID" %}
+                    <span style="color:green;font-weight:600;">Paid</span>
+                {% else %}
+                    <span style="color:red;">Pending</span>
+                {% endif %}
+            </td>
+
+            <td data-label="Status">
+                {% if order.status == "Delivered" %}
+                    <span class="status-delivered">Delivered</span>
+                {% elif order.status == "Shipped" %}
+                    <span class="status-shipped">Shipped</span>
+                {% else %}
+                    <span class="status-processing">{{ order.status }}</span>
+                {% endif %}
+            </td>
+
+            <td data-label="Invoice">
+                {% if order.invoice_pdf %}
+                    <a href="{{ order.invoice_pdf.url }}" target="_blank">Download</a>
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+
+            <td data-label="Action">
+                <a href="{% url 'orders:order_detail' order.id %}">View</a>
+                {% if order.delivery %}
+                    {% if order.delivery.tracking_id %}
+                        <a href="{% url 'orders:track_order' order.id %}">Track</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="9" style="text-align:center; padding:20px;">No orders yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

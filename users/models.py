@@ -52,6 +52,7 @@ class UserAddress(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
+    mail =models.EmailField(max_length=255,blank=True,null=True)
     address_line1 = models.TextField()
     address_line2 = models.TextField()
     city = models.CharField(max_length=50)
@@ -72,7 +73,7 @@ class UserAddress(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} - {self.phone},{self.address_line1}, {self.address_line2}, {self.city}, {self.state_province},{self.postal_code}"
+        return f"{self.user} ={self.full_name}, {self.phone},{self.address_line1}, {self.address_line2}, {self.city}, {self.state_province},{self.country},{self.postal_code}----{self.mail}"
 
 
 

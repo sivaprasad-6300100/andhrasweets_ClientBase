@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+.track-order-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px 35px;
+    background: linear-gradient(145deg, #ffffff, #f0f8ff);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Poppins', sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.track-order-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.track-order-container h2 {
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.track-order-container p {
+    font-size: 17px;
+    margin: 12px 0;
+    color: #444;
+}
+
+.track-order-container p strong {
+    color: #222;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+}
+
+.status-pending { background-color: #ff9800; }
+.status-shipped { background-color: #2196f3; }
+.status-delivered { background-color: #4caf50; }
+.status-cancelled { background-color: #f44336; }
+
+.track-order-container .no-tracking {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+.track-order-container .order-items {
+    margin-top: 25px;
+}
+
+.track-order-container .order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.track-order-container .order-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 15px;
+}
+.back-btn-container {
+    text-align: center;  /* Center the button */
+    margin-top: 25px;    /* Add space from content above */
+}
+.back-btn {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #2196f3;        /* Blue background */
+    color: #fff;                /* White text */
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;      /* Remove underline */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+.back-btn:hover {
+    background: #1976d2;        /* Darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(33, 150, 243, 0.5);
+}
+
+
+.track-order-container .order-item-details {
+    flex: 1;
+}
+</style>
+
+<div class="track-order-container">
+    <h2>Track Order #{{ order.id }}</h2>
+
+    {% if delivery %}
+        <!-- <p><strong>Status:</strong>  -->
+            <!-- <span class="status-badge  -->
+                <!-- {% if order.status == 'pending' %}status-pending{% endif %} -->
+                <!-- {% if order.status == 'shipped' %}status-shipped{% endif %} -->
+                <!-- {% if order.status == 'delivered' %}status-delivered{% endif %} -->
+                <!-- {% if order.status == 'cancelled' %}status-cancelled{% endif %} -->
+            <!-- "> -->
+                <!-- {{ order.status|capfirst }} -->
+            <!-- </span> -->
+        <!-- </p> -->
+        <p><strong>Tracking ID:</strong> {{ delivery.tracking_id }}</p>
+        <p><strong>Delivery Date:</strong> 
+            {% if delivery.delivery_date %}
+                {{ delivery.delivery_date|date:"d M Y" }}
+            {% else %}
+                Not set
+            {% endif %}
+        </p>
+        <p><strong>Shipped At:</strong> 
+            {% if delivery.shipped_at %}
+                {{ delivery.shipped_at|date:"d M Y H:i" }}
+            {% else %}
+                Not shipped yet
+            {% endif %}
+        </p>
+        <p><strong>Delivered At:</strong> 
+            {% if delivery.delivered_at %}
+                {{ delivery.delivered_at|date:"d M Y H:i" }}
+            {% else %}
+                Not delivered yet
+            {% endif %}
+        </p>
+    {% else %}
+        <p class="no-tracking">Tracking details not available yet.</p>
+    {% endif %}
+
+    {% if items %}
+    <div class="order-items">
+        <h3>Products in this Order:</h3>
+        {% for item in items %}
+        <div class="order-item">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            <div class="order-item-details">
+                <strong>{{ item.product.name }}</strong><br>
+                Quantity: {{ item.quantity }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="back-btn-container">
+    <a href="{% url 'orders:order_list' %}" class="back-btn">Back to Orders</a>
+    </div>
+
+    {% endif %}
+</div>
+
+
+{% endblock %}

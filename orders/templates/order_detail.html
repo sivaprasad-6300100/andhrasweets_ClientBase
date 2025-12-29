@@ -1,12 +1,64 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>Order #{{ order.id }}</h2>
-<p><strong>Product:</strong> {{ order.product.name }}</p>
-<p><strong>Quantity:</strong> {{ order.quantity }}</p>
-<p><strong>Total Price:</strong> {{ order.total_price }}</p>
-<p><strong>Status:</strong> {{ order.status }}</p>
-<p><strong>Ordered At:</strong> {{ order.ordered_at }}</p>
 
-<a href="{% url 'orders:order_list' %}">Back to Orders</a>
+<style>
+.order-card {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    font-family: Segoe UI, sans-serif;
+}
+.order-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.order-item {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+.order-item:last-child {
+    border-bottom: none;
+}
+.label {
+    color: #ff9800;
+    font-weight: 600;
+}
+.back-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background: #ff9800;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+</style>
+
+<div class="order-card">
+    <h2>Order #{{ order.id }}</h2>
+
+    {% for item in order.items.all %}
+        <div class="order-item">
+            <p><span class="label">Product:</span> {{ item.product.name }}</p>
+            <p><span class="label">Weight:</span> {{ item.weight }} g</p>
+            <p><span class="label">Quantity:</span> {{ item.quantity }}</p>
+            <p><span class="label">Price:</span> ₹{{ item.price }}</p>
+            <p><span class="label">Item Total:</span> ₹{{ item.price|floatformat:2|add:item.quantity }}</p>
+        </div>
+    {% endfor %}
+
+    <hr>
+
+    <p><span class="label">Subtotal:</span> ₹{{ order.subtotal }}</p>
+    <p><span class="label">Delivery Charge:</span> ₹{{ order.delivery_charge }}</p>
+    <p><span class="label">Total Price:</span> ₹{{ order.total_amount }}</p>
+    <p><span class="label">Status:</span> {{ order.status }}</p>
+    <p><span class="label">Ordered At:</span> {{ order.created_at|date:"d M Y, h:i A" }}</p>
+
+    <a href="{% url 'orders:order_list' %}" class="back-btn">Back to Orders</a>
+</div>
+
 {% endblock %}

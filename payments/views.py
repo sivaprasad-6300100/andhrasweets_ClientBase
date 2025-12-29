@@ -2,11 +2,15 @@ import razorpay
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from users.models import UserAddress
-from orders.models import Order
+from orders.models import Order,OrderItem,Delivery
 from cart.models import Cart
 import requests
+from datetime import datetime
+# from reportlab.pdfbase import pdfmetrics
+# from reportlab.pdfbase.ttfonts import TTFont
 from django.http import JsonResponse
 from products.models import Products
+from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render,redirect
@@ -21,6 +25,14 @@ import os
 
 # Initialize Razorpay client
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+
+# ✅ NORTH INDIA STATES
+NORTH_INDIA_STATES = [
+    "delhi", "haryana", "punjab", "uttar pradesh",
+    "uttarakhand", "himachal pradesh", "rajasthan",
+    "chandigarh", "jammu and kashmir", "ladakh"
+]
 # trails just =======================
 
 @login_required
@@ -28,11 +40,10 @@ def checkout(request):
     addresses = UserAddress.objects.filter(user=request.user)
 
 
-    delivery_charge = 199
+    delivery_charge =  0   # 🇮🇳 FREE delivery
     is_india = True
 
-
-    # 🔴 ADDED: CLEAR BUY NOW SESSION WHEN USER COMES FROM CART CHECKOUT
+    # 🔴 ADDED: CLEAR BUY NOW SESSION WHEN USER COMES FROM CART CHECKOUT 
     if request.GET.get('mode') == 'cart':
         request.session['buy_now'] = False
         request.session.pop('buy_now_item', None)
@@ -42,9 +53,13 @@ def checkout(request):
 
         buy_item = request.session.get('buy_now_item')
         product = get_object_or_404(Products, id=buy_item['product_id'])
-        quantity = buy_item['quantity']
 
-        total_amount = (product.price * quantity) + delivery_charge
+        price = buy_item['price']
+        quantity = buy_item['quantity']
+        weight = buy_item['weight']
+
+        base_amount = price * quantity
+        total_amount = base_amount + delivery_charge
 
 
         # ---------- GET ----------
@@ -53,9 +68,12 @@ def checkout(request):
                 "addresses": addresses,
                 "buy_now_product": product,
                 "buy_now_qty": quantity,
+                "buy_now_price": price,          # ✅ PASS PRICE
+                "buy_now_weight": weight,  
                 "delivery_charge": delivery_charge,   # 🔴 ADD
                 "is_india": is_india,                 # 🔴 ADD
                 "amount": total_amount,
+                "base_amount": base_amount,   # ✅ ADD THIS
                 "is_buy_now": True
             })
 
@@ -64,21 +82,43 @@ def checkout(request):
             address_id = request.POST.get("address_id")
             address = get_object_or_404(UserAddress, id=address_id, user=request.user)
 
+            country = address.country.strip().lower()
+            state = address.state_province.strip().lower()
+
             # 🔴 DELIVERY BASED ON COUNTRY
-            if address.country.strip().lower() != 'india':
+            if country != "india":
                 delivery_charge = 1600
                 is_india = False
-
+            elif state in NORTH_INDIA_STATES:
+                delivery_charge = 100
+                is_india = True
+            else:
+                delivery_charge = 0
+                is_india = True
             
-            total_amount = (product.price * quantity) + delivery_charge
+            
+            base_amount = price * quantity
+            total_amount = base_amount + delivery_charge
 
             order = Order.objects.create(
                 user=request.user,
                 address=address,
                 total_amount=total_amount,
+                subtotal=base_amount,
+                delivery_charge=delivery_charge,
                 payment_method="UPI",
                 status="Pending"
             )
+
+            # ✅ SAVE BUY NOW ITEM (ONLY ONE PRODUCT)
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity,
+                price=price,
+                weight=weight
+            )
+
 
             razorpay_order = client.order.create({
                 "amount": int(total_amount * 100),
@@ -96,15 +136,15 @@ def checkout(request):
                 "order_db_id": order.id
             })
 
-    # ---------------- NORMAL CART MODE ----------------
+    # ---------------- CART MODE ----------------
     cart_items = Cart.objects.filter(user=request.user)
 
     
 
     if request.method == "GET":
-        cart_total = sum(item.subtotal() for item in cart_items)
+        base_amount= sum(item.subtotal() for item in cart_items)
 
-        total_amount = cart_total +delivery_charge
+        total_amount = base_amount +delivery_charge
 
         return render(request, "payments/checkout_order.html", {
             "addresses": addresses,
@@ -112,6 +152,7 @@ def checkout(request):
             "delivery_charge": delivery_charge,
             "is_india": is_india,
             "amount": total_amount,
+            "base_amount": base_amount,
             "is_buy_now": False
         })
 
@@ -125,11 +166,20 @@ def checkout(request):
 
 
 
-        # 🔴 ADD THIS: DELIVERY CHARGE LOGIC
-        if address.country.strip().lower() != 'india':
+        country = address.country.strip().lower()
+        state = address.state_province.strip().lower()
+
+
+        # ✅ DELIVERY CHARGE LOGIC
+        if country != "india":
             delivery_charge = 1600
             is_india = False
-
+        elif state in NORTH_INDIA_STATES:
+            delivery_charge = 100
+            is_india = True
+        else:
+            delivery_charge = 0
+            is_india = True
 
 
         cart_total = sum(item.subtotal() for item in cart_items)
@@ -138,10 +188,26 @@ def checkout(request):
         order = Order.objects.create(
             user=request.user,
             address=address,
+            subtotal=cart_total,
+            delivery_charge=delivery_charge,
             total_amount=total_amount,
-            payment_method="UPI",
+            payment_method="ONLINE",
             status="Pending"
         )
+
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price=item.get_price(),   # ✅ CORRECT PRICE BY WEIGHT
+                weight=item.weight        # ✅ CORRECT WEIGHT
+            
+                
+            )
+            # ✅ CLEAR CART AFTER SAVING
+        cart_items.delete()
+
 
         razorpay_order = client.order.create({
             "amount": int(total_amount * 100),
@@ -162,19 +228,38 @@ def checkout(request):
 
 
 # buy_now_chekout=========================================
+
 @login_required
 def buy_now_checkout(request, id):
+    if request.method != "POST":
+        return redirect('product_detail', id=id)
+
     product = get_object_or_404(Products, id=id)
-    
-    # Store Buy Now item in session
+
+    # 🔥 READ DATA FROM FORM
+    weight = request.POST.get('weight', '250')
+    quantity = int(request.POST.get('quantity', 1))
+
+    # 🔥 PRICE BY WEIGHT
+    if weight == '250':
+        price = product.price_250
+    elif weight == '500':
+        price = product.price_500
+    elif weight == '1000':
+        price = product.price_1000
+    else:
+        price = product.price_250
+
+    # 🔥 SAVE EVERYTHING IN SESSION
     request.session['buy_now_item'] = {
         'product_id': product.id,
-        'quantity': 1
+        'quantity': quantity,
+        'weight': weight,
+        'price': float(price)
     }
-    request.session['buy_now'] = True  # ✅ Add a flag
+    request.session['buy_now'] = True
 
     return redirect('checkout')
-
 
 
 # =================payment success view ==========================
@@ -200,10 +285,37 @@ def payment_success(request):
             order.status = "Confirmed"
             order.save()
 
+
+            # 🔥 FIX: Recalculate subtotal from OrderItems
+            correct_subtotal = sum(
+                item.price * item.quantity
+                for item in order.items.all()
+            )
+
+            order.subtotal = correct_subtotal
+            order.total_amount = correct_subtotal + order.delivery_charge
+            order.save()
+
+
+            # ================= CREATE DELIVERY ENTRY =================
+            Delivery.objects.get_or_create(
+                order=order,
+                defaults={
+                    "tracking_id": f"AR{order.id}{int(datetime.now().timestamp())}",
+                    "shipped_at": timezone.now()
+                }
+            )
+
+
             # ✅ SEND ORDER DETAILS TO ADMIN ONLY
             # 🔥 ADMIN NOTIFICATIONS
-            send_admin_order_mail(order)
-            send_invoice_mail(order)
+            pdf_path_seller =generate_invoice_seller_pdf(order)
+            send_admin_order_mail_with_pdf(order,pdf_path_seller)
+
+            # /customer received mail
+            pdf_path = generate_invoice_pdf(order)
+            send_invoice_email(order, pdf_path)
+
             send_whatsapp_alert(order)
 
             return redirect("order_success")
@@ -217,94 +329,294 @@ def payment_success(request):
 # from django.core.mail import send_mail/
 # from django.conf import settings
 
-def send_admin_order_mail(order):
+def send_admin_order_mail_with_pdf(order,pdf_path_seller):
     subject = f"🧾 New Order Received | Order #{order.id}"
 
     message = f"""
-NEW ORDER RECEIVED
+📦 NEW ORDER RECEIVED – ACTION REQUIRED
 
-Order ID: {order.id}
-Customer: {order.user.username}
-Phone: {order.address.phone}
+Dear Admin,
 
-Delivery Address:
-{order.address}
+A new order has been successfully placed on Andhrasruchulu.
 
----------------------------------
-ORDER ITEMS
----------------------------------
+Order Details:
+• Order ID   : {order.id}
+• Customer   : {order.user.name}
+
+Please review the order and proceed with the next steps at the earliest.
+
+Regards,
+Andhrasruchulu System
 """
 
-    for item in order.items.all():
-        message += f"""
-{item.product.name}
-Qty: {item.quantity}
-Price: ₹{item.price}
-Subtotal: ₹{item.quantity * item.price}
----------------------------------
-"""
-
-    message += f"""
-TOTAL AMOUNT: ₹{order.total_amount}
-
-Payment Method: Razorpay
-Payment Status: PAID
-
-Andhra Sweets
-"""
-
-    send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [settings.ADMIN_EMAIL],  # ✅ ONLY YOUR MAIL
-        fail_silently=False,
+    email =EmailMessage(
+        subject=subject,
+        body=message,
+        from_email =settings.EMAIL_HOST_USER,
+        to=[settings.ADMIN_EMAIL]
     )
 
+    email.attach_file(pdf_path_seller)
+
+    email.send(fail_silently=False)
+
+
+# generate invoice for seller =========================
+
+
+
+def generate_invoice_seller_pdf(order):
+    # File path
+    invoice_name = f"invoice_order_{order.id}.pdf"
+    file_path = os.path.join(settings.MEDIA_ROOT, invoice_name)
+
+    c = canvas.Canvas(file_path, pagesize=A4)
+    width, height = A4
+
+    # ================= COMPANY HEADER =================
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(50, height - 50, "ANDHRASRUCHULU")
+
+    c.setFont("Helvetica", 9)
+    c.drawString(50, height - 70, "www.andhrasruchulu.com")
+    c.drawString(50, height - 85, "Email: andhrasweetsandpickles@gmail.com")
+    c.drawString(50, height - 100, "Phone: +91-9490128341")
+    c.drawString(50, height - 115, "Andhra Pradesh – 524004")
+
+    # ================= INVOICE DETAILS (RIGHT) =================
+    c.setFont("Helvetica", 10)
+    c.drawString(350, height - 70, f"Invoice No: INV-{order.id}")
+    c.drawString(350, height - 85, f"Order ID: {order.id}")
+    c.drawString(350, height - 100, f"Invoice Date: {datetime.now().strftime('%d-%m-%Y')}")
+    c.drawString(350, height - 115, "Payment Method: Razorpay")
+    c.drawString(350, height - 130, "Payment Status: PAID")
+
+    # ================= LINE =================
+    c.line(50, height - 150, width - 50, height - 150)
+
+
+    # ================= CUSTOMER DETAILS =================
+    y = height - 180
+    c.setFont("Helvetica-Bold", 11)
+    c.drawString(50, y, "BILL TO")
+
+    y -= 18
+    c.setFont("Helvetica", 10)
+    c.drawString(50, y, f"Name: {order.user.name}")
+
+    y -= 15
+    c.drawString(50, y, f"Phone: {order.user.phone}")
+
+    y -= 18
+    c.setFont("Helvetica-Bold", 9)
+    c.drawString(50, y, "Delivery Address:")
+
+    y -= 14
+    c.setFont("Helvetica", 9)
+
+    text = c.beginText(50, y)
+    for line in str(order.address).split(","):
+        text.textLine(line.strip())
+        y -= 12
+
+    c.drawText(text)
+
+
+    # ================= ITEMS TABLE HEADER =================
+
+    # ================= ITEMS TABLE =================
+    y -= 25
+    c.line(50, y, width - 50, y)
+
+    y -= 18
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(50, y, "Product")
+    c.drawString(220, y, "Weight")
+    c.drawString(280, y, "Qty")
+    c.drawString(330, y, "Price")
+    c.drawString(420, y, "Total")
+
+    y -= 8
+    c.line(50, y, width - 50, y)
+
+    # ================= ITEMS =================
+    c.setFont("Helvetica", 10)
+    y -= 20
+
+    for item in order.items.all():
+        c.drawString(50, y, item.product.name)
+        c.drawString(220, y, f"{item.weight} g")  # ✅ ADD
+        c.drawString(280, y, str(item.quantity))
+        c.drawString(330, y, f"₹ {item.price}")
+        c.drawString(420, y, f"₹ {item.price * item.quantity}")
+        y -= 18
+
+    # ================= TOTALS =================
+
+    y -= 10
+    c.line(300, y, width - 50, y)
+
+    y -= 16
+    c.setFont("Helvetica", 10)
+    c.drawString(330, y, "Subtotal:")
+    c.drawRightString(width - 50, y, f"₹ {order.subtotal:.2f}")
+
+    y -= 14
+    c.drawString(330, y, "Delivery Charges:")
+    c.drawRightString(width - 50, y, f"₹ {order.delivery_charge:.2f}")
+
+    y -= 18
+    c.setFont("Helvetica-Bold", 11)
+    c.drawString(330, y, "GRAND TOTAL:")
+    c.drawRightString(width - 50, y, f"₹ {order.total_amount:.2f}")
+
+    # ================= FOOTER =================
+    c.setFont("Helvetica-Oblique", 9)
+    c.drawString(50, 80, "Thank you for your business with Andhrasruchulu.")
+    c.drawString(50, 65, "This is a computer-generated invoice.")
+
+    # Save PDF
+    c.save()
+
+    return file_path
 
 
 
 # ===============invoice pdf  generated  ================
+
 def generate_invoice_pdf(order):
     file_path = os.path.join(settings.MEDIA_ROOT, f"invoice_{order.id}.pdf")
     c = canvas.Canvas(file_path, pagesize=A4)
 
+    # ================= HEADER =================
+    y = 800
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(50, 800, "ANDHRA SWEETS - INVOICE")
+    c.drawString(50, y, "andhrasruchulu_Order - INVOICE")
 
+    y -= 25
+    c.setFont("Helvetica", 9)
+    c.drawString(50, y, "andhrasruchulu.com")
+
+    y -= 15
+    c.drawString(50, y, "Andhra Pradesh - 524004")
+
+
+    y -= 15
+    c.drawString(50, y, "Phone: +91-9490128341")
+
+    y -= 15
+    c.drawString(50, y, "Email: andhrasweetsandpickles@gmail.com")
+
+    # ================= ORDER & CUSTOMER DETAILS =================
+    y -= 30
     c.setFont("Helvetica", 10)
-    c.drawString(50, 770, f"Order ID: {order.id}")
-    c.drawString(50, 755, f"Customer: {order.user.username}")
-    c.drawString(50, 740, f"Total Amount: ₹{order.total_amount}")
+    c.drawString(50, y, f"Order ID: {order.id}")
 
-    y = 700
-    c.drawString(50, y, "Items:")
+    y -= 15
+    c.drawString(50, y, f"Customer Name: {order.user.name}")
+
+    y -= 15
+    c.drawString(50, y, f"Customer Phone: {order.user.phone}")
+
+    # Right side invoice info
+    c.drawString(350, y + 30, f"Invoice Date: {datetime.now().strftime('%d-%m-%Y')}")
+    c.drawString(350, y + 15, "Payment Method: Razorpay")
+    c.drawString(350, y, "Payment Status: Paid")
+
+    # ================= SEPARATOR =================
+    y -= 25
+    c.line(50, y, 550, y)
+
+    # ================= ITEMS TABLE HEADER =================
     y -= 20
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(50, y, "Product")
+    c.drawString(220, y, "Weight")   # ✅
+    c.drawString(280, y, "Qty")
+    c.drawString(330, y, "Price")
+    c.drawString(420, y, "Total")
+
+    y -= 10
+    c.line(50, y, 550, y)
+
+    # ================= ITEMS LIST =================
+    y -= 15
+    c.setFont("Helvetica", 10)
 
     for item in order.items.all():
-        c.drawString(50, y, f"{item.product.name} × {item.quantity} = ₹{item.price * item.quantity}")
+        c.drawString(50, y, item.product.name)
+        c.drawString(220, y, f"{item.weight} g")  # ✅ ADD
+        c.drawString(280, y, str(item.quantity))
+        c.drawString(330, y, f"Rs {item.price}")
+        c.drawString(420, y, f"Rs {item.price * item.quantity}")
         y -= 15
 
-    c.drawString(50, y - 10, f"TOTAL: ₹{order.total_amount}")
-    c.save()
+    # ================= TOTALS =================
+    y -= 10
+    c.line(300, y, 550, y)
 
+    y -= 15
+    c.drawString(330, y, "Subtotal:")
+    items_total = sum(
+    item.price * item.quantity
+    for item in order.items.all()
+    )
+
+    c.drawString(420, y, f"Rs {items_total}")
+
+
+    y -= 15
+    c.drawString(330, y, "Delivery Charges:")
+    c.drawString(420, y, f"Rs {order.delivery_charge}")
+
+    y -= 15
+    c.setFont("Helvetica-Bold", 10)
+    c.drawString(330, y, "Grand Total:")
+    c.drawString(420, y, f"Rs {order.total_amount}")
+
+    # ================= FOOTER =================
+    c.setFont("Helvetica-Oblique", 9)
+    c.drawString(50, 100, "Thank you for shopping with Andhrasruchulu!")
+    c.drawString(50, 85, "This is a computer-generated invoice.")
+
+    c.save()
     return file_path
+
 # mail invoice pdf to admin ========================
 
 from django.core.mail import EmailMessage
 
-def send_invoice_mail(order):
-    pdf_path = generate_invoice_pdf(order)
+def send_invoice_email(order, pdf_path):
+    subject = f"Your Invoice - Order #{order.id}"
+    message = f"""
+Dear {order.user.name},
+
+Thank you for shopping with Andhras Ruchulu ❤️
+
+Please find your invoice attached.
+
+Order ID: {order.id}
+Amount Paid: Rs {order.total_amount}
+
+Regards,
+Andhras Ruchulu Team
+"""
 
     email = EmailMessage(
-        subject=f"Invoice | Order #{order.id}",
-        body="Invoice attached for the new order.",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        to=[settings.ADMIN_EMAIL],
+        subject=subject,
+        body=message,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[order.address.mail],   # CUSTOMER EMAIL
     )
 
+    # ✅ Attach PDF
     email.attach_file(pdf_path)
-    email.send()
+    
+
+    email.send(fail_silently=False)
+
+    
+
 
 
 # ================whats app poppup========================
@@ -314,37 +626,58 @@ def send_whatsapp_alert(order):
     message = f"""
 New Order Received
 Order ID: {order.id}
-Amount: ₹{order.total_amount}
-Customer: {order.user.username}
+Amount: Rs{order.total_amount}
+Customer: {order.user.phone}
 """
 
-    url = "https://www.fast2sms.com/dev/whatsapp"
+    url = "https://www.fast2sms.com/dev/bulkV2"
     headers = {
         "authorization": settings.FAST2SMS_API_KEY
     }
 
     payload = {
-        "numbers": "6300100420",  # your WhatsApp number
+        "route": "q",
+        "numbers": "9490128341",  # your WhatsApp number
         "message": message
     }
 
     requests.post(url, headers=headers, data=payload)
 
 
-# get delivery charges==============================
+# get delivery charges=============================
+
 @login_required
 def get_delivery_charge(request):
     address_id = request.GET.get("address_id")
     address = get_object_or_404(UserAddress, id=address_id, user=request.user)
 
-    if address.country.strip().lower() == "india":
+    country = address.country.strip().lower()
+    state = address.state_province.strip().lower()  # ✅ SAME FIELD AS TEMPLATE
+
+    # 🌍 OUTSIDE INDIA
+    if country != "india":
         return JsonResponse({
-            "is_india": True,
-            "delivery_charge": 199
-        })
-    else:
-        return JsonResponse({
-            "is_india": False,
+            "country": country,
             "delivery_charge": 1600
         })
 
+    # 🇮🇳 INDIA → NORTH INDIA
+    if state in NORTH_INDIA_STATES:
+        return JsonResponse({
+            "country": "india",
+            "delivery_charge": 100
+        })
+
+    # 🇮🇳 INDIA → OTHER STATES (FREE)
+    return JsonResponse({
+        "country": "india",
+        "delivery_charge": 0
+    })
+
+
+# order succss view ========================
+def order_success(request):
+    return render(request, "payments/success.html")
+
+
+# order details===============

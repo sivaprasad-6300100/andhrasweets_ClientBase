@@ -1,5 +1,139 @@
 {% extends 'base.html' %}
 
-{% block title %} Abount | Andhra Sweets {% endblock %}
+{% block content %}
 
-{% block content %} this is a abount Page {% endblock %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<style>
+    .company-profile {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+}
+
+.company-profile h1 {
+    text-align: center;
+    color: #8b0000;
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.company-profile h3 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.company-profile section {
+    margin-bottom: 25px;
+}
+
+.company-profile h2 {
+    color: #8b0000;
+    border-left: 5px solid #8b0000;
+    padding-left: 10px;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.company-profile p {
+    line-height: 1.7;
+    font-size: 16px;
+}
+
+.company-profile ul {
+    padding-left: 20px;
+}
+
+.company-profile ul li {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.founder {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.founder a {
+    text-decoration: none;
+    color: #8b0000;
+    font-weight: bold;
+}
+
+.tagline {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #8b0000;
+    margin-top: 30px;
+}
+
+</style>
+
+<div class="company-profile">
+    <h1>Andhra’s Ruchulu</h1>
+    <h3>Authentic Taste of Andhra Pradesh</h3>
+
+    <section>
+        <h2>Company Overview</h2>
+        <p>
+            Andhra’s Ruchulu is a traditional food brand dedicated to preserving and delivering the authentic
+            flavors of Andhra Pradesh. Founded and owned by <strong>Shyam Molathati</strong>, the brand specializes
+            in handcrafted Andhra pickles prepared using age-old recipes passed down through generations.
+        </p>
+    </section>
+
+    <section>
+        <h2>Our Products</h2>
+        <p>
+            We offer a wide range of traditional Andhra pickles made using fresh farm-sourced ingredients,
+            hand-ground spices, and pure oils. Our preparation methods strictly follow traditional practices
+            while maintaining high standards of hygiene and quality.
+        </p>
+        <p>
+            <strong>No artificial flavors. No preservatives. Just authentic homemade taste.</strong>
+        </p>
+    </section>
+
+    <section>
+        <h2>Our Values</h2>
+        <ul>
+            <li>Authenticity & Tradition</li>
+            <li>Quality & Hygiene</li>
+            <li>Customer Trust</li>
+            <li>Rich Andhra Culinary Heritage</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Our Mission</h2>
+        <p>
+            To bring the original taste of Andhra cuisine to households across India and around the world,
+            while preserving the cultural essence and traditional preparation methods.
+        </p>
+    </section>
+
+    <section class="founder">
+        <h2>Founder</h2>
+        <p>
+            <strong>Shyam Molathati</strong><br>
+            Owner – Andhra’s Ruchulu<br>
+            📞 <a href="tel:9490128341">94901 28341</a>
+        </p>
+    </section>
+
+    <p class="tagline">
+        Prepared with tradition. Served with love.
+    </p>
+</div>
+
+{% endblock %}

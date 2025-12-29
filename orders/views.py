@@ -78,18 +78,36 @@ def order_success(request):
 
 
 # order details
+
 @login_required
 def order_list(request):
-    # Get all Delivery objects where the related Order belongs to the current user
-    orders = Delivery.objects.filter(order__user=request.user).order_by('-order__created_at')
+    orders = Order.objects.filter(
+        user=request.user
+    ).select_related('delivery').prefetch_related('items__product').order_by('-created_at')
+
     return render(request, 'order_list.html', {'orders': orders})
 
 
 @login_required
 def order_detail(request, order_id):
-    order = get_object_or_404(Delivery, id=order_id, user=request.user)
-    return render(request, 'orders/order_detail.html', {'order': order})
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    delivery = getattr(order, 'delivery', None)  # Optional Delivery object
+    return render(request, 'order_detail.html', {
+        'order': order,
+        'delivery': delivery
+    })
 
+
+@login_required
+def track_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    delivery = getattr(order, 'delivery', None)
+    items = order.items.all()  # related_name='items' in OrderItem
+    return render(request, 'track_order.html', {
+        'order': order,
+        'delivery': delivery,
+        'items': items
+    })
 
 
 

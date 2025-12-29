@@ -15,7 +15,7 @@
 <div class="pickles-container">
 
     <h1 class="main-title">🌶 Andhra-Pickles Collection </h1>
-    <p class="sub-title">Choose your favourite category</p>
+    <p class="sub-title">Choose your favourite  Items</p>
     <p class="sub-title">Homemade | Authentic | Traditional Taste</p>
     <!-- Tabs -->
     <div class="tabs-box">
@@ -48,11 +48,11 @@
         <div class="pickle-card">
             <div class="img-box">
                 <img src="{{ item.image.url }}">
-                <span class="price-tag red">₹{{ item.price }}</span>
+                <span class="price-tag ">₹{{ item.price }}</span>
             </div>
             <h4>{{ item.name }}</h4>
             <p>{{ item.telugu_name }}</p>
-            <button class="add-btn">View Product</button>
+            <button class="add-btn"><a href="{% url 'product_detail' item.id %}" class="remove-btn">View Product</a></button>
             <!-- <a href="{% url 'product_detail' item.id %}" class="view-btn">View</a> -->
         </div>
         {% empty %}

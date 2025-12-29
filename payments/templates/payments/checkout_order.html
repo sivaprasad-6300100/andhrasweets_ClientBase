@@ -257,7 +257,7 @@
             <div>
                 <strong>{{ address.full_name }} - {{ address.phone }}</strong><br>
                 {{ address.address_line1 }}, {{ address.address_line2 }}<br>
-                {{ address.state_province }} {{ address.postal_code }}, {{address.country}}
+                {{ address.state_province }} {{ address.postal_code }}, {{address.country}}-{{address.mail}}
             </div>
         </label>
         {% endfor %}
@@ -272,7 +272,7 @@
 <!-- ====================== Bill Summary ====================== -->
 <div class="card bill-card">
     <h3 class="bill-title">Bill Summary</h3>
-<input type="hidden" id="base-amount" value="{{ amount }}">
+<input type="hidden" id="base-amount" value="{{ base_amount }}">
 
     {% if is_buy_now %}
     <!-- BUY NOW PRODUCT -->
@@ -281,11 +281,11 @@
         <div class="bill-item-details">
             <p class="bill-item-name">{{ buy_now_product.name }}</p>
             <p class="bill-item-qty">
-                {{ buy_now_qty }} × ₹{{ buy_now_product.price }}
+                {{ buy_now_qty }} × ₹{{ buy_now_price }}
             </p>
         </div>
         <div class="bill-item-price">
-            ₹{{ amount }}
+             ₹{{ buy_now_price|floatformat:2 }}
         </div>
     </div>
 {% else %}
@@ -306,13 +306,14 @@
     {% endfor %}
 {% endif %}
 
-  <div class="bill-row">
+
+
+
+   <div class="bill-row">
         <span>Delivery Charges</span>
-        <span id="delivery-charge">
-            <span class="strike">₹199</span>
-            <strong style="color:green; margin-left:6px;">FREE</strong>
-        </span>
+        <span id="delivery-charge"><strong style="color:green;">FREE</strong></span>
     </div>
+
     <div class="bill-total">
         <span>Total</span>
         <span id="total-amount">₹{{ amount }}</span>
@@ -333,12 +334,12 @@
 
 <!-- ====================Payment Options =================== -->
  
-<div class="card">
-    <h3>Payment Options</h3>
-    <div class="option">UPI <span>GPay, PhonePe</span></div>
-    <div class="option">Card <span>Visa, Mastercard</span></div>
-    <div class="option">Net Banking</div>
-</div>
+<!-- <div class="card"> -->
+    <!-- <h3>Payment Options</h3> -->
+    <!-- <div class="option">UPI <span>GPay, PhonePe</span></div> -->
+    <!-- <div class="option">Card <span>Visa, Mastercard</span></div> -->
+    <!-- <div class="option">Net Banking</div> -->
+<!-- </div> -->
 
 <!-- </div> -->
 
@@ -352,118 +353,101 @@
 
 
 <script>
-/* 🔹 ADDED: Function to read CSRF token from cookie */
 function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.startsWith(name + "=")) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+    let value = null;
+    document.cookie.split(";").forEach(c => {
+        c = c.trim();
+        if (c.startsWith(name + "=")) {
+            value = decodeURIComponent(c.substring(name.length + 1));
         }
-    }
-    return cookieValue;
+    });
+    return value;
 }
 
-document.getElementById("pay-btn").addEventListener("click", function () {
-
-    let selected = document.querySelector('input[name="address_id"]:checked');
+document.getElementById("pay-btn").onclick = function () {
+    let selected = document.querySelector("input[name='address_id']:checked");
     if (!selected) {
-        alert("Please select address");
+        alert("Select address");
         return;
     }
-
-    /* 🔹 ADDED: get CSRF token correctly */
-    const csrftoken = getCookie("csrftoken");
 
     fetch("{% url 'checkout' %}", {
         method: "POST",
         headers: {
-            "X-CSRFToken": csrftoken,   /* 🔹 CHANGED HERE */
+            "X-CSRFToken": getCookie("csrftoken"),
             "Content-Type": "application/x-www-form-urlencoded"
         },
         body: "address_id=" + selected.value
     })
     .then(res => res.json())
     .then(data => {
-
-        if (data.error) {
-            alert(data.error);
-            return;
-        }
-
-        var options = {
+        new Razorpay({
             key: data.razorpay_key,
             amount: data.amount,
-            currency: "INR",
-            name: "Your Store",
             order_id: data.razorpay_order_id,
-            handler: function (response) {
-
-                var form = document.createElement("form");
-                form.method = "POST";
-                form.action = "{% url 'payment_success' %}";
-                form.innerHTML = `
-                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
-                    <input type="hidden" name="razorpay_payment_id" value="${response.razorpay_payment_id}">
-                    <input type="hidden" name="razorpay_order_id" value="${response.razorpay_order_id}">
-                    <input type="hidden" name="razorpay_signature" value="${response.razorpay_signature}">
+            handler: function (res) {
+                let f = document.createElement("form");
+                f.method = "POST";
+                f.action = "{% url 'payment_success' %}";
+                f.innerHTML = `
+                    <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie("csrftoken")}">
+                    <input type="hidden" name="razorpay_payment_id" value="${res.razorpay_payment_id}">
+                    <input type="hidden" name="razorpay_order_id" value="${res.razorpay_order_id}">
+                    <input type="hidden" name="razorpay_signature" value="${res.razorpay_signature}">
                 `;
-                document.body.appendChild(form);
-                form.submit();
+                document.body.appendChild(f);
+                f.submit();
             }
-        };
+        }).open();
+    });
+};
 
-        new Razorpay(options).open();
-    })
-    .catch(() => alert("Something went wrong"));
-});
-</script>
-
-<!-- live Delivery Changes =================== -->
-
-<script>
-document.querySelectorAll('input[name="address_id"]').forEach(function (radio) {
-    radio.addEventListener('change', function () {
+// LIVE DELIVERY UPDATE
+document.querySelectorAll("input[name='address_id']").forEach(radio => {
+    radio.addEventListener("change", function () {
 
         fetch(`/payments/get-delivery-charge/?address_id=${this.value}`)
-            .then(function (res) {
-                return res.json();
-            })
-            .then(function (data) {
+            .then(res => res.json())
+            .then(data => {
 
-                // 🔴 IMPORTANT: base amount WITHOUT delivery
-                let baseAmount = Number(document.getElementById("base-amount").value);
+                const baseAmount = Number(
+                    document.getElementById("base-amount").value
+                );
+
                 let total = baseAmount;
+                let deliveryHTML = "";
 
-                if (data.is_india) {
-                    document.getElementById("delivery-charge").innerHTML = `
-                        <span class="strike">₹199</span>
-                        <strong style="color:green; margin-left:6px;">FREE</strong>
-                    `;
-                } else {
-                    document.getElementById("delivery-charge").innerHTML =
-                        `<strong>₹${data.delivery_charge}</strong>`;
+                // ✅ INDIA
+                if (data.country === "india") {
+
+                    // 🔵 NORTH INDIA
+                    if (data.delivery_charge === 100) {
+                        deliveryHTML = `<strong>₹100 (North India)</strong>`;
+                        total = baseAmount + 100;
+                    }
+                    // 🟢 OTHER INDIA (FREE)
+                    else {
+                        deliveryHTML = `<strong style="color:green;">FREE</strong>`;
+                        total = baseAmount;
+                    }
+
+                }
+                // 🔴 OUTSIDE INDIA
+                else {
+                    deliveryHTML = `<strong>₹${data.delivery_charge}</strong>`;
                     total = baseAmount + data.delivery_charge;
                 }
 
+                document.getElementById("delivery-charge").innerHTML = deliveryHTML;
                 document.getElementById("total-amount").innerText = "₹" + total;
                 document.getElementById("pay-amount").innerText = total;
             })
-            .catch(function () {
-                alert("Failed to update delivery charge");
+            .catch(() => {
+                alert("Failed to calculate delivery charge");
             });
-
     });
 });
 </script>
-
-
-
-
 
 
 </body>

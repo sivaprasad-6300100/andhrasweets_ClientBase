@@ -123,7 +123,7 @@ def can_review(user):
     return user.is_authenticated and user.is_verified
 
 
-@login_required
+# @login_required
 def product_detail(request, id):
     product = get_object_or_404(Products, id=id)
 

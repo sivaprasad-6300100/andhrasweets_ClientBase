@@ -6,37 +6,31 @@
 {% block content %}
 
 <style>
-    /* Customer Requirements Textarea with colors */
+/* Customer Requirements Textarea with colors */
 .quantity-box textarea#customer-req {
     width: 100%;
     padding: 12px;
-    border: 2px solid #ff9800; /* bright orange border */
+    border: 2px solid #ff9800;
     border-radius: 10px;
-    background: #fff8e1; /* light cream background */
+    background: #fff8e1;
     font-size: 14px;
     color: #333;
     resize: vertical;
     box-shadow: 0 2px 6px rgba(255, 152, 0, 0.2);
     transition: all 0.3s ease;
 }
-
-/* Focus effect */
 .quantity-box textarea#customer-req:focus {
-    border-color: #ff5722; /* deep orange on focus */
-    background: #fff3e0; /* slightly lighter background */
+    border-color: #ff5722;
+    background: #fff3e0;
     box-shadow: 0 0 8px rgba(255, 87, 34, 0.4);
     outline: none;
 }
-
-/* Label styling */
 .quantity-box label[for="customer-req"] {
     display: block;
     font-weight: 700;
     margin-bottom: 6px;
-    color: #ff6f00; /* dark orange for label */
+    color: #ff6f00;
 }
-
-
 </style>
 
 <div class="product-container">
@@ -56,152 +50,145 @@
             <p class="telugu-name">{{ product.telugu_name }}</p>
             {% endif %}
 
-            <!-- Dynamic price output -->
+            <!-- Price -->
             <p class="price" id="product-price">₹{{ product.price_250 }}</p>
 
+            <p style="font-size:16px;color:#1a73e8;font-weight:500;">
+                The total amount is inclusive of both the item price and packaging charges.
+            </p>
 
-            {% if product.description %}
-            <p class="description">{{ product.description }}</p>
-            {% else %}
-            <p class="description">No additional details available.</p>
-            {% endif %}
-
-            <!-- Weight Selector -->
+            <!-- Weight -->
             <div class="quantity-box">
-                <label for="weight">Select Weight:</label>
-                <select id="weight" name="weight">
+                <label>Select Weight:</label>
+                <select id="weight">
                     <option value="250">250 g</option>
                     <option value="500">500 g</option>
                     <option value="1000">1 Kg</option>
                 </select>
             </div>
 
-            <!-- Hidden price to send to cart -->
-            <input type="hidden" id="selected-price" value="{{ product.price_250 }}">
-
             <!-- Quantity -->
             <div class="quantity-box">
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <label>Quantity:</label>
+                <input type="number" id="quantity" value="1" min="1">
+            </div>
+
+            <!-- Customer Requirements -->
+            <div class="quantity-box">
+                <label>Special Instructions:</label>
+                <textarea id="customer-req" rows="3"
+                    placeholder="E.g., extra sugar, less salt, more spice..."></textarea>
             </div>
 
             <!-- Buttons -->
             <div class="buttons">
-                <a id="buyNowBtn" href="{% url 'buy_now_checkout' product.id %}" class="btn btn-primary">Buy Now</a>
-                <a id="addCartBtn" href="{% url 'add_to_cart' product.id %}" class="btn btn-warning">Add to Cart</a>
+                <a href="#" id="buyNowBtn" class="btn btn-primary">Buy Now</a>
+                <a href="#" id="addCartBtn" class="btn btn-warning">Add to Cart</a>
             </div>
+
+            <!-- Hidden POST Form -->
+            <form id="cartForm" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="weight" id="form-weight" value="250">
+                <input type="hidden" name="quantity" id="form-quantity" value="1">
+                <input type="hidden" name="customer_req" id="form-customer-req">
+            </form>
 
         </div>
-
     </div>
 
-    <!-- Customer Requirements -->
-<div class="quantity-box">
-    <label for="customer-req">Special Instructions:</label>
-    <textarea id="customer-req" name="customer_req" placeholder="E.g., extra sugar, less salt, more spice..." rows="3"></textarea>
-</div>
+    <!-- Customer Reviews -->
+    <div class="review-section">
+        <h3>Customer Reviews</h3>
+        <p>⭐ {{ avg_rating|floatformat:1 }} / 5</p>
 
-
-<!-- customer reviews====================== -->
- <div class="review-section">
-   <h3>Customer Reviews</h3>
-
-<p>⭐ {{ avg_rating|floatformat:1 }} / 5</p>
-
-{% for review in reviews %}
-<div class="review-card">
-    {% for i in "12345" %}
-        {% if forloop.counter <= review.rating %}
-            ⭐
-        {% else %}
-            ☆
-        {% endif %}
-    {% endfor %}
-    <p>{{ review.comment }}</p>
-    <small>— {{ review.user.name }}</small>
-    <!-- <small>— {{ review.user.phone }}</small> -->
-</div>
-{% empty %}
-<p>No reviews yet.</p>
-{% endfor %}
-
-{% if user.is_authenticated %}
-    {% if can_user_review %}
-        <form method="post">
-            {% csrf_token %}
-            <!-- <div class="form-group"> -->
-                <!-- <label>Your Name</label> -->
-                <!-- <input type="text" name="name" required placeholder="Name Same as  username"> -->
-            <!-- </div> -->
-            <div class="form-group">
-              <label>Rating</label>
-                <select name="rating" required>
-                    <option value="5">★★★★★</option>
-                    <option value="4">★★★★</option>
-                    <option value="3">★★★</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Comment</label>
-                <textarea name="comment" required></textarea>
-        
-
-            <button type="submit">Submit Review</button>
-            </div>
-        </form>
-    {% else %}
-        <p>Please verify your phone number to write a review.</p>
-    {% endif %}
-{% else %}
-    <p>Please login to write a review.</p>
-{% endif %}
- </div>
-
-
-<!-- ⭐⭐ REVIEWS SECTION END HERE ⭐⭐ -->
-<!-- ⭐⭐ REVIEWS SECTION END HERE ⭐⭐ -->
-
-
-
-    <!-- Related Products -->
-    <div class="related-products">
-        <h2>Related Pickles</h2>
-        <div class="related-grid">
-            {% for item in related_products %}
-            <a href="{% url 'product-detail' item.id %}">
-            <div class="related-card">
-                <img src="{{ item.image.url }}" alt="{{ item.name }}">
-                <p>{{ item.name }}</p>
-            </div>
-            </a>
+        {% for review in reviews %}
+        <div class="review-card">
+            {% for i in "12345" %}
+                {% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}
             {% endfor %}
+            <p>{{ review.comment }}</p>
+            <small>— {{ review.user.name }}</small>
         </div>
-    </div>
+        {% empty %}
+            <p>No reviews yet.</p>
+        {% endfor %}
+            {% if user.is_authenticated %}
+                {% if can_user_review %}
+            <form method="post">
+                {% csrf_token %}
 
+                <div class="form-group">
+                    <label>Rating</label>
+                    <select name="rating" required>
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★</option>
+                        <option value="3">★★★</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Comment</label>
+                    <textarea name="comment" required></textarea>
+                </div>
+
+                <button type="submit">Submit Review</button>
+            </form>
+        {% else %}
+            <p style="color:red;">Only customers who purchased this product can write a review.</p>
+        {% endif %}
+        {% else %}
+            <p>Please login to write a review.</p>
+        {% endif %}
+    </div>
 </div>
 
-
-<!-- JavaScript for dynamic price change -->
+<!-- JavaScript -->
 <script>
-    const price250 = ("{{ product.price_250|default:0 }}");
-    const price500 = ("{{ product.price_500|default:0 }}");
-    const price1000 = ("{{ product.price_1000|default:0 }}");
+    const price250 = "{{ product.price_250 }}";
+    const price500 = "{{ product.price_500 }}";
+    const price1000 = "{{ product.price_1000 }}";
 
-    const weightSelect = document.getElementById("weight");
+    const weight = document.getElementById("weight");
+    const quantity = document.getElementById("quantity");
+    const customerReq = document.getElementById("customer-req");
     const priceBox = document.getElementById("product-price");
-    const hiddenPrice = document.getElementById("selected-price");
 
-    // Update price dynamically
-    weightSelect.addEventListener("change", function () {
-        let price = 0;
+    const form = document.getElementById("cartForm");
+    const formWeight = document.getElementById("form-weight");
+    const formQuantity = document.getElementById("form-quantity");
+    const formCustomerReq = document.getElementById("form-customer-req");
 
-        if (this.value == "250") price = price250;
-        if (this.value == "500") price = price500;
-        if (this.value == "1000") price = price1000;
-
+    // Update price
+    weight.addEventListener("change", () => {
+        let price = price250;
+        if (weight.value === "500") price = price500;
+        if (weight.value === "1000") price = price1000;
         priceBox.innerHTML = "₹" + price;
-        hiddenPrice.value = price;
+        formWeight.value = weight.value;
     });
+
+    quantity.addEventListener("input", () => {
+        formQuantity.value = quantity.value;
+    });
+
+    customerReq.addEventListener("input", () => {
+        formCustomerReq.value = customerReq.value;
+    });
+
+    // Add to Cart
+    document.getElementById("addCartBtn").onclick = function(e) {
+        e.preventDefault();
+        form.action = "{% url 'add_to_cart' product.id %}";
+        form.submit();
+    };
+
+    // Buy Now
+    document.getElementById("buyNowBtn").onclick = function(e) {
+        e.preventDefault();
+        form.action = "{% url 'buy_now_checkout' product.id %}";
+        form.submit();
+    };
 </script>
 
 {% endblock %}

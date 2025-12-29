@@ -35,6 +35,7 @@ def address_list(request):
         )
         address.full_name=request.POST.get('full_name')
         address.phone=request.POST.get('phone')
+        address.mail =request.POST.get('mail')
         address.address_line1=request.POST.get('address_line1')
         address.address_line2=request.POST.get('address_line2')
         address.city=request.POST.get('city')
@@ -67,6 +68,7 @@ def add_address(request):
             user=request.user,
             full_name=request.POST.get('full_name'),
             phone=request.POST.get('phone'),
+            mail =request.POST.get('mail'),
             address_line1=request.POST.get('address_line1'),
             address_line2=request.POST.get('address_line2'),
             city=request.POST.get('city'),
@@ -85,6 +87,7 @@ def edit_address(request, id):
     if request.method == "POST":
         address.full_name = request.POST['full_name']
         address.phone = request.POST['phone']
+        address.mail =request.POST['mail'],
         address.address_line1 = request.POST['address_line1']
         address.address_line2 = request.POST['address_line2']
         address.city = request.POST['city']
@@ -124,17 +127,18 @@ def register_view(request):
                 return redirect("user_register")
 
             user.name = name
-            user.otp = str(random.randint(100000, 999999))
+            user.otp = "1234"
+
             user.save()
 
-            sms_response = send_fast2sms_otp(phone, user.otp)
+            # sms_response = send_fast2sms_otp(phone, user.otp)
 
-            if not sms_response.get("return"):
-                messages.error(request, "Failed to send OTP. Try again.")
-                return redirect("user_register")
+            # if not sms_response.get("return"):
+                # messages.error(request, "Failed to send OTP. Try again.")
+                # return redirect("user_register")
 
             request.session["phone"] = phone
-            messages.success(request, "OTP sent to your mobile number.")
+            messages.success(request, "Enter the for Testing Purpose 1234.")
             return redirect("otp_verify")
 
     return render(request, "login_phone.html", {"form": form})
@@ -153,14 +157,14 @@ def login_phone_view(request):
             })
 
         user = UserProfile.objects.get(phone=phone)
-        user.otp = str(random.randint(100000, 999999))
+        user.otp = "1234"
         user.save()
 
-        sms_response = send_fast2sms_otp(phone, user.otp)
+        # sms_response = send_fast2sms_otp(phone, user.otp)
 
-        if not sms_response.get("return"):
-            messages.error(request, "Failed to send OTP.")
-            return redirect("login_phone_view")
+        # if not sms_response.get("return"):
+            # messages.error(request, "Failed to send OTP.")
+            # return redirect("login_phone_view")
 
         request.session["phone"] = phone
         return redirect("otp_verify")
@@ -185,26 +189,40 @@ def otp_verify_view(request):
     except UserProfile.DoesNotExist:
         messages.error(request, "User not found.")
         return redirect("user_register")
+    
 
+    
+    # AUTO LOGIN WITHOUT FORM
+    if user.otp == "1234":
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+        user.otp = None
+        user.save()
+        return redirect("home")
+
+    # Optional fallback if you still want manual OTP
     form = OTPForm()
-
-    if request.method == "POST":
-        form = OTPForm(request.POST)
-        if form.is_valid():
-            otp_input = form.cleaned_data["otp"]
-
-            if otp_input == user.otp:
-                user.backend = 'django.contrib.auth.backends.ModelBackend'
-                login(request, user)
-
-                user.otp = None
-                user.save()
-
-                return redirect("home")
-            else:
-                messages.error(request, "Invalid OTP")
-
     return render(request, "verify_otp.html", {"form": form})
+
+    # form = OTPForm()
+
+    # if request.method == "POST":
+        # form = OTPForm(request.POST)
+        # if form.is_valid():
+            # otp_input = form.cleaned_data["otp"]
+
+            # if otp_input == user.otp:
+                # user.backend = 'django.contrib.auth.backends.ModelBackend'
+                # login(request, user)
+
+                # user.otp = None
+                # user.save()
+
+                # return redirect("home")
+            # else:
+                # messages.error(request, "Invalid OTP")
+
+    # return render(request, "verify_otp.html", {"form": form})
 
 
 

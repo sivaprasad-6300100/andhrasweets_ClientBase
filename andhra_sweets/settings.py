@@ -18,11 +18,11 @@ load_dotenv()
 # SECURITY
 # --------------------------------------------------
 SECRET_KEY = 'django-insecure-_vzmgiyr_+sw(8onijr_oc7)63^+tw79n=t((rs2n(y(tus#+e'
-DEBUG = False
-ALLOWED_HOSTS = ['andhrasruchulu.com','www.andhrasruchulu.com','72.61.244.174']
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
 # Domains trusted for CSRF protection (forms, POST requests)
-CSRF_TRUSTED_ORIGINS = ['https://andhrasruchulu.com', 'https://www.andhrasruchulu   .com']
+# CSRF_TRUSTED_ORIGINS = ['https://andhrasruchulu.com', 'https://www.andhrasruchulu   .com']
 
 # --------------------------------------------------
 # APPLICATIONS
@@ -112,11 +112,12 @@ USE_TZ = True
 # STATIC & MEDIA
 # --------------------------------------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/andhrasruchulu/static/'
+# STATIC_ROOT = '/var/www/andhrasruchulu/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/andhrasruchulu/media/'
+MEDIA_ROOT = BASE_DIR / "media"
+
 
 # --------------------------------------------------
 # AUTH
@@ -129,20 +130,23 @@ AUTH_USER_MODEL = 'users.UserProfile'
 # --------------------------------------------------
 # EMAIL
 # --------------------------------------------------
-ADMIN_EMAIL = "sambasivaprasad345@gmail.com"
-DEFAULT_FROM_EMAIL = "sambasivaprasad345@gmail.com"
+ADMIN_EMAIL = "andhrasweetsandpickles@gmail.com"
+DEFAULT_FROM_EMAIL = "andhrasweetsandpickles@gmail.com"
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sambasivaprasad345@gmail.com'
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'andhrasweetsandpickles@gmail.com'
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 
 # --------------------------------------------------
 # PAYMENT
 # --------------------------------------------------
-RAZORPAY_KEY_ID = "rzp_test_RtNLRHXgb1dBZQ"
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 # --------------------------------------------------
