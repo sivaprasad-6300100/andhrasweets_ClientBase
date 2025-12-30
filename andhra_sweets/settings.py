@@ -18,11 +18,11 @@ load_dotenv()
 # SECURITY
 # --------------------------------------------------
 SECRET_KEY = 'django-insecure-_vzmgiyr_+sw(8onijr_oc7)63^+tw79n=t((rs2n(y(tus#+e'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = False
+ALLOWED_HOSTS = ['andhrasruchulu.com', 'www.andhrasruchulu.com','72.61.244.174']
 
 # Domains trusted for CSRF protection (forms, POST requests)
-# CSRF_TRUSTED_ORIGINS = ['https://andhrasruchulu.com', 'https://www.andhrasruchulu   .com']
+CSRF_TRUSTED_ORIGINS = ['https://andhrasruchulu.com', 'https://www.andhrasruchulu.com']
 
 # --------------------------------------------------
 # APPLICATIONS
@@ -112,11 +112,11 @@ USE_TZ = True
 # STATIC & MEDIA
 # --------------------------------------------------
 STATIC_URL = '/static/'
-# STATIC_ROOT = '/var/www/andhrasruchulu/static/'
+STATIC_ROOT = '/var/www/andhrasruchulu/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = '/var/www/andhrasruchulu/media/'
 
 
 # --------------------------------------------------
@@ -148,6 +148,8 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 # --------------------------------------------------
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+RAZORPAY_WEBHOOK_SECRET = "@andhrasruchulu.com"
+
 
 # --------------------------------------------------
 # FAST2SMS (FROM .env)

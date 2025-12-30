@@ -10,6 +10,8 @@ from datetime import datetime
 # from reportlab.pdfbase.ttfonts import TTFont
 from django.http import JsonResponse
 from products.models import Products
+from django.core.mail import EmailMessage
+
 from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
@@ -267,61 +269,7 @@ def buy_now_checkout(request, id):
 @csrf_exempt
 def payment_success(request):
     if request.method == "POST":
-        payment_id = request.POST.get("razorpay_payment_id")
-        razorpay_order_id = request.POST.get("razorpay_order_id")
-        signature = request.POST.get("razorpay_signature")
-
-        params_dict = {
-            "razorpay_payment_id": payment_id,
-            "razorpay_order_id": razorpay_order_id,
-            "razorpay_signature": signature
-        }
-
-        try:
-            client.utility.verify_payment_signature(params_dict)
-
-            order = Order.objects.get(razorpay_order_id=razorpay_order_id)
-            order.payment_status = "PAID"
-            order.status = "Confirmed"
-            order.save()
-
-
-            # 🔥 FIX: Recalculate subtotal from OrderItems
-            correct_subtotal = sum(
-                item.price * item.quantity
-                for item in order.items.all()
-            )
-
-            order.subtotal = correct_subtotal
-            order.total_amount = correct_subtotal + order.delivery_charge
-            order.save()
-
-
-            # ================= CREATE DELIVERY ENTRY =================
-            Delivery.objects.get_or_create(
-                order=order,
-                defaults={
-                    "tracking_id": f"AR{order.id}{int(datetime.now().timestamp())}",
-                    "shipped_at": timezone.now()
-                }
-            )
-
-
-            # ✅ SEND ORDER DETAILS TO ADMIN ONLY
-            # 🔥 ADMIN NOTIFICATIONS
-            pdf_path_seller =generate_invoice_seller_pdf(order)
-            send_admin_order_mail_with_pdf(order,pdf_path_seller)
-
-            # /customer received mail
-            pdf_path = generate_invoice_pdf(order)
-            send_invoice_email(order, pdf_path)
-
-            send_whatsapp_alert(order)
-
-            return redirect("order_success")
-
-        except razorpay.errors.SignatureVerificationError:
-            return render(request, "payments/failure.html")
+        return redirect("order_success")
 
 
 # =======================send mail to admin ============================
@@ -584,7 +532,6 @@ def generate_invoice_pdf(order):
 
 # mail invoice pdf to admin ========================
 
-from django.core.mail import EmailMessage
 
 def send_invoice_email(order, pdf_path):
     subject = f"Your Invoice - Order #{order.id}"
@@ -681,3 +628,59 @@ def order_success(request):
 
 
 # order details===============
+
+
+# payment webhooks=========================
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+# from django.views.decorators.csrf import csrf_exempt
+import json
+
+
+
+
+@csrf_exempt
+def razorpay_webhook(request):
+    if request.method == "POST":
+        payload = request.body
+        signature = request.headers.get("X-Razorpay-Signature")
+
+        try:
+            client.utility.verify_webhook_signature(
+                payload,
+                signature,
+                settings.RAZORPAY_WEBHOOK_SECRET
+            )
+        except razorpay.errors.SignatureVerificationError:
+            return HttpResponse(status=400)
+
+        data = json.loads(payload)
+        event = data.get("event")
+
+        # ✅ ONLY HANDLE PAYMENT CAPTURED
+        if event == "payment.captured":
+            payment = data["payload"]["payment"]["entity"]
+            razorpay_order_id = payment["order_id"]
+
+            try:
+                order = Order.objects.get(razorpay_order_id=razorpay_order_id)
+
+                # 🔒 Avoid duplicate execution
+                if order.payment_status != "PAID":
+                    order.payment_status = "PAID"
+                    order.status = "Confirmed"
+                    order.save()
+
+                    # 🔥 SEND MAILS & WHATSAPP HERE (SAFE)
+                    pdf_path_seller = generate_invoice_seller_pdf(order)
+                    send_admin_order_mail_with_pdf(order, pdf_path_seller)
+
+                    pdf_path = generate_invoice_pdf(order)
+                    send_invoice_email(order, pdf_path)
+
+                    send_whatsapp_alert(order)
+
+            except Order.DoesNotExist:
+                pass
+
+        return HttpResponse(status=200)
