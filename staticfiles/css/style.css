@@ -1,0 +1,1303 @@
+
+/* Remove wrong global pointer */
+* {
+    cursor: default;
+}
+
+/* Only clickable elements */
+a, button, .lap-card, .add-btn {
+    cursor: pointer;
+}
+
+/* Remove white line focus */
+
+*:not(input):not(textarea) {
+    caret-color: transparent !important;
+}
+
+
+
+
+/* ================== */
+
+header .container {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.navbar-brand {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+}
+
+.navbar {
+    padding-left: 0 !important;
+}
+
+.navbar-color{
+    background:linear-gradient(135deg, #7b8bf3,#4bc7ff);
+}
+/* logo code  */
+.logo-code{
+    margin:14px 14px;
+}
+/* .Andhrasweets-title{ */
+    /* font-family: serif; */
+    /* font-weight: 700;   bold like brand logo */
+    /* letter-spacing: 1.0px; */
+    /* color: whitesmoke; */
+    /* font-size: 25px; */
+/* } */
+
+.Andhrasweets-title {
+    font-family: serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 28px;
+    color: #FFCC00 !important;   /* Bright yellow for brand highlight */
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);  /* makes it pop */
+}
+
+
+.nav-link {
+    position: relative;
+    font-size: 18px;
+    color: #f2f6ff !important;
+    transition: 0.3s;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #a8d4ff;
+    transition: 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* 
+ */
+/* =================== */
+
+/* responsive coding  */
+/* @media (max-width: 576px) {    mobile view */
+    /* .navbar-mobileview { */
+        /* margin-left: 20% !important; */
+        /* font-size: 20px !important; */
+    /* } */
+/* } */
+
+
+
+/* =====================Bottom navbar code================= */
+/* ====== MOBILE BOTTOM NAVBAR ====== */
+.la-mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #006b3c; /* Dark Andhra Green */
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 9999;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+}
+
+/* Navigation icons */
+.la-nav-item {
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.la-nav-item i {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 3px;
+}
+
+/* Hide on Desktop */
+@media(min-width: 769px) {
+    .la-mobile-nav {
+        display: none;
+    }
+}
+
+
+
+
+
+
+/* ==============Home.Html file css code ====================== */
+
+/* -------- HERO SECTION -------- */
+/* .hero-section { */
+    /* width: 100%; */
+    /* min-height: 100vh; */
+    /* background: */
+        /* linear-gradient(135deg, rgba(0,0,0,0.75), rgba(0,0,0,0.55)), */
+        /* url("{% static 'images/home_logo.png' %}"); */
+    /* background-size: cover; */
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* padding: 0px; */
+    /* margin: 0px; */
+    /* overflow: hidden; */
+/* } */
+
+/* Left Side Text Animation */
+.hero-content {
+    max-width: 550px;
+    color: #fff;
+    animation: slideLeft 1.4s ease-out;
+}
+
+@keyframes slideLeft {
+    from { opacity: 0; transform: translateX(-60px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-title {
+    font-size: 3.4rem;
+    font-weight: 700;
+     /* Gradient Color */
+    background: linear-gradient(90deg, #ff8800, #ffcc00, #ff0080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Smooth shimmer movement */
+    background-size: 200%;
+    animation: gradientMove 3s ease infinite;
+}
+    @keyframes gradientMove {
+        0% { background-position: 0% }
+        100% { background-position: 100% }
+}
+
+.hero-subtitle {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    opacity: 0.9;
+}
+
+/* CTA Button */
+.hero-btn {
+    margin-top: 25px;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #ff8800, #ffb300);
+    border: none;
+    border-radius: 35px;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(255, 153, 0, 0.4);
+}
+
+/* -------- RIGHT SIDE IMAGES -------- */
+.hero-images {
+    position: relative;
+    animation: fadeUp 1.6s ease-out;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(60px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.main-jar {
+    width: 360px;
+    border-radius: 20px;
+    box-shadow: 0 8px 35px rgba(0,0,0,1.35);
+}
+
+/* Floating small pickle bottle */
+.floating-pickle {
+    position: absolute;
+    right: -30px;
+    top: 30px;
+    width: 170px;
+    animation: float 3.5s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
+}
+
+/* Responsive */
+@media(max-width: 992px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+    }
+    .hero-images {
+        margin-top: 30px;
+    }
+    .main-jar {
+        width: 260px;
+    }
+}
+
+/* ==============last section code =================================== */
+
+
+/* Hero Section */
+.hero-section-lastsection {
+    padding: 80px 0;
+    background: #fff; /* change if needed */
+}
+
+.hero-img {
+    width: 100%;
+    max-width: 450px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-title1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #5a3200;
+}
+
+.hero-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #444;
+    margin-top: 15px;
+}
+
+/* Brown Button */
+.btn-brown {
+    background-color: #8a4b08;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-brown:hover {
+    background-color: #663508;
+    color: #fff;
+}
+
+/* Smooth Fade Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* ===========reviews page css code starts=============== */
+
+/* =========================
+   REVIEW SECTION
+========================= */
+
+.review-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+/* Heading */
+.review-section h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+/* Average rating text */
+.review-section > p {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 22px;
+}
+
+/* =========================
+   REVIEW CARD
+========================= */
+
+.review-card {
+    background: #ffffff;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+/* Stars inside card */
+.review-card {
+    font-size: 18px;
+    color: #ffb400;
+}
+
+/* Comment */
+.review-card p {
+    font-size: 15px;
+    color: #333;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* Name */
+.review-card small {
+    font-size: 14px;
+    color: #777;
+    font-style: italic;
+}
+
+/* =========================
+   REVIEW FORM
+========================= */
+
+.review-section form {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff7f0;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+/* Labels */
+.review-section label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+/* Inputs */
+.review-section input,
+.review-section select,
+.review-section textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-section input:focus,
+.review-section select:focus,
+.review-section textarea:focus {
+    border-color: #ff7a18;
+    box-shadow: 0 0 0 3px rgba(255,122,24,0.15);
+}
+
+/* Submit Button */
+.review-section button {
+    background: linear-gradient(135deg, #ff7a18, #ff5722);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-section button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(255,87,34,0.4);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+    .review-section {
+        padding: 15px;
+    }
+
+    .review-card {
+        padding: 14px;
+    }
+
+    .review-section h3 {
+        font-size: 20px;    
+    }
+}
+/* =================code ends ================ */
+
+/* Little Andhra pickles========================= */
+
+.lap-title{
+    text-align: center;
+    font-weight: 700;
+    font-size: 35px;
+    margin-top:30px;
+}
+.lap-subtitle {
+    text-align: center;
+    font-size: 16px;
+    color: #229122;
+}
+
+/* .lap-tab { */
+    /* padding: 10px 20px; */
+    /* border: none; */
+    /* background: #eee; */
+    /* font-size: 16px; */
+    /* border-radius: 8px; */
+    /* margin: 5px; */
+    /* cursor: pointer; */
+/* } */
+/* .lap-tab.active { */
+    /* background: #ff9800; */
+    /* color: #fff; */
+/* } */
+/*  */
+/* Horizontal scroll container */
+/* .scroll-container { */
+    /* display: flex !important;       FLEX FIX */
+    /* gap: 20px; */
+    /* overflow-x: auto; */
+    /* white-space: nowrap; */
+    /* scroll-behavior: smooth; */
+    /* scrollbar-width: none;  firefox */
+    /* padding: 10px; */
+/* } */
+/*  */
+/*  */
+/* Stop scrollbars showing */
+/* .scroll-container::-webkit-scrollbar { */
+    /* display: none; */
+/* } */
+/*  */
+/* Product card */
+/* .lap-card { */
+    /* min-width: 170px;      IMPORTANT for horizontal scrolling */
+    /* flex: 0 0 auto;        Do not shrink */
+    /* text-align: center; */
+/* } */
+/*  */
+/*  */
+/*  */
+/* Image */
+/* .lap-img { */
+    /* width: 100%; */
+    /* height: 150px; */
+    /* object-fit: contain; */
+    /* border-radius: 10px; */
+/* } */
+/*  */
+/* Product name */
+/* .lap-name { */
+    /* font-size: 15px; */
+    /* margin-top: 5px; */
+/* } */
+/*  */
+/* MOBILE RESPONSIVE */
+/* @media (max-width: 768px) { */
+    /* .scroll-container { */
+        /* grid-template-columns: repeat(2, 1fr); Mobile */
+        /* gap: 15px; */
+    /* } */
+    /* .lap-img { */
+        /* height: 130px; */
+    /* } */
+/* } */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+
+
+
+/* ---------------------- */
+/* TABS */
+.lap-tab {
+    padding: 10px 20px;
+    border: none;
+    background: #eee;
+    font-size: 16px;
+    border-radius: 8px;
+    margin: 5px;
+    cursor: pointer;
+}
+.lap-tab.active {
+    background: #ff9800;
+    color: #fff;
+}
+
+/* ---------------------- */
+/* AUTO SCROLL (outer wrapper) */
+.auto-scroll {
+    width: 100%;
+    overflow: hidden;
+    padding-left: 10px;
+}
+
+/* AUTO SCROLL TRACK (moves) */
+.scroll-track {
+    display: flex;
+    gap: 20px;
+    animation: scrollAnim 20s linear infinite;
+}
+
+@keyframes scrollAnim {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* ---------------------- */
+/* PRODUCT CARD */
+.lap-card {
+    min-width: 170px;
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.lap-img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.lap-name {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+/* ---------------------- */
+/* MOBILE */
+@media (max-width: 768px) {
+    .lap-img {
+        height: 130px;
+    }
+}
+
+
+
+/* ========Sweets Categories Css======= */
+
+
+/* Section Title */
+/* .section-title { */
+    /* font-size: 22px; */
+    /* margin: 15px 0; */
+    /* font-weight: 700; */
+/* } */
+/*  */
+/* Grid System */
+/* .products-grid { */
+    /* display: grid; */
+    /* grid-template-columns: repeat(3, 1fr); Laptop: 3 cards */
+    /* gap: 20px; */
+    /* padding: 10px 0; */
+/* } */
+/*  */
+/* Cards */
+/* .lap-card { */
+    /* background: #fff; */
+    /* border-radius: 12px; */
+    /* padding: 10px; */
+    /* text-align: center; */
+    /* box-shadow: 0 2px 8px rgba(0,0,0,0.1); */
+/* } */
+/*  */
+/* .lap-img { */
+    /* width: 100%; */
+    /* height: 160px; */
+    /* object-fit: cover; */
+    /* border-radius: 10px; */
+/* } */
+/*  */
+/* .lap-name { */
+    /* font-size: 16px; */
+    /* font-weight: 600; */
+    /* margin-top: 8px; */
+/* } */
+/*  */
+/* Mobile: 2 cards per row */
+/* @media (max-width: 600px) { */
+    /* .products-grid { */
+        /* grid-template-columns: repeat(2, 1fr); */
+    /* } */
+/* } */
+/*  */
+
+/* ==================All proucts page css code Andhra sweets ========================================== */
+
+
+.section-title{
+    text-align: center;
+    font-weight: 700;
+    font-size: 35px;
+    margin-top:30px; }
+
+
+/* Grid System */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    padding: 15px;
+}
+
+
+/* Cards */
+.lap-card1 {
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+/* Image FIX - No cutting */
+.lap-img1 {
+    width: 100%;
+    max-height: 200px;        /* auto-fit height */
+    object-fit: contain !important;  /* show full image */
+    border-radius: 10px;
+}
+.lap-img1:hover {
+    transform: scale(1.10);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+
+
+/* Name */
+.lap-name1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Price */
+.lap-card1 p:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* =================================Masala's and podi's ================================= */
+
+/* Cards */
+.lap-card2 {
+    background: #fff;
+    border-radius: 18px;             /* smoother corners */
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.lap-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Images */
+.lap-img2 {
+    width: 70%;
+    height: 300px;      /*larger image like your screenshot */
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* Name */
+.lap-name2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Price text */
+.lap-card p:last-child {
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Mobile: 2 cards per row */
+@media (max-width: 800px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .lap-img2 {
+        height: 150px;  /* smaller for mobile */
+    }
+}
+
+
+
+/* ==========================Andhra Savories======================== */
+
+
+
+
+
+/* =========================final cards code delivery,always fast,premimum quality =============================== */*/
+.features-wrapper {
+    margin-bottom: 70px !important;
+}
+
+.features-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);   /* 3 boxes in a row */
+    gap: 12px;                               /* space between boxes */
+    padding: 0 10px;
+}
+
+/* Feature box */
+.feature-box {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    transition: 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+}
+
+/* Icon circle */
+.icon-circle {
+    width: 55px;
+    height: 55px;
+    background: #ff9800;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 12px;
+}
+
+.icon-circle i {
+    font-size: 28px;
+    color: white;
+}
+
+/* Title */
+.feature-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ff9800;
+    margin-bottom: 5px;
+}
+
+/* Small paragraph */
+.feature-box p {
+    font-size: 12px;
+    color: #444;
+    line-height: 1.3;
+}
+
+/* Larger screens (tablet/laptop): 3 in a row stays same */
+@media (min-width: 769px) {
+    .features-row {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+}
+
+
+.fake-code{
+    color: white;
+}
+
+
+
+
+/* ===========================next page pickles page============================= */
+/* Banner container */
+.page-banner {
+    width: 100%;
+    height: 320px; /* Adjust height */
+    overflow: hidden;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.page-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* IMPORTANT */
+    object-position: center; /* Keeps center focus */
+    display: block;
+}
+
+
+
+/* ===============all pages  cards sections======================== */
+
+/* =========== PAGE STYLE =========== */
+/* ===== MAIN LAYOUT ===== */
+.pickles-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 25px;
+    text-align: center;
+    animation: fadePage .8s ease-in-out;
+}
+
+.main-title {
+    font-size: 42px;
+    font-weight: 900;
+    color: #d1352b;
+    text-shadow: 0 4px 10px rgba(209,53,43,0.3);
+}
+
+.sub-title {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 40px;
+}
+
+/* ===== TABS UI ===== */
+.tabs-box {
+    display: inline-flex;
+    background: #fff;
+    padding: 5px;
+    border-radius: 40px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    margin-bottom: 35px;
+}
+
+.tab-btn {
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.tab-btn.active {
+    background: linear-gradient(45deg,#ff4747,#ff7b38);
+    color: white;
+    box-shadow: 0 6px 25px rgba(255,77,54,0.6);
+    transform: scale(1.05);
+}
+
+/* ===== CARD GRID All Pages picles Page,Sweets page,savories page,masalas page,======= */
+.pickles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+    animation: fadeSlide .6s ease;
+}
+
+
+.pickle-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    padding-bottom: 18px;
+    transition: .45s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    position: relative;
+}
+
+.pickle-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+}
+
+/* IMAGE */
+.img-box {
+    height: 220px;
+    overflow: hidden;
+    border-radius: 18px 18px 0 0;
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .6s;
+}
+
+.pickle-card:hover img {
+    transform: scale(1.12);
+}
+
+/* PRICE TAG */
+.price-tag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #26ca58;
+    padding: 8px 14px;
+    border-radius: 50px;
+    color: white;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+.price-tag.red {
+    background: #e81919;
+}
+
+/* PRODUCT NAME */
+.pickle-card h4 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 14px;
+}
+
+.pickle-card p {
+    font-size: 14px;
+    opacity: 0.75;
+}
+
+/* ADD TO CART BUTTON */
+.add-btn {
+    margin-top: 12px;
+    background: linear-gradient(45deg,#ff532a,#ff9d1e);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.add-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 6px 20px rgba(255,104,44,0.6);
+}
+
+.remove-btn{
+    text-decoration: none;
+    color: white;
+}
+/* ===== ANIMATIONS ===== */
+@keyframes fadePage {
+    from {opacity:0; margin-top:25px;}
+    to   {opacity:1; margin-top:0;}
+}
+
+@keyframes fadeSlide {
+    from {opacity:0; transform: translateY(20px);}
+    to   {opacity:1; transform: translateY(0);}
+}
+
+.d-none {display: none;}
+.no-data {font-size:18px; color:#c12727; font-weight:600;}
+
+
+
+/* ========================product page========================== */
+
+.product-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 50px 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Main product section */
+.product-main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.product-image {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.product-image:hover img {
+    transform: scale(1.08);
+}
+
+.product-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.product-info h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: #d1352b;
+}
+
+.telugu-name {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2ecc71;
+    margin: 15px 0;
+}
+
+.description {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Quantity selector */
+.quantity-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.quantity-box input {
+    width: 60px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-now {
+    background: linear-gradient(45deg,#ff4747,#ff7b38);
+    color: #fff;
+}
+
+.buy-now:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255,77,54,0.5);
+}
+
+.add-cart {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.add-cart:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(46,204,87,0.5);
+}
+
+/* Related products */
+.related-products h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-align: left;
+    border-left: 6px solid #e84b23;
+    padding-left: 12px;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.related-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.related-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.related-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Responsive */
+@media(max-width: 900px){
+    .product-main {flex-direction: column;}
+    .related-grid {grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));}
+}
+
+
+/* ==============================All responsive css code==========================  */
+/* ------navbar code--------------- */
+/* ---- MOBILE NAVBAR FIX ---- */
+@media (max-width: 576px) {
+
+    /* Navbar main container */
+    .navbar {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100%;
+        padding: 5px 10px !important;
+    }
+
+    /* Logo + Brand Name */
+    .navbar-brand {
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 8px;
+    }
+
+    /* Brand text */
+    .Andhrasweets-title {
+        font-size: 20px !important;
+        margin: 0 !important;
+    }
+
+    /* REMOVE wrong margin-left on mobile links */
+    .navbar-mobileview {
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+    }
+
+    /* Toggler (3 bar icon) stays right side */
+    .navbar-toggler {
+        margin: 0 !important;
+        padding: 3px 6px !important;
+    }
+
+    /* Toggler icon bigger for mobile */
+    .navbar-toggler-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* ===============andhra sweets,savories,masalas_posi==================== */
+/* Mobile: 2 cards per row */
+@media (max-width: 800px) {
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .lap-img1 {
+        max-height: 140px;      /* adjusts for mobile */
+        object-fit: contain !important;
+    }
+}
+
+
+/* =========================picles,sweets,savories,masalas_podi  page mobile view code=============================== */
+/* ==== Mobile View: Show 2 Pickles Per Row ==== */
+@media (max-width: 600px) {
+    .pickles-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        padding: 0 10px !important;
+    }
+
+    .pickle-card {
+        margin: 0 !important;
+    }
+
+    .img-box {
+        height: 160px !important; /* reduce height so it fits nicely */
+    }
+
+    .pickle-card h4 {
+        font-size: 16px !important;
+    }
+
+    .pickle-card p {
+        font-size: 12px !important;
+    }
+}
+
+
+
